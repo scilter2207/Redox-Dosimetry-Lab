@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d1819">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Redox Lab">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Redox Dosimetry Lab</title>
+<style>
+:root{
+  --ground:#1d1819; --surface:#2a2224; --raised:#352b2e; --line:#47393c;
+  --ink:#f4ebe6; --muted:#b3a39b; --red:#ff5242; --nir:#a58bff; --ok:#8fd19e; --warn:#ffc266;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.45 var(--sans);
+  padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+main{max-width:560px;margin:0 auto;display:grid;gap:20px}
+header{padding:8px 2px 0}
+h1{font:600 30px/1.1 var(--serif);margin:0;letter-spacing:.2px}
+.sub{margin:6px 0 0;color:var(--muted)}
+h2{font:600 19px/1.2 var(--serif);margin:0 0 14px}
+section{background:var(--surface);border-radius:16px;padding:18px 16px}
+label{display:block;font-size:14px;color:var(--muted);margin-bottom:12px}
+label>span.l{display:block;margin-bottom:5px}
+select,input[type=number],input[type=text]{width:100%;min-height:46px;background:var(--raised);color:var(--ink);border:1px solid var(--line);
+  border-radius:10px;padding:0 12px;font:inherit;font-size:16px}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 20px,calc(100% - 15px) 20px;background-size:5px 5px;background-repeat:no-repeat;padding-right:36px}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.prow{display:flex;gap:10px}.prow select{flex:1}
+.chip{display:flex;align-items:center;gap:8px;min-height:46px;margin-top:19px;font-weight:600}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.dot.r{background:var(--red)}.dot.n{background:var(--nir)}
+.hint{font-size:13px;color:var(--muted);margin:6px 0 0}
+.bars{display:grid;gap:8px;margin-top:4px}
+.bar{display:grid;grid-template-columns:62px 1fr 44px;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.bar i{display:block;height:8px;border-radius:4px;background:var(--raised);overflow:hidden}
+.bar i b{display:block;height:100%;border-radius:4px}
+.bar span:last-child{text-align:right;color:var(--ink)}
+.dose{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px}
+.dose output{font:600 22px var(--serif)}
+input[type=range]{width:100%;accent-color:var(--red);height:32px}
+.range-ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin:-4px 0 14px}
+.dist{display:flex;gap:12px;align-items:end}
+.dist label{flex:1;margin:0}
+.linkbtn{background:none;border:0;color:var(--ink);text-decoration:underline;min-height:46px;font:inherit;font-size:14px;cursor:pointer;padding:0 4px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 6px}
+.card{background:var(--raised);border-radius:12px;padding:14px 12px;border-left:4px solid var(--ink)}
+.card.r{border-left-color:var(--red)}.card.n{border-left-color:var(--nir)}
+.card h3{margin:0;font:500 14px var(--sans);color:var(--muted)}
+.card .big{font:600 40px/1.05 var(--serif);margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.card .pw{font-size:15px;font-weight:600}
+.card p{margin:8px 0 0;font-size:12.5px;color:var(--muted)}
+.hero{margin:6px 0 0}
+.hero .k{font-size:14px;color:var(--muted)}
+.hero .v{font:600 34px/1.1 var(--serif)}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 4px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-weight:500;color:var(--muted)}
+td:not(:first-child),th:not(:first-child){text-align:right}
+.cal th,.cal td{border:0;padding:4px}
+.cal th:first-child,.cal td:first-child{text-align:left}
+.cal input{min-height:42px;padding:0 8px;text-align:right}
+.cal .rm{background:none;border:0;color:var(--muted);font-size:20px;min-width:36px;min-height:42px;cursor:pointer}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{background:var(--raised);color:var(--muted);border:0;min-height:40px;padding:0 16px;font:inherit;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--ground);font-weight:600}
+.btn{min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--raised);color:var(--ink);padding:0 14px;font:inherit;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--ground);border-color:var(--ink);font-weight:600}
+.btn.danger{color:var(--warn)}
+.warns{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
+.warns li{font-size:13.5px;padding:10px 12px;border-radius:10px;background:var(--raised);border-left:4px solid var(--warn)}
+.warns li.info{border-left-color:var(--muted)}
+.toggle{display:flex;gap:10px;align-items:flex-start;color:var(--ink);font-size:14px;margin:14px 0 0}
+.toggle input{width:22px;height:22px;margin:1px 0 0;accent-color:var(--ink);flex:none}
+dialog{border:0;border-radius:16px;background:var(--surface);color:var(--ink);padding:18px 16px;width:min(560px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto}
+dialog::backdrop{background:rgba(0,0,0,.65)}
+dialog:not([open]){display:none}
+dialog.fb[open]{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:50;box-shadow:0 0 0 100vmax rgba(0,0,0,.65);margin:0}
+.actions{display:flex;gap:10px;margin-top:18px}.actions .btn{flex:1}
+.err{color:var(--warn);font-size:13.5px;min-height:18px;margin:8px 0 0}
+details summary{cursor:pointer;font:600 19px/1.2 var(--serif);list-style:none;min-height:30px}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"+";float:right;color:var(--muted)}
+details[open] summary::after{content:"\2212"}
+details[open] summary{margin-bottom:14px}
+.ev{padding:12px 0;border-top:1px solid var(--line)}
+.ev:first-child{border-top:0;padding-top:0}
+.evh{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
+.evh b{font-size:15px}
+.badge{flex:none;font-size:12px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--ink);white-space:nowrap}
+.b-pub{border-color:var(--ok)}.b-part{border-color:var(--nir)}.b-est{border-color:var(--warn)}.b-none{border-color:var(--red)}.b-calc{border-color:var(--muted)}
+.ev p{font-size:13.5px;color:var(--muted);margin:6px 0 0}
+.refs{margin:8px 0 0;padding-left:18px;font-size:13px}
+.refs li{margin:4px 0}
+.refs a{color:var(--ink);overflow-wrap:anywhere}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--surface);border-radius:12px;padding:5px}
+.tabs button{min-height:44px;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-weight:600;cursor:pointer}
+.tabs button[aria-pressed=true]{background:var(--ink);color:var(--ground)}
+body[data-view="simple"] .lab{display:none!important}
+body[data-view="lab"] .simple-only{display:none!important}
+.dlg-h{font:600 15px var(--serif);margin:16px 0 8px}
+.actions{flex-wrap:wrap}
+svg{width:100%;height:auto;display:block}
+svg text{fill:var(--muted);font:10px var(--sans)}
+.foot{font-size:12.5px;color:var(--muted);padding:0 4px}
+</style>
+</head>
+<body data-view="simple">
+<main>
+<div id="loadfail" style="display:none;background:#352b2e;border-left:4px solid #ffc266;border-radius:10px;padding:12px 14px;font-size:14px">The calculator did not finish loading. If this was opened from a message, email or file preview, open the web link in Safari instead. Older iPhones need iOS 12 or newer, so a software update may also help.</div>
+<noscript><div style="background:#352b2e;border-left:4px solid #ffc266;border-radius:10px;padding:12px 14px;font-size:14px">This app needs JavaScript. Turn it on in Safari settings, or open the web link in Safari instead of a file preview.</div></noscript>
+<header>
+  <h1>Redox Dosimetry Lab</h1>
+  <p class="sub">Red light therapy protocol calculator</p>
+</header>
+
+<div class="tabs" role="group" aria-label="View">
+  <button type="button" data-view="simple" aria-pressed="true">Simple</button>
+  <button type="button" data-view="lab" aria-pressed="false">Lab View (Advanced)</button>
+</div>
+
+<section aria-labelledby="h-panel">
+  <h2 id="h-panel">Panel profile</h2>
+  <div class="prow">
+    <select id="profile" aria-label="Panel profile"></select>
+    <button class="btn" id="editProfile" type="button">Edit</button>
+  </div>
+  <p class="hint" id="profileHint"></p>
+</section>
+
+<dialog id="editor" aria-labelledby="dlgTitle">
+  <h2 id="dlgTitle"></h2>
+  <label><span class="l">Profile name</span><input id="pname" type="text" maxlength="40" placeholder="Panel name"></label>
+  <div style="display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px">
+    <span style="font-size:14px;color:var(--muted)">Measuring distance in</span>
+    <div class="seg" role="group" aria-label="Distance unit"><button type="button" data-unit="in">inches</button><button type="button" data-unit="cm">cm</button></div>
+  </div>
+  <h3 class="dlg-h">Wavelengths</h3>
+  <table class="cal" aria-label="Wavelengths">
+    <thead><tr><th>Wavelength (nm)</th><th>Share of output (%)</th><th></th></tr></thead>
+    <tbody id="bands"></tbody>
+  </table>
+  <p class="hint">Share of the panel's total output at each wavelength with everything on. If the maker does not publish it, split evenly or use LED counts.</p>
+  <button class="btn" id="addBand" type="button" style="margin-top:10px">Add wavelength</button>
+  <h3 class="dlg-h">Irradiance readings</h3>
+  <table class="cal" aria-label="Irradiance readings">
+    <thead><tr><th>Distance</th><th>Total mW/cm²</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="hint">Total irradiance in mW/cm² with all wavelengths on at 100% power, centered on the panel. More distances means better numbers between them.</p>
+  <button class="btn" id="addRow" type="button" style="margin-top:10px">Add distance</button>
+  <label style="margin-top:18px"><span class="l">Solar meter correction</span><input id="pfactor" type="number" inputmode="decimal" step="0.05" min="0.2" max="1.5"></label>
+  <p class="hint">Solar meters tend to read 2 to 3 times high on narrow-band LEDs. 0.5 is a middle-of-the-road guess. Use 1.0 to take your readings as-is.</p>
+  <label class="toggle"><input type="checkbox" id="ptogether"><span>Wavelengths fire together. Red and near-infrared cannot be switched separately.</span></label>
+  <p class="hint" id="dlgSrc"></p>
+  <p class="err" id="dlgErr" role="alert"></p>
+  <div class="actions">
+    <button class="btn" id="cancelProfile" type="button">Cancel</button>
+    <button class="btn danger" id="delProfile" type="button" hidden>Delete</button>
+    <button class="btn primary" id="saveProfile" type="button">Save changes</button>
+    <button class="btn" id="savePreset" type="button">Save as new preset</button>
+  </div>
+</dialog>
+
+<section aria-labelledby="h-treat" class="not-edit">
+  <h2 id="h-treat">Treatment</h2>
+  <label><span class="l">What are you treating?</span><select id="treatment"></select></label>
+  <label><span class="l">Target area</span><select id="area"></select></label>
+  <div class="row2 lab">
+    <label><span class="l">Depth to target (mm)</span><input id="depth" type="number" inputmode="decimal" step="0.5" min="0.5"></label>
+    <div class="chip" id="verdict" aria-live="polite"></div>
+  </div>
+  <p class="hint lab" id="depthHint"></p>
+  <div class="bars lab" id="trans" style="margin-top:12px"></div>
+</section>
+
+<section aria-labelledby="h-proto" class="not-edit">
+  <h2 id="h-proto"><span class="simple-only">Recommendation</span><span class="lab">Protocol</span></h2>
+  <div class="dose lab"><span style="color:var(--muted);font-size:14px">Dose per session</span><output id="doseOut" for="dose"></output></div>
+  <input id="dose" class="lab" type="range" aria-label="Dose per session in joules per square centimeter">
+  <div class="range-ends lab"><span id="doseLo"></span><span>published window</span><span id="doseHi"></span></div>
+  <div class="row2" style="margin-bottom:6px">
+    <label style="margin:0"><span class="l">Time goal (full power)</span>
+      <select id="goal"><option value="3">About 3 min</option><option value="5">About 5 min</option><option value="8">About 8 min</option><option value="10">About 10 min</option><option value="15">About 15 min</option><option value="20">About 20 min</option><option value="30">About 30 min</option><option value="custom" disabled hidden>Set by distance</option></select></label>
+    <div class="dist"><label style="margin:0"><span class="l">Distance (<span class="u"></span>)</span><input id="dist" type="number" inputmode="decimal" step="0.5" min="0"></label>
+    <button class="linkbtn" id="auto" type="button" hidden>Auto</button></div>
+  </div>
+  <p class="hint">Pick a time to set the distance, or type a distance and the times update. Either one overrides the other.</p>
+  <div id="result"></div>
+</section>
+
+<section class="not-edit">
+  <details id="evd">
+    <summary>Evidence and reasoning</summary>
+    <div id="evidence"></div>
+  </details>
+</section>
+
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 19.</p>
+</main>
+
+
+
+<script>
+window.addEventListener("load",function(){if(!window.__rdlReady){var b=document.getElementById("loadfail");if(b)b.style.display="block"}});
+</script>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const store={get(){try{return JSON.parse(localStorage.getItem("rdl.v2"))}catch(e){return null}},set(v){try{localStorage.setItem("rdl.v2",JSON.stringify(v))}catch(e){}}};
+
+/* ---------- Data ---------- */
+const SMALL_WORDS=new Set(["and","or","of","for","in","the","a","an","to","on","with","at","by","x"]);
+function titleCase(s){
+  return String(s).replace(/\S+/g,function(w,off){
+    const m=w.match(/^([^A-Za-z0-9]*)(.*)$/),lead=m[1],rest=m[2];
+    if(!rest)return w;
+    const core=rest.replace(/[^A-Za-z0-9]+$/,"");
+    if(off>0&&SMALL_WORDS.has(core)&&core===core.toLowerCase())return w;
+    return lead+rest.charAt(0).toUpperCase()+rest.slice(1);
+  });
+}
+const TREATMENTS=[
+ {id:"skin",name:"Skin rejuvenation",layer:"skin",areas:["face","neck","chest","upab","lowab","uparm","hand"],dose:[4,12],freq:"3 to 5 sessions a week for 8 to 12 weeks"},
+ {id:"acne",name:"Acne and blemishes",layer:"skin",areas:["face","neck","chest","shoulder","upback"],dose:[4,20],def:10,freq:"3 to 5 sessions a week"},
+ {id:"wound",name:"Wound and scar healing",layer:"skin",areas:"all",dose:[2,16],def:5,freq:"Daily to every other day"},
+ {id:"hair",name:"Hair regrowth",layer:"skin",areas:["scalp","face"],dose:[6,20],freq:"3 to 4 sessions a week for 3 to 6 months"},
+ {id:"muscle",name:"Muscle recovery and performance",layer:"muscle",areas:["thigh","calf","uparm","forearm","shoulder","upback","lowback","neck","chest","hip","upab","lowab"],irrMin:35,dose:[10,40],freq:"Daily, or around training"},
+ {id:"joint",name:"Joint and tendon pain",layer:"joint",areas:["knee","shoulder","lowback","neck","upback","elbow","hand","hip","foot","forearm"],irrMin:35,dose:[10,50],freq:"3 to 5 sessions a week"},
+ {id:"cog",name:"Cognitive decline, memory and dementia (transcranial)",layer:"brain",areas:["forehead","crown"],irrMin:100,dose:[1,10],def:7,freq:"3 to 6 sessions a week in published trials, over 4 to 12 weeks",
+  caution:"Evidence is preliminary: small trials, mostly 810 nm head-mounted devices rather than panels. Cadaver studies find the scalp and skull block roughly 95 to 99.5% of near-infrared light, and critical reviews doubt that LED devices deliver enough to the cortex. Light is not a replacement for medical care for memory problems or dementia, so talk to a doctor first. Keep the eyes shielded, since 850 nm is invisible and the forehead is close to them."},
+ {id:"core",name:"Postpartum core recovery (diastasis recti)",layer:"muscle",areas:["upab","lowab"],irrMin:35,dose:[10,30],freq:"3 to 5 sessions a week, alongside core rehab",
+  caution:"There is no established light dose for diastasis recti. Light may support muscle and tissue recovery, but core and pelvic-floor rehab is the main treatment, and the gap itself will not close from light alone. Check with her physio or doctor first, especially if there is a hernia, a recent C-section wound, or she is pregnant."}
+];
+const AREAS=[
+ {id:"face",name:"Face",d:[1.5,5,8]},{id:"scalp",name:"Scalp",d:[3.5,6,null]},{id:"forehead",name:"Forehead (prefrontal)",d:[2,5,8,14],note:"Scalp, skull and the membranes under it add up to roughly 12 to 15 mm at the forehead, and skull thickness varies between people. Type your own estimate to override."},{id:"crown",name:"Temples and crown",d:[3.5,6,null,15],note:"Scalp, skull and the membranes under it add up to roughly 12 to 15 mm here, and skull thickness varies between people. Type your own estimate to override."},{id:"neck",name:"Neck",d:[2,12,15]},
+ {id:"shoulder",name:"Shoulder",d:[3,18,15]},{id:"upback",name:"Upper back",d:[3,15,25]},{id:"lowback",name:"Lower back",d:[3,22,35]},
+ {id:"chest",name:"Chest",d:[3,15,20]},
+ {id:"upab",name:"Upper abdomen",d:[3,14,20],note:"Abdominal wall depth varies a lot with body composition and after pregnancy. Type your own estimate to override."},
+ {id:"lowab",name:"Lower abdomen",d:[3,16,22],note:"Abdominal wall depth varies a lot with body composition and after pregnancy. Type your own estimate to override."},{id:"uparm",name:"Upper arm",d:[2.5,15,null]},{id:"elbow",name:"Elbow",d:[2,8,8]},
+ {id:"forearm",name:"Forearm",d:[2,10,10]},{id:"hand",name:"Hand and wrist",d:[1.5,5,6]},{id:"hip",name:"Hip",d:[4,30,40]},
+ {id:"thigh",name:"Thigh",d:[3,25,null]},{id:"knee",name:"Knee",d:[2.5,10,10]},{id:"calf",name:"Calf",d:[2.5,18,null]},
+ {id:"foot",name:"Ankle and foot",d:[2,6,8]}
+];
+TREATMENTS.forEach(t=>{t.name=titleCase(t.name)});
+AREAS.forEach(a=>{a.name=titleCase(a.name)});
+const DELTA={"660":2.6,"850":6.2};
+const LAYER_IDX={skin:0,muscle:1,joint:2,brain:3};
+
+/* ---------- State ---------- */
+const DEFAULT_PROFILE={id:"default",name:"Default panel",unit:"in",factor:0.5,mode:"switch",bands:[{nm:"660",share:"45"},{nm:"850",share:"55"}],rows:[{d:"8",t:"200"}],kind:"user",src:"Starting point: one reading of 200 mW/cm\u00b2 at 8 in with both wavelengths on, split 90 and 110 between 660 and 850 nm."};
+function migrate(p){
+  if(p.bands&&p.rows&&p.rows.every(r=>"t" in r))return p;
+  const rows=p.rows||[];let a=null,b=null;
+  for(const r of rows){const x=parseFloat(r.a),y=parseFloat(r.b);if(x>0&&y>0){a=x;b=y;break}}
+  let bands;
+  if(a!=null)bands=[{nm:"660",share:String(Math.round(a/(a+b)*100))},{nm:"850",share:String(Math.round(b/(a+b)*100))}];
+  else{const hasA=rows.some(r=>parseFloat(r.a)>0),hasB=rows.some(r=>parseFloat(r.b)>0);
+    bands=hasA&&!hasB?[{nm:"660",share:"100"}]:(!hasA&&hasB?[{nm:"850",share:"100"}]:[{nm:"660",share:"50"},{nm:"850",share:"50"}])}
+  const nr=rows.map(r=>({d:r.d,t:String((parseFloat(r.a)||0)+(parseFloat(r.b)||0)||"")}));
+  return Object.assign({},p,{bands:bands,rows:nr,mode:p.together?"fixed":"switch",kind:p.kind||"user"});
+}
+/* ---------- Preset panels ---------- */
+// rows are [distance in inches, total mW/cm2 with every wavelength on at 100% power]; bands are [nm, share of output in percent]
+const PRESETS=[
+ {id:"kala-pro",name:"Kala Pro Panel",factor:0.5,mode:"fixed",bands:[[660,50],[850,50]],rows:[[6,135]],kind:"claim",
+  src:"Kala lists more than 135 mW/cm\u00b2 at 6 inches or more, measured with a solar meter, so the solar correction is applied. 85 LEDs, 660 and 850 nm in a 1:1 LED ratio. The power split is assumed to be even, and separate switching of the wavelengths was not confirmed.",
+  refs:[{t:"Kala Red Light Pro Panel specifications (retailer listing)",u:"https://golfwellnesslab.com/products/kala-red-light-pro-panel"},{t:"Kala Red Light Pro Panel review",u:"https://red-light-therapy.beehiiv.com/p/kala-red-light-pro-panel-review"}]},
+ {id:"kala-elite",name:"Kala Elite Panel",factor:0.5,mode:"fixed",bands:[[660,50],[850,50]],rows:[[6,161]],kind:"claim",
+  src:"Kala lists 161 mW/cm\u00b2 at 6 inches, measured with a solar meter, so the solar correction is applied. 231 LEDs, 660 and 850 nm in a 1:1 LED ratio. The power split is assumed to be even, and separate switching was not confirmed.",
+  refs:[{t:"Kala Red Light Elite Panel specifications (retailer listing)",u:"https://healf.com/en-uk/products/kala-red-light-therapy-elite-panel?variant=48599840489711"}]},
+ {id:"kala-quad",name:"Kala Quad Panel",factor:0.5,mode:"fixed",bands:[[660,50],[850,50]],rows:[[6,161]],kind:"claim",
+  src:"Kala lists 161 mW/cm\u00b2 at 6 inches, measured with a solar meter, so the solar correction is applied. 924 LEDs, 660 and 850 nm in a 1:1 LED ratio. The power split is assumed to be even, and separate switching was not confirmed.",
+  refs:[{t:"Kala Red Light Quad Panel specifications (retailer listing)",u:"https://shop.healfaster.ca/products/kala-red-light-quad-panel"}]},
+ {id:"mito-max-large",name:"Mito MitoMAX 2.0 (36 x 12 in)",factor:1,mode:"switch",bands:[[660,50],[850,50]],rows:[[6,74]],kind:"lab",
+  src:"Mito publishes a lab figure of more than 74 mW/cm\u00b2 at 6 inches, alongside more than 165 on a consumer solar meter. The lab figure is used, so no solar correction. 660 and 850 nm in a 50/50 split with a separate switch for each.",
+  refs:[{t:"Mito Red Light MitoMAX 2.0 (manufacturer page)",u:"https://mitoredlight.com/products/mitomax"}]},
+ {id:"mito-max-small",name:"Mito MitoMAX 2.0 (12 x 9 in)",factor:1,mode:"switch",bands:[[660,50],[850,50]],rows:[[6,52]],kind:"lab",
+  src:"Mito publishes a lab figure of more than 52 mW/cm\u00b2 at 6 inches, alongside more than 115 on a consumer solar meter. The lab figure is used, so no solar correction. 660 and 850 nm in a 50/50 split with a separate switch for each.",
+  refs:[{t:"Mito Red Light MitoMAX 2.0 (manufacturer page)",u:"https://mitoredlight.com/products/mitomax"}]},
+ {id:"mito-pro-1500plus",name:"Mito MitoPRO 1500+",factor:1,mode:"fixed",bands:[[630,25],[660,25],[830,25],[850,25]],rows:[[6,68.2]],kind:"lab",
+  src:"Mito's accredited lab test lists 68.2 mW/cm\u00b2 peak and 56.8 average at 6 inches, against more than 170 on a solar meter. The lab peak is used. Four wavelengths at 25% each. Separate switching was not confirmed.",
+  refs:[{t:"MitoPRO 1500+ specifications and lab figures (third-party summary)",u:"https://lifespanvault.com/red-light/mito-red-pro-1500"},{t:"Light Therapy Insiders: MitoPRO 1500+ review",u:"https://www.lighttherapyinsiders.com/mito-red-mitopro-1500-plus-review/"}]},
+ {id:"joovv-solo-3",name:"Joovv Solo 3.0",factor:1,mode:"fixed",bands:[[660,41],[850,59]],rows:[[6,72.4]],kind:"ind",
+  src:"An independent spectrometer test (Light Therapy Insiders) found 72.4 mW/cm\u00b2 peak and 59.2 average with both on. Red alone read 45.2 and near-infrared alone 66.3, which gives the 41/59 split. Joovv itself lists more than 100 mW/cm\u00b2, and sources disagree on the distance. 150 LEDs. The test distance is assumed to be 6 inches, and separate switching was not confirmed.",
+  refs:[{t:"Light Therapy Insiders: Joovv Solo 3.0 review",u:"https://www.lighttherapyinsiders.com/joovv-solo-3-review/"},{t:"Joovv Solo 3.0 specifications (more than 100 mW/cm\u00b2 claim)",u:"https://medgrade.org/devices/joovv-solo-3-0/"}]},
+ {id:"biolight-recharge",name:"BioLight ReCharge",factor:1,mode:"switch",bands:[[660,50],[850,50]],rows:[[6,63]],kind:"claim",
+  src:"BioLight lists 63 mW/cm\u00b2 at 6 inches at 100% power, third-party tested per the brand with the instrument not named, so no solar correction. 60 dual-chip LEDs, so an even split is assumed. Red only, near-infrared only and combined modes. The brand's other power settings (75%: 66, 50%: 49, 25%: 16 mW/cm\u00b2) do not scale linearly, which conflicts with the linear power assumption.",
+  refs:[{t:"BioLight ReCharge (manufacturer page)",u:"https://www.biolight.shop/products/recharge"}]},
+ {id:"biolight-restore",name:"BioLight ReStore",factor:1,mode:"switch",bands:[[660,50],[850,50]],rows:[[6,56.9]],kind:"claim",
+  src:"BioLight lists 56.9 mW/cm\u00b2 at 6 inches at 100% power, third-party tested per the brand with the instrument not named, so no solar correction. 300 dual-chip LEDs, so an even split is assumed. Red only, near-infrared only and combined modes. The brand's other power settings (75%: 56.5, 50%: 44, 25%: 32 mW/cm\u00b2) do not scale linearly, which conflicts with the linear power assumption.",
+  refs:[{t:"BioLight ReStore (manufacturer page)",u:"https://www.biolight.shop/products/restore"}]},
+ {id:"rouge-tabletop-g4",name:"Rouge Tabletop G4",factor:1,mode:"switch",bands:[[630,12.5],[650,12.5],[660,12.5],[670,12.5],[810,12.5],[830,12.5],[850,12.5],[1060,12.5]],rows:[[6,79]],kind:"claim",
+  src:"Rouge lists 79 mW/cm\u00b2 at 6 inches on a spectrometer, alongside 164 on a solar meter. The spectrometer figure is used, so no solar correction. 72 dual-chip LEDs with eight wavelengths, assumed to be an even 12.5% each (1060 nm is reported at about 12.5%). The wavelengths can be used together or independently.",
+  refs:[{t:"Rouge Tabletop G4 (manufacturer page)",u:"https://rouge.care/products/rouge-tabletop-g4"},{t:"Rouge Red Light Therapy review (third-party)",u:"https://redlighttherapytop10.com/rouge-red-light-therapy-review/"}]},
+ {id:"rouge-pro-g4",name:"Rouge Pro G4",factor:1,mode:"switch",bands:[[630,12.5],[650,12.5],[660,12.5],[670,12.5],[810,12.5],[830,12.5],[850,12.5],[1060,12.5]],rows:[[6,90]],kind:"claim",
+  src:"Rouge lists 90 mW/cm\u00b2 at 6 inches on a spectrometer, alongside 164 on a solar meter. The spectrometer figure is used, so no solar correction. An independent test (Light Therapy Insiders) measured a peak of 65 and an average of 59.2 mW/cm\u00b2, so this may be generous. 288 dual-chip LEDs with eight wavelengths, assumed to be an even 12.5% each. The wavelengths can be used together or independently.",
+  refs:[{t:"Rouge Pro G4 (manufacturer page)",u:"https://rouge.care/products/rouge-pro-g4-bundle-1"},{t:"Light Therapy Insiders: Rouge G4 Pro review",u:"https://www.lighttherapyinsiders.com/rouge-g4-pro-review-most-advanced-red-light-panel-yet/"}]},
+ {id:"rouge-max-g4",name:"Rouge Max G4",factor:1,mode:"switch",bands:[[630,12.5],[650,12.5],[660,12.5],[670,12.5],[810,12.5],[830,12.5],[850,12.5],[1060,12.5]],rows:[[6,81]],kind:"claim",
+  src:"Rouge lists 81 mW/cm\u00b2 at 6 inches on a spectrometer (reported by a third-party review), alongside 164 on a solar meter. The spectrometer figure is used, so no solar correction. 576 dual-chip LEDs with eight wavelengths, assumed to be an even 12.5% each.",
+  refs:[{t:"Rouge Red Light Therapy review (third-party)",u:"https://redlighttherapytop10.com/rouge-red-light-therapy-review/"}]},
+ {id:"platinumled-biomax-900",name:"PlatinumLED BIOMAX 900",factor:1,mode:"switch",bands:[[480,2],[630,10],[660,40],[810,5],[830,5],[850,38]],rows:[[6,90]],kind:"est",
+  src:"PlatinumLED does not publish a single irradiance figure on its product page and links lab reports instead. The 90 mW/cm\u00b2 at 6 inches is an independent spectrometer average reported by a third-party review of the BIOMAX 900, against a claim of 185 on a solar meter. The wavelength shares come from a third-party review of an earlier BIOMAX and may not match the current seven-band version, so treat the split as assumed. The red and near-infrared arrays can be dimmed independently.",
+  refs:[{t:"PlatinumLED BIOMAX series (manufacturer page)",u:"https://www.platinumtherapylights.com/products/biomax-rlt"},{t:"PlatinumLED BIOMAX review (independent spectrometer figure)",u:"https://frequency.technology/platinumled-review/"},{t:"PlatinumLED BIOMAX series review (wavelength shares)",u:"https://www.therapeuticbeams.com/red-light-therapy/platinumled-biomax-series-review"}]},
+ {id:"hooga-pro1500",name:"Hooga PRO1500",factor:1,mode:"switch",bands:[[660,50],[850,50]],rows:[[6,96]],kind:"ind",
+  src:"An independent spectrometer test (Light Therapy Insiders) reported 96 mW/cm\u00b2 peak and 86 average at 6 inches, against Hooga's claim of 189 on a solar meter. The test figures come from a third-party summary. 300 dual-chip LEDs, so an even split is assumed, with separate red and near-infrared switches.",
+  refs:[{t:"Hooga PRO1500 claims versus measured output (third-party summary)",u:"https://www.lighttherapyiq.com/reviews/mito-red-light-mitopro-1500x-review"},{t:"Hooga PRO1500 product listing",u:"https://peaksaunas.com/products/hooga-pro1500-red-light-therapy-device"}]},
+ {id:"hooga-ultra-1500",name:"Hooga ULTRA 1500",factor:1,mode:"fixed",bands:[[630,25],[660,25],[810,25],[850,25]],rows:[[6,104]],kind:"ind",
+  src:"An independent spectrometer test (Light Therapy Insiders) measured 104 mW/cm\u00b2 peak and 81.7 average at 6 inches, against Hooga website figures above 165. Quad-chip LEDs with the energy split equally across four wavelengths. Separate switching was not confirmed.",
+  refs:[{t:"Light Therapy Insiders: Hooga ULTRA 1500 review",u:"https://www.lighttherapyinsiders.com/hooga-ultra-1500-review/"}]}
+];
+
+PRESETS.forEach(p=>{p.name=titleCase(p.name)});
+const BUILTIN=PRESETS.map(presetToProfile);
+const DEFAULT={view:"simple",profiles:[DEFAULT_PROFILE],active:"default",goal:10,treatment:"skin",area:"face",depthManual:null,distManualCm:null,dose:null};
+let S=Object.assign({},DEFAULT,store.get()||{});
+if(!Array.isArray(S.profiles)||!S.profiles.length)S.profiles=[JSON.parse(JSON.stringify(DEFAULT_PROFILE))];
+S.profiles=S.profiles.map(migrate);
+S.profiles.forEach(p=>{p.name=titleCase(p.name)});
+if(!S.profiles.some(p=>p.id===S.active)&&!PRESETS.some(p=>p.id===S.active))S.active=S.profiles[0].id;
+function save(){store.set(S)}
+const P=()=>S.profiles.find(p=>p.id===S.active)||BUILTIN.find(p=>p.id===S.active)||S.profiles[0];
+
+/* ---------- Math ---------- */
+const toCm=(v,u)=>(u||P().unit)==="in"?v*2.54:v;
+const fromCm=(v,u)=>(u||P().unit)==="in"?v/2.54:v;
+const clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
+
+function makeIrr(pts){
+  if(!pts.length)return null;
+  if(pts.length===1){const p=pts[0];return d=>p.i*Math.pow(p.d/d,1.5)}
+  const L=pts.map(p=>({x:Math.log(p.d),y:Math.log(p.i)}));
+  return d=>{
+    const x=Math.log(d),first=L[0],last=L[L.length-1];
+    let a,b,base,k=L.findIndex(p=>p.x>=x);
+    if(k===-1){a=L[L.length-2];b=last;base=last}
+    else if(k===0){a=first;b=L[1];base=first}
+    else{a=L[k-1];b=L[k];base=a}
+    let s=(b.y-a.y)/(b.x-a.x);
+    if(x<first.x||x>last.x)s=clamp(s,-2.2,0);
+    return Math.exp(base.y+s*(x-base.x));
+  };
+}
+function fitExponent(pts){
+  if(pts.length<2)return null;
+  const xs=pts.map(p=>Math.log(p.d)),ys=pts.map(p=>Math.log(p.i)),n=pts.length;
+  const mx=xs.reduce((s,v)=>s+v,0)/n,my=ys.reduce((s,v)=>s+v,0)/n;
+  let num=0,den=0;for(let i=0;i<n;i++){num+=(xs[i]-mx)*(ys[i]-my);den+=(xs[i]-mx)**2}
+  return den?-num/den:null;
+}
+function points(prof){
+  prof=prof||P();
+  const m=new Map();
+  prof.rows.forEach(r=>{const d=parseFloat(r.d),i=parseFloat(r.t);if(d>0&&i>0)m.set(toCm(d,prof.unit),i)});
+  return [...m.entries()].sort((a,b)=>a[0]-b[0]).map(([d,i])=>({d,i}));
+}
+const fmtT=s=>{if(!isFinite(s))return"-";s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
+const fmt=(x,n=1)=>(+x).toFixed(n).replace(/\.0+$/,"");
+
+/* ---------- Model ---------- */
+function groupsOf(prof){
+  const bs=prof.bands.map(b=>({nm:parseFloat(b.nm),sh:parseFloat(b.share)})).filter(b=>b.nm>0&&b.sh>0);
+  const tot=bs.reduce((s,b)=>s+b.sh,0)||1,sum=a=>a.reduce((s,b)=>s+b.sh,0);
+  const red=bs.filter(b=>b.nm<=700),nir=bs.filter(b=>b.nm>700);
+  return {bs,tot,red,nir,sr:sum(red)/tot,sn:sum(nir)/tot};
+}
+const deltaNm=nm=>nm<=660?DELTA["660"]:nm>=850?DELTA["850"]:DELTA["660"]+(nm-660)*(DELTA["850"]-DELTA["660"])/190;
+function bandLabel(arr,kind){
+  if(arr.length===1)return arr[0].nm+" nm";
+  const lo=Math.min(...arr.map(b=>b.nm)),hi=Math.max(...arr.map(b=>b.nm));
+  return kind+" "+lo+"-"+hi+" nm";
+}
+function model(){
+  const prof=P(),G=groupsOf(prof);
+  const T=TREATMENTS.find(t=>t.id===S.treatment)||TREATMENTS[0];
+  const A=AREAS.find(a=>a.id===S.area)||AREAS[0];
+  const au=A.d[LAYER_IDX[T.layer]],auto=au!=null?au:A.d[1];
+  const depth=S.depthManual!=null&&S.depthManual>0?S.depthManual:auto;
+  let wave=depth<4?"660":depth<13?"blend":"850",subst=null;
+  const fixed=prof.mode==="fixed";
+  if(!fixed){
+    if(wave==="660"&&G.sr===0&&G.sn>0){wave="850";subst="This panel has no red output, so near-infrared is used."}
+    else if(wave==="850"&&G.sn===0&&G.sr>0){wave="660";subst="This panel has no near-infrared output, so red is used."}
+    else if(wave==="blend"&&(G.sr===0||G.sn===0)&&(G.sr+G.sn)>0){wave=G.sr===0?"850":"660";subst="This panel only has "+(G.sr===0?"near-infrared":"red")+" output, so only that is used."}
+  }
+  const s660=clamp(0.7-0.5*(depth-4)/8,0.2,0.7);
+  const [lo,hi]=T.dose;
+  const dose=clamp(S.dose!=null?S.dose:(T.def!=null?T.def:(lo+hi)/2),lo,hi);
+  const f=makeIrr(points(prof)),k=clamp(parseFloat(prof.factor)||1,0.2,1.5);
+  const irr=(ch,dcm)=>{
+    if(!f)return null;const tot=f(dcm)*k;
+    return ch==="660"?tot*G.sr:ch==="850"?tot*G.sn:tot;
+  };
+  const redL=bandLabel(G.red,"red"),nirL=bandLabel(G.nir,"near-infrared");
+  const allL=G.bs.length>4?"all "+G.bs.length+" wavelengths":G.bs.map(b=>b.nm).join(" + ")+" nm";
+  let segs;
+  if(fixed)segs=[{ch:"both",share:1,label:allL,cls:"x"}];
+  else if(wave==="660")segs=[{ch:"660",share:1,label:redL,cls:"r"}];
+  else if(wave==="850")segs=[{ch:"850",share:1,label:nirL,cls:"n"}];
+  else segs=[{ch:"660",share:s660,label:redL,cls:"r"},{ch:"850",share:1-s660,label:nirL,cls:"n"}];
+  const secs=(seg,dcm,p,D)=>{const I=irr(seg.ch,dcm);return I?D*seg.share*1000/(I*p/100):null};
+  const total=(dcm,p,D)=>{let t=0;for(const s of segs){const x=secs(s,dcm,p,D);if(x==null)return null;t+=x}return t};
+  const allPts=points(prof);
+  const missing=!f||G.bs.length===0;
+  // light reaching the target: skull transmission comes from cadaver measurements, other tissue from an exponential model weighted by each wavelength
+  const tg=(arr,nm0)=>{const u=arr.length?arr:[{nm:nm0,sh:1}],s=u.reduce((a,b)=>a+b.sh,0);return u.reduce((a,b)=>a+b.sh*Math.exp(-depth/deltaNm(b.nm)),0)/s};
+  const trans=ch=>{
+    if(T.layer==="brain"){const r=0.007,n=0.015;return ch==="660"?r:ch==="850"?n:(G.sr*r+G.sn*n)/((G.sr+G.sn)||1)}
+    return ch==="660"?tg(G.red,660):ch==="850"?tg(G.nir,850):tg(G.bs,750);
+  };
+  const irrSel=d=>Math.min(...segs.map(s=>irr(s.ch,d)));
+  return {prof,G,T,A,auto,depth,wave,subst,s660,lo,hi,dose,irr,segs,secs,total,allPts,missing,k,trans,irrSel};
+}
+
+function recommend(m){
+  if(m.missing||!m.allPts.length)return null;
+  const ds=m.allPts.map(p=>p.d),dmin=Math.min(...ds),dmax=Math.max(...ds);
+  const step=m.prof.unit==="in"?2.54/2:1;
+  const goal=(parseFloat(S.goal)||10)*60,need=m.T.irrMin||0;
+  const cand=[];
+  for(let d=Math.max(2.54,dmin*0.5);d<=dmax*3+1e-6;d+=step){
+    const t=m.total(d,100,m.dose),I=m.irrSel(d);
+    if(t==null||!isFinite(I))continue;
+    cand.push({d,t,I,e:Math.abs(t-goal),meas:d>=dmin-1e-6&&d<=dmax+1e-6});
+  }
+  if(!cand.length)return null;
+  const pool=need?cand.filter(c=>c.I>=need):cand;
+  if(!pool.length){const c=cand.reduce((a,b)=>b.I>a.I?b:a);return {d:c.d,short:true,I:c.I}}
+  const better=(a,b)=>!a||b.e<a.e-1e-9||(Math.abs(b.e-a.e)<1e-9&&b.d>a.d);
+  let best=null;
+  pool.filter(c=>c.meas&&c.e/goal<=0.1).forEach(c=>{if(better(best,c))best=c});
+  if(!best)pool.forEach(c=>{if(better(best,c))best=c});
+  return {d:best.d,short:false,I:best.I};
+}
+
+/* ---------- Evidence ---------- */
+const R={
+ esnouf:{t:"Depth of penetration of an 850nm wavelength low level laser in human skin (Acupunct Electrother Res, 2007)",u:"https://pubmed.ncbi.nlm.nih.gov/18077939/"},
+ ninety:{t:"More than ninety percent of near-infrared laser energy is absorbed within the first ten millimeters of tissue",u:"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9775104/"},
+ marq:{t:"Near infrared light penetration in human tissue: Monte Carlo simulation thesis (Marquette, 2022)",u:"https://epublications.marquette.edu/theses_open/739"},
+ biphasic:{t:"Biphasic dose response in low level light therapy (Dose-Response, 2009)",u:"https://pubmed.ncbi.nlm.nih.gov/20011653/"},
+ wound:{t:"Red and near-infrared photobiomodulation for impaired cutaneous wound healing (2017 review)",u:"https://pubmed.ncbi.nlm.nih.gov/27943458/"}
+};
+const EVID={
+ skin:{kind:"est",text:"There is no single consensus dose. Published trials use 633 and 830 nm LED over several weeks, and a safety review covers red (625 to 700 nm) and near-infrared light for skin rejuvenation. The 4 to 12 J/cm\u00b2 window is a rounding of public dosing guides, not a figure from one trial.",
+  refs:[{t:"Photobiomodulation: a systematic review of the oncologic safety of low-level light therapy for aesthetic skin rejuvenation (Aesthet Surg J, 2023)",u:"https://pmc.ncbi.nlm.nih.gov/articles/PMC10309024"}]},
+ acne:{kind:"part",text:"Reviews find red light can help acne but not clearly better than standard treatments, with mild side effects. Doses vary widely between studies, from about 20 J/cm\u00b2 twice weekly in one reported trial to 80 J/cm\u00b2 in a single-exposure study, so 4 to 20 J/cm\u00b2 is a conservative window for a home panel.",
+  refs:[{t:"Red light therapy for moderate-to-severe acne: systematic review and meta-analysis (J Cosmet Dermatol, 2021)",u:"https://pubmed.ncbi.nlm.nih.gov/34363730/"},
+        {t:"Light therapy in the treatment of acne vulgaris (Dermatol Surg, 2004)",u:"https://pubmed.ncbi.nlm.nih.gov/14756640/"},
+        {t:"Red light for acne (Dermatology News), source of the 20 and 80 J/cm\u00b2 figures",u:"https://www.mdedge.com/dermatology/article/54418/aesthetic-dermatology/red-light-acne/page/0/1"},
+        {t:"At-home LED devices for acne: systematic review and meta-analysis (JAMA Dermatology)",u:"https://jamanetwork.com/journals/jamadermatology/article-abstract/2830694"}]},
+ wound:{kind:"part",text:"Reviews support red and near-infrared light for wound and scar healing and describe a biphasic response where moderate doses beat low or high ones. Scar trials used roughly 4 to 16 J/cm\u00b2 per session, and a chronic-wound LED trial at 126 J/cm\u00b2 showed no benefit. The 2 to 16 window spans those, and the default sits near the low end.",
+  refs:[R.wound,
+        {t:"Red and near-infrared photobiomodulation for burn, hypertrophic and post-surgical scars: scoping review (Lasers Med Sci)",u:"https://link.springer.com/10.1007/s10103-026-04875-8"},
+        {t:"LED photobiomodulation for chronic lower-limb wounds: systematic review of randomized trials (Lasers Med Sci)",u:"https://link.springer.com/10.1007/s10103-026-04928-y"}]},
+ hair:{kind:"part",text:"Meta-analyses of randomized trials find light therapy increases hair density in pattern hair loss. Those trials mostly used laser combs and helmets, and the reviews found give no J/cm\u00b2 window for panels, so 6 to 20 J/cm\u00b2 is an estimate from public guides. One meta-analysis found lower treatment frequency worked better than high frequency.",
+  refs:[{t:"Home-use low-level light therapy devices for pattern hair loss: systematic review and meta-analysis (J Clin Aesthet Dermatol, 2021)",u:"https://pubmed.ncbi.nlm.nih.gov/34980962/"},
+        {t:"Low-level laser therapy for androgenic alopecia: a review (Lasers Med Sci, 2018)",u:"https://pubmed.ncbi.nlm.nih.gov/29270707/"},
+        {t:"Comparative effectiveness of low-level laser therapy for adult androgenic alopecia: meta-analysis",u:"https://hub.tmu.edu.tw/en/publications/comparative-effectiveness-of-low-level-laser-therapy-for-adult-an/"}]},
+ muscle:{kind:"part",text:"Reviews of pre-exercise light therapy find benefits for performance and soreness. They report energy per muscle in joules, mostly 20 to 60 J for small groups and 60 to 300 J for large groups, and one meta-analysis put optimal energy density near 24 J/cm\u00b2. Converting joules to J/cm\u00b2 depends on the area you treat, so 10 to 40 J/cm\u00b2 is an estimated conversion for a panel.",
+  refs:[{t:"Photobiomodulation therapy for muscular performance and fatigue in healthy people: systematic review and meta-analysis",u:"https://pure.amsterdamumc.nl/en/publications/photobiomodulation-therapy-for-the-improvement-of-muscular-perfor/"},
+        {t:"Phototherapy with combined laser and LEDs, optimal dose near 30 J (Lasers Med Sci)",u:"https://www.doi.org/10.1007/S10103-014-1611-7"},
+        {t:"Near-infrared preirradiation and lower-limb muscle strength after exercise: meta-analysis (PEDro record)",u:"https://search.pedro.org.au/search-results/record-detail/77409"},
+        {t:"Does photobiomodulation improve muscle performance and recovery? A systematic review (Rev Bras Med Esporte)",u:"https://www.scielo.br/j/rbme/a/BkXv8gzmSMdhpDJnmxNHJKS/?lang=en"}]},
+ joint:{kind:"part",text:"A meta-analysis of 18 trials concludes laser and light therapy reduces musculoskeletal pain, and researchers in the field argue that doses following WALT guidelines work better. WALT doses are set in joules per treatment spot and depend on the joint and wavelength, not J/cm\u00b2 from a panel, so 10 to 50 J/cm\u00b2 is an estimate for panel use.",
+  refs:[{t:"Effects of low-level laser therapy on pain in musculoskeletal disorders: systematic review and meta-analysis (Eur J Phys Rehabil Med, 2017)",u:"https://pubmed.ncbi.nlm.nih.gov/28145397/"},
+        {t:"Letter on WALT dose recommendations in a knee osteoarthritis laser trial (BMC Musculoskelet Disord)",u:"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7805127/"}]},
+ cog:{kind:"part",text:"Systematic reviews report mostly positive but preliminary results in people with memory complaints, mild cognitive impairment and dementia, with no adverse effects reported, and they call for larger trials. A common protocol used 810 nm light at 20 to 25 mW/cm\u00b2 and 1 to 10 J/cm\u00b2, which is where this window comes from. Those doses are quoted at the scalp. Cadaver studies find only about 0.5 to 5% of near-infrared light gets through scalp and skull, so the cortex receives a small fraction of that, and treat any benefit as unproven.",
+  refs:[{t:"Transcranial photobiomodulation for cognitive function: systematic review (35 studies, 2022)",u:"https://pubmed.ncbi.nlm.nih.gov/36371017/"},
+        {t:"Photobiomodulation therapy for dementia: systematic review of pre-clinical and clinical studies (J Alzheimers Dis, 2021)",u:"https://pubmed.ncbi.nlm.nih.gov/33935090/"},
+        {t:"Photobiomodulation for Alzheimer's disease: has the light dawned? (Photonics, 2019)",u:"https://pubmed.ncbi.nlm.nih.gov/31363464/"},
+        {t:"TRAP-AD: dose-dependent transcranial photobiomodulation trial in early Alzheimer's (ongoing)",u:"https://clinicaltrials.gov/study/NCT04784416"},
+        {t:"Penetration profiles of visible and near-infrared light through head tissues in animals and humans: review (Photobiomodulation Photomed Laser Surg, 2019)",u:"https://journals.sagepub.com/doi/10.1089/photob.2019.4676"},
+        {t:"Transcranial red and near infrared light transmission in a cadaveric model (PLoS ONE, 2012)",u:"https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0047460"},
+        {t:"Critical review of transcranial photobiomodulation dosimetry (Front Neurol, 2024)",u:"https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2024.1398894/xml"}]},
+ core:{kind:"none",text:"No studies of red or near-infrared light for diastasis recti turned up. The evidence-based conservative treatment is exercise, with some support for adding electrical stimulation, and even that evidence is very low certainty. This dose window is borrowed from the low end of the muscle-recovery range because the target is the rectus muscle and linea alba beneath skin and fat. Treat it as an estimate with no clinical backing.",
+  refs:[{t:"Conservative approaches for diastasis recti abdominis in postpartum women: systematic review and meta-analysis (Medicine, 2025)",u:"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12151038/"},
+        {t:"Conservative interventions for diastasis recti abdominis in postpartum women: review with meta-analysis",u:"https://pubmed.ncbi.nlm.nih.gov/36466120/"}]}
+};
+const BADGE={user:["b-calc","Entered by you"],pub:["b-pub","Published data"],part:["b-part","Partly published"],est:["b-est","Estimate"],none:["b-none","No data, estimated"],calc:["b-calc","Calculated"]};
+const escT=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+function evItem(title,kind,text,refs){
+  const b=BADGE[kind],list=refs&&refs.length?`<ul class="refs">${refs.map(r=>`<li><a href="${r.u}" target="_blank" rel="noopener">${escT(r.t)}</a></li>`).join("")}</ul>`:"";
+  return `<div class="ev"><div class="evh"><b>${title}</b><span class="badge ${b[0]}">${b[1]}</span></div><p>${text}</p>${list}</div>`;
+}
+function evidence(m){
+  const ev=EVID[m.T.id],prof=m.prof,items=[];
+  const p660=m.trans("660")*100,p850=m.trans("850")*100;
+  const pc=x=>x>=10?Math.round(x):fmt(x,1);
+  const nRead=new Set(prof.rows.filter(r=>parseFloat(r.d)>0&&parseFloat(r.t)>0).map(r=>parseFloat(r.d))).size;
+  const wl=m.wave==="blend"?"660 + 850 nm":m.wave==="660"?"660 nm":"850 nm";
+  items.push(evItem(`Dose window: ${m.lo} to ${m.hi} J/cm\u00b2`,ev.kind,ev.text,ev.refs));
+  items.push(evItem("Why the dose slider has an upper limit","part","Light therapy often shows a biphasic dose response, where moderate doses work better than very low or very high ones. That is why the slider stops at the top of the window.",[R.biphasic]));
+  items.push(evItem(`Depth to target: ${fmt(m.depth,1)} mm`,"est",S.depthManual!=null&&S.depthManual>0?"You entered this depth, so it overrides the estimate.":m.A.note||"Typical tissue thickness for this area and layer, rounded. No study gives a number for your body, and fat thickness changes it a lot. Type your own estimate to override it.",[]));
+  items.push(evItem(`Wavelength: ${wl}`,"est",`The rule is 660 nm under 4 mm, both from 4 to 13 mm, and 850 nm deeper. It is built on published penetration data, which shows near-infrared passes through tissue better than red, but the cutoffs are a judgment call. ${prof.mode==="fixed"?"This panel fires all wavelengths together, so the dose counts every wavelength. ":""}`,[R.esnouf,R.ninety,R.wound]));
+  items.push(evItem(`Light reaching ${m.T.layer==="brain"?"the cortex":fmt(m.depth,1)+" mm"}: about ${pc(p660)}% of 660 nm and ${pc(p850)}% of 850 nm`,"est","This uses a single-exponential model with 1/e depths of 2.6 mm for 660 and 6.2 mm for 850. The 850 value is fitted to published ranges (about 45% at 5 mm, 9% at 15 mm, under 1% at 30 mm). The 660 value is estimated, with no source found. Lab measurements in animal tissue are more pessimistic than this model, while simulations suggest fat-rich sites can pass several centimeters, so treat these percentages as rough."+(m.T.layer==="brain"?" This model ignores the skull, which scatters and absorbs light differently, so the real number at the brain is uncertain.":""),[R.esnouf,R.ninety,R.marq]));
+  if(m.wave==="blend"&&prof.mode!=="fixed")items.push(evItem(`Dose split: ${Math.round(m.s660*100)}% 660 nm, ${Math.round((1-m.s660)*100)}% 850 nm`,"est","A heuristic, not from a trial. The share of 660 nm falls from 70% at 4 mm to 20% at 12 mm because red reaches less deeply. No trial specifies a ratio.",[]));
+  if(m.T.irrMin)items.push(evItem(`Surface irradiance target: at least ${m.T.irrMin} mW/cm\u00b2`,"est",m.T.layer==="brain"
+    ?"Transcranial devices in the literature and in device patents deliver roughly 100 to 500 mW/cm\u00b2 at the scalp because only about 0.5 to 5% of near-infrared light gets through the skull. So this protocol picks the farthest distance that still gives at least 100 mW/cm\u00b2 at the surface, even when that makes the session shorter than your time goal. Critical reviews argue that even this leaves the cortex with very little, so this is a floor, not a promise of effect."
+    :"Deep targets depend on irradiance, not just total dose, because only a small share of surface light reaches them. 35 mW/cm\u00b2 is anchored to one meta-analysis of near-infrared pre-irradiation of leg muscle that found optimal effects near 37 mW/cm\u00b2. This is an estimate, not a published threshold, and the app stays near this irradiance instead of stretching the session by moving the panel far away.",
+    m.T.layer==="brain"?[{t:"Light-emitting device and method for providing phototherapy to the brain (patent describing 100 to 500 mW/cm\u00b2 at the scalp)",u:"https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/11179572"},{t:"Evaluation of near-infrared light therapy for neurodegenerative diseases: limited penetration depth into the brain (bioRxiv preprint, 2024)",u:"https://www.biorxiv.org/content/10.1101/2024.11.18.624091.full.pdf"}]
+    :[{t:"Near-infrared preirradiation and lower-limb muscle strength after exercise: meta-analysis (PEDro record)",u:"https://search.pedro.org.au/search-results/record-detail/77409"}]));
+  items.push(evItem("Distance and session time","calc",`Time = dose \u00f7 (irradiance \u00d7 power%). Irradiance comes from your ${nRead} measured distance${nRead===1?"":"s"}, interpolated between them. The recommended distance is the one whose full-power time is closest to your time goal${m.T.irrMin?`, but never so far that the surface irradiance drops below ${m.T.irrMin} mW/cm\u00b2`:""}. Beyond your measured range it extends the curve with a typical falloff guess until you add more readings.`,[]));
+  items.push(evItem("Power setting","est","Irradiance is assumed to scale linearly with the power setting, which is typical for dimmed LEDs. This has not been verified for your panel, so spot-check one dimmed reading.",[]));
+  items.push(evItem(`Solar meter correction: ${fmt(prof.factor,2)}`,"est","Solar meters respond differently to narrow-band LEDs and overread them. Sources disagree on by how much: one independent tester reports 40 to 70% high, while a panel vendor reports 2 to 3 times. Vendors sell panels, so treat the high end with some caution. Your profile uses the number shown, and you can change it under Edit.",[
+    {t:"Red light therapy buyer's guide: independent spectrometer testing (the solar meter problem)",u:"https://outliyr.com/red-light-therapy-buyers-guide"},
+    {t:"Panel vendor page on solar meter versus lab irradiance figures (reports 2 to 3 times)",u:"https://mitoredlight.com/pages/why-we-list-two-irradiance-figures"},
+    {t:"Light Therapy Insiders: the problem with solar meter measurements",u:"https://www.lighttherapyinsiders.com/i-bought-a-10-000-red-light-therapy-testing-tool-heres-why-it-matters/"},
+    {t:"Why you should not use solar or laser power meters for RLT devices (Medium)",u:"https://john-iovine.medium.com/why-you-shouldnt-use-solar-power-meters-for-red-light-therapy-devices-2d70ff7b8faf"}]));
+  const bandsTxt=m.G.bs.map(b=>b.nm+" nm ("+Math.round(b.sh/m.G.tot*100)+"%)").join(", ");
+  const kindMap={lab:"pub",ind:"pub",claim:"part",est:"est",user:"user"};
+  items.push(evItem("Panel profile: "+escT(prof.name),kindMap[prof.kind]||"user",(prof.src||"Entered by you from your own readings.")+" Wavelengths and shares: "+bandsTxt+". Solar correction "+fmt(prof.factor,2)+".",prof.refs||[]));
+  return items.join("");
+}
+
+/* ---------- Render ---------- */
+function fillSelects(){
+  $("#treatment").innerHTML=TREATMENTS.map(t=>`<option value="${t.id}">${t.name}</option>`).join("");
+  $("#treatment").value=S.treatment;fillAreas();$("#goal").value=String(S.goal);
+}
+function fillAreas(reset){
+  const T=TREATMENTS.find(t=>t.id===S.treatment)||TREATMENTS[0];
+  const list=T.areas==="all"?AREAS:AREAS.filter(a=>T.areas.includes(a.id));
+  const ok=list.some(a=>a.id===S.area);
+  if(!ok||(reset&&T.areas!=="all"))S.area=T.areas==="all"?list[0].id:T.areas[0];
+  $("#area").innerHTML=list.map(a=>`<option value="${a.id}">${a.name}</option>`).join("");
+  $("#area").value=S.area;
+}
+function fillProfiles(){
+  const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+  const opt=p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`;
+  $("#profile").innerHTML=`<optgroup label="My Presets">${S.profiles.map(opt).join("")}</optgroup><optgroup label="Presets">${BUILTIN.map(opt).join("")}</optgroup><option value="__new">New Panel Profile...</option>`;
+  $("#profile").value=S.active;
+}
+function presetToProfile(x){
+  return {id:x.id,name:x.name,unit:"in",factor:x.factor,mode:x.mode,
+    bands:x.bands.map(b=>({nm:String(b[0]),share:String(b[1])})),
+    rows:x.rows.map(r=>({d:String(r[0]),t:String(r[1])})),kind:x.kind,src:x.src,refs:x.refs};
+}
+function profileHint(m){
+  const f=makeIrr(points(m.prof));if(!f)return "";
+  const pts=points(m.prof),dcm=15.24,k=m.k;
+  const meas=pts.length&&dcm>=pts[0].d-1e-6&&dcm<=pts[pts.length-1].d+1e-6;
+  const listed=f(dcm),eff=listed*k;
+  const notes=[];
+  if(!meas)notes.push("estimated");
+  if(Math.abs(k-1)>0.005)notes.push(fmt(listed,1)+" listed, solar correction "+fmt(k,2));
+  return "Irradiance at 6 in: "+fmt(eff,1)+" mW/cm\u00b2"+(notes.length?" ("+notes.join("; ")+")":"");
+}
+
+function chart(m,dcm){
+  const W=360,H=230,L=40,R=34,Tp=12,B=30,pw=W-L-R,ph=H-Tp-B;
+  const t50=m.total(dcm,50,m.dose),t100=m.total(dcm,100,m.dose);
+  const xmax=Math.max(60,Math.ceil((t50*1.15)/60)*60);
+  const ymax=Math.max(m.hi*1.1,m.dose*1.35);
+  const X=t=>L+t/xmax*pw,Y=j=>Tp+ph-j/ymax*ph;
+  const col=m.segs.length===1&&m.segs[0].cls==="r"?"#ff5242":m.segs.length===1&&m.segs[0].cls==="n"?"#a58bff":"#f4ebe6";
+  const pows=[[100,1,2.6],[75,.72,2],[50,.52,2],[25,.34,2]];
+  const xs=xmax/60,xstep=xs<=6?1:xs<=14?2:xs<=30?5:10,ystep=ymax<=12?2:ymax<=30?5:ymax<=70?10:20;
+  let g="";
+  for(let j=0;j<=ymax;j+=ystep)g+=`<line x1="${L}" x2="${W-R}" y1="${Y(j)}" y2="${Y(j)}" stroke="#47393c" stroke-width=".6"/><text x="${L-6}" y="${Y(j)+3}" text-anchor="end">${j}</text>`;
+  for(let t=0;t<=xs+1e-9;t+=xstep)g+=`<text x="${X(t*60)}" y="${H-12}" text-anchor="middle">${t}</text>`;
+  g+=`<text x="${W-R}" y="${H-1}" text-anchor="end">minutes</text><text x="${L}" y="9" text-anchor="start">J/cm\u00b2</text>`;
+  g+=`<rect x="${L}" y="${Y(m.hi)}" width="${pw}" height="${Y(m.lo)-Y(m.hi)}" fill="#f4ebe6" opacity=".07"/>`;
+  g+=`<line x1="${L}" x2="${W-R}" y1="${Y(m.dose)}" y2="${Y(m.dose)}" stroke="#f4ebe6" stroke-width="1" stroke-dasharray="4 3" opacity=".8"/>`;
+  g+=`<text x="${W-R+3}" y="${Y(m.dose)+3}" text-anchor="start" style="fill:#f4ebe6">target</text>`;
+  let lines="",labels="",dots="";
+  pows.forEach(([p,op,sw])=>{
+    const bp=[[0,0]];let t=0,d=0;
+    for(const s of m.segs){const x=m.secs(s,dcm,p,m.dose);t+=x;d+=m.dose*s.share;bp.push([t,d])}
+    const last=m.segs[m.segs.length-1],rate=m.irr(last.ch,dcm)*p/100/1000;
+    bp.push([xmax,d+rate*(xmax-t)]);
+    const path=[];
+    for(let i=0;i<bp.length;i++){
+      let [tt,dd]=bp[i];
+      if(dd>ymax&&i>0){const [t0,d0]=bp[i-1],f=(ymax-d0)/(dd-d0);tt=t0+f*(tt-t0);dd=ymax;path.push([tt,dd]);break}
+      path.push([tt,dd]);
+    }
+    lines+=`<polyline fill="none" stroke="${col}" stroke-opacity="${op}" stroke-width="${sw}" stroke-linejoin="round" points="${path.map(q=>X(q[0]).toFixed(1)+","+Y(q[1]).toFixed(1)).join(" ")}"/>`;
+    const e=path[path.length-1];
+    labels+=`<text x="${clamp(X(e[0])+3,L,W-R+3)}" y="${clamp(Y(e[1])+(e[1]>=ymax-1e-6?8:0),Tp+8,H-B-2)}" style="fill:${col};opacity:${Math.max(op,.6)}">${p}%</text>`;
+    if(p===100||p===50){const tt=m.total(dcm,p,m.dose);dots+=`<circle cx="${X(tt)}" cy="${Y(m.dose)}" r="4.5" fill="${col}" stroke="#2a2224" stroke-width="1.5"/>`}
+  });
+  const desc=`Dose over time. At 100% power the target of ${fmt(m.dose)} joules per square centimeter is reached in ${fmtT(t100)}, at 50% in ${fmtT(t50)}.`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${desc}"><defs><clipPath id="cp"><rect x="${L}" y="${Tp}" width="${pw}" height="${ph}"/></clipPath></defs>${g}<g clip-path="url(#cp)">${lines}</g>${labels}${dots}</svg>`;
+}
+
+function render(){
+  const m=model(),prof=m.prof;
+  document.querySelectorAll(".u").forEach(e=>e.textContent=prof.unit);
+  $("#profileHint").textContent=profileHint(m);
+  $("#evidence").innerHTML=evidence(m);
+  if(document.activeElement!==$("#depth"))$("#depth").value=fmt(m.depth,1);
+  $("#depthHint").textContent=S.depthManual!=null?"Using your depth. Change area or treatment to reset it.":(m.A.note||"Estimated from the area and tissue layer. Type a number to override.");
+  const v={"660":'<span class="dot r"></span>660 nm red',"850":'<span class="dot n"></span>850 nm near-infrared',"blend":'<span class="dot r"></span><span class="dot n"></span>660 + 850 nm'}[m.wave];
+  $("#verdict").innerHTML=v;
+  const bar=(ch,c)=>{const T=m.trans(ch);return `<div class="bar"><span>${ch} nm</span><i><b style="width:${Math.max(T*100,1.5).toFixed(1)}%;background:${c}"></b></i><span>${T>=.1?Math.round(T*100):fmt(T*100,1)}%</span></div>`};
+  $("#trans").innerHTML=bar("660","var(--red)")+bar("850","var(--nir)")+'<p class="hint" style="margin:0">'+(m.T.layer==="brain"?"Share of scalp-surface light reaching the cortex, from published skull measurements (about 0.5 to 5% for near-infrared). Red is estimated.":"Share of surface light reaching the target depth, from a rough single-exponential model.")+'</p>';
+  const ds=$("#dose");ds.min=m.lo;ds.max=m.hi;ds.step=m.hi-m.lo>=20?1:.5;ds.value=m.dose;
+  $("#doseOut").textContent=fmt(m.dose)+" J/cm\u00b2";$("#doseLo").textContent=m.lo;$("#doseHi").textContent=m.hi;
+  const rec=recommend(m),box=$("#result");
+  if(m.missing||!rec){
+    $("#auto").hidden=true;
+    box.innerHTML=`<ul class="warns"><li>This profile needs at least one wavelength and one distance reading. Tap Edit on the panel profile to add them.</li></ul>`;
+    return;
+  }
+  const manual=S.distManualCm!=null&&S.distManualCm>0;
+  const dcm=manual?S.distManualCm:rec.d;
+  $("#goal").value=manual?"custom":String(S.goal);
+  if(document.activeElement!==$("#dist"))$("#dist").value=fmt(fromCm(dcm),1);
+  $("#auto").hidden=!manual;
+  const opt=(p,name)=>{
+    const t=m.total(dcm,p,m.dose);
+    const cls=m.segs.length===1?m.segs[0].cls:"x";
+    const detail=m.segs.length>1?m.segs.map(s=>`${s.label} ${fmtT(m.secs(s,dcm,p,m.dose))}`).join(", then "):"";
+    const I=m.segs.length===1?m.irr(m.segs[0].ch,dcm)*p/100:null;
+    return `<div class="card ${cls}"><h3>${name}</h3><div class="big">${fmtT(t)}</div><div class="pw">${p}% power</div>
+      <p>${fmt(m.dose)} J/cm\u00b2${I?` at ${fmt(I)} mW/cm\u00b2`:""}${detail?`<br>${detail}`:""}</p></div>`;
+  };
+  const warns=[];
+  const ds2=m.allPts.map(p=>p.d),dmin=Math.min(...ds2),dmax=Math.max(...ds2);
+  if(dcm<dmin-1e-6||dcm>dmax+1e-6)warns.push(ds2.length<2
+    ?"You have one measured distance, so the output here is estimated. Measure at this distance and add it under Edit to confirm."
+    :"This distance is outside your measured range, so the output is extrapolated. Measure there and add it under Edit to confirm.");
+  const t100=m.total(dcm,100,m.dose),t50=m.total(dcm,50,m.dose);
+  if(m.T.irrMin&&m.irrSel(dcm)<m.T.irrMin)warns.push(`This treatment works best with at least ${m.T.irrMin} mW/cm\u00b2 at the surface, and your panel gives about ${fmt(m.irrSel(dcm))} here. Move closer than your measured range or use a stronger panel.`);
+  const goalSec=(parseFloat(S.goal)||10)*60;
+  if(!manual&&Math.abs(t100-goalSec)/goalSec>0.15)warns.push(m.T.irrMin&&m.irrSel(dcm)>=m.T.irrMin
+    ?`Full power takes ${fmtT(t100)} at the farthest distance that still keeps at least ${m.T.irrMin} mW/cm\u00b2 at the surface, so the session is shorter than your ${S.goal} minute goal. Backing the panel off would stretch the time but drop the irradiance below what this treatment needs.`
+    :`The closest reachable time to your ${S.goal} minute goal is ${fmtT(t100)} at full power. The search only extends so far past your measured distances. Add readings at other distances under Edit to extend that.`);
+  if(t50>30*60)warns.push("Half power takes over 30 minutes at this distance. Move the panel closer or use full power.");
+  if(t100<45)warns.push("Full power finishes in under a minute. Increase the distance for more even coverage and easier dose control.");
+  if(m.subst)warns.push(m.subst);
+  if(m.wave==="blend"&&prof.mode!=="fixed")warns.push(`This depth benefits from both wavelengths. Run each for its time. The dose is split ${Math.round(m.s660*100)}% 660 nm and ${Math.round((1-m.s660)*100)}% 850 nm, shifting toward 850 as depth increases.`);
+  if(prof.mode==="fixed")warns.push("This panel fires all its wavelengths together, so the dose counts every wavelength.");
+  const tr=m.trans(prof.mode==="fixed"?"both":(m.wave==="blend"?"850":m.wave));
+  const info=`About ${fmt(m.dose*tr,2)} J/cm\u00b2 and ${fmt(m.irrSel(dcm)*tr,2)} mW/cm\u00b2 reach ${m.T.layer==="brain"?"the cortex":fmt(m.depth,1)+" mm"} by this rough model. Frequency: ${m.T.freq}.`;
+  const rows=[100,75,50,25].map(p=>`<tr><td>${p}%</td><td>${fmtT(m.total(dcm,p,m.dose))}</td><td>${fmt(m.dose*Math.min(1,600/m.total(dcm,p,m.dose)),1)} J/cm\u00b2</td></tr>`).join("");
+  box.innerHTML=`
+    <div class="hero"><div class="k">${manual?"Distance you picked":"Recommended distance"}</div><div class="v">${fmt(fromCm(dcm),1)} ${prof.unit}</div><div class="k lab" style="margin-top:2px">${m.segs.map(s=>`${fmt(m.irr(s.ch,dcm))} mW/cm\u00b2 ${s.label}`).join(", ")} at the surface, full power</div><div class="k simple-only" style="margin-top:2px">Light: ${m.segs.map(s=>s.label).join(" and ")}${prof.mode==="fixed"?" (together)":""}</div></div>
+    <div class="cards">${opt(100,"Fast")}${opt(50,"Gentle")}</div>
+    <p class="hint lab">Pick either. Both deliver the same dose. Irradiance is assumed to scale linearly with the power setting.</p>
+    <p class="hint simple-only">Pick either option. Both deliver the same dose.</p>
+    <div class="lab">${chart(m,dcm)}</div>
+    <table class="lab" style="margin-top:8px"><thead><tr><th>Power</th><th>Time to dose</th><th>Dose after 10 min</th></tr></thead><tbody>${rows}</tbody></table>
+    <ul class="warns">${warns.map(w=>`<li class="${/^(You have one measured|This distance is outside)/.test(w)?"lab":"keep"}">${w}</li>`).join("")}<li class="info lab">${info}</li>${m.T.caution?`<li class="keep">${m.T.caution}</li>`:""}</ul>
+    <button class="btn primary lab" id="copy" type="button" style="margin-top:14px;width:100%">Copy protocol</button>`;
+  $("#copy").onclick=()=>{
+    const txt=`${m.T.name}, ${m.A.name}\nPanel: ${prof.name}\n${m.wave==="blend"?"660 + 850 nm":m.wave+" nm"} at ${fmt(fromCm(dcm),1)} ${prof.unit}\nDose ${fmt(m.dose)} J/cm2\n100% power: ${fmtT(t100)}\n50% power: ${fmtT(t50)}\n${m.T.freq}`;
+    const done=()=>{$("#copy").textContent="Copied";setTimeout(()=>{const b=$("#copy");if(b)b.textContent="Copy protocol"},1400)};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(done,()=>{});else done();
+  };
+}
+
+/* ---------- Profile editor (popup) ---------- */
+let draft=null,editingId=null,editingBuiltin=false,delArmed=false;
+function dlgUnits(){document.querySelectorAll("#editor [data-unit]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.unit===draft.unit))}
+function renderDraftRows(){
+  $("#rows").innerHTML=draft.rows.map((r,i)=>`<tr>
+    <td><input type="number" inputmode="decimal" step="any" min="0" data-i="${i}" data-k="d" value="${r.d}" aria-label="Distance ${i+1} in ${draft.unit}" placeholder="${draft.unit}"></td>
+    <td><input type="number" inputmode="decimal" step="any" min="0" data-i="${i}" data-k="t" value="${r.t}" aria-label="Total irradiance reading ${i+1}"></td>
+    <td><button class="rm" type="button" data-rm="${i}" aria-label="Remove row ${i+1}">&times;</button></td></tr>`).join("");
+  $("#bands").innerHTML=draft.bands.map((r,i)=>`<tr>
+    <td><input type="number" inputmode="decimal" step="any" min="0" data-i="${i}" data-k="nm" value="${r.nm}" aria-label="Wavelength ${i+1} in nanometers"></td>
+    <td><input type="number" inputmode="decimal" step="any" min="0" data-i="${i}" data-k="share" value="${r.share}" aria-label="Share of output ${i+1} in percent"></td>
+    <td><button class="rm" type="button" data-rmb="${i}" aria-label="Remove wavelength ${i+1}">&times;</button></td></tr>`).join("");
+}
+function showView(v){
+  document.body.dataset.view=v;
+  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.view===v));
+}
+function openDlg(id){
+  const saved=id?S.profiles.find(p=>p.id===id):null,built=id&&!saved?BUILTIN.find(p=>p.id===id):null;
+  const base=saved||built||{id:null,name:"",unit:"in",factor:0.5,mode:"switch",bands:[{nm:"660",share:"50"},{nm:"850",share:"50"}],rows:[{d:"",t:""}],kind:"user"};
+  draft=JSON.parse(JSON.stringify(base));editingId=id;editingBuiltin=!!built;delArmed=false;
+  $("#dlgTitle").textContent=!id?"New panel profile":built?"Preset: "+base.name:"Edit panel profile";
+  $("#pname").value=draft.name;$("#pfactor").value=draft.factor;$("#ptogether").checked=draft.mode==="fixed";
+  $("#saveProfile").hidden=!saved;
+  $("#savePreset").className=saved?"btn":"btn primary";
+  $("#delProfile").hidden=!saved||S.profiles.length<2;$("#delProfile").textContent="Delete";
+  $("#dlgErr").textContent="";
+  $("#dlgSrc").textContent=(built?"Built-in preset. It cannot be overwritten, but an edited copy can be saved as a new preset. ":"")+(draft.src||"");
+  dlgUnits();renderDraftRows();
+  const dg=$("#editor");if(dg.showModal)dg.showModal();else{dg.className="fb";dg.setAttribute("open","")}
+}
+function closeDlg(){const dg=$("#editor");if(dg.close)dg.close();else dg.removeAttribute("open")}
+function collect(){
+  draft.name=titleCase($("#pname").value.trim());
+  const f=parseFloat($("#pfactor").value);draft.factor=f>0?clamp(f,.2,1.5):1;
+  draft.mode=$("#ptogether").checked?"fixed":"switch";
+  draft.rows=draft.rows.filter(r=>String(r.d)!==""||String(r.t)!=="");
+  draft.bands=draft.bands.filter(r=>String(r.nm)!==""||String(r.share)!=="");
+  const okRows=draft.rows.some(r=>parseFloat(r.d)>0&&parseFloat(r.t)>0);
+  const okBands=draft.bands.some(r=>parseFloat(r.nm)>0&&parseFloat(r.share)>0);
+  if(!okRows||!okBands){
+    $("#dlgErr").textContent=!okBands?"Add at least one wavelength with a share of output.":"Add at least one distance with a total irradiance reading.";
+    if(!draft.rows.length)draft.rows.push({d:"",t:""});if(!draft.bands.length)draft.bands.push({nm:"",share:""});renderDraftRows();return false}
+  return true;
+}
+function finishEdit(){S.distManualCm=null;save();fillProfiles();render();closeDlg()}
+
+$("#profile").addEventListener("change",e=>{
+  if(e.target.value==="__new"){e.target.value=S.active;openDlg(null);return}
+  S.active=e.target.value;S.distManualCm=null;save();render();
+});
+$("#editProfile").addEventListener("click",()=>openDlg(S.active));
+$("#cancelProfile").addEventListener("click",closeDlg);
+$("#addRow").addEventListener("click",()=>{draft.rows.push({d:"",t:""});renderDraftRows()});
+$("#addBand").addEventListener("click",()=>{draft.bands.push({nm:"",share:""});renderDraftRows()});
+$("#bands").addEventListener("input",e=>{const t=e.target;if(t.dataset.i!=null)draft.bands[+t.dataset.i][t.dataset.k]=t.value});
+$("#bands").addEventListener("click",e=>{const b=e.target.closest("[data-rmb]");if(!b)return;draft.bands.splice(+b.dataset.rmb,1);if(!draft.bands.length)draft.bands.push({nm:"",share:""});renderDraftRows()});
+$("#rows").addEventListener("input",e=>{const t=e.target;if(t.dataset.i!=null)draft.rows[+t.dataset.i][t.dataset.k]=t.value});
+$("#rows").addEventListener("click",e=>{const b=e.target.closest("[data-rm]");if(!b)return;draft.rows.splice(+b.dataset.rm,1);if(!draft.rows.length)draft.rows.push({d:"",t:""});renderDraftRows()});
+document.querySelectorAll("#editor [data-unit]").forEach(b=>b.addEventListener("click",()=>{
+  const nu=b.dataset.unit;if(nu===draft.unit)return;
+  const k=nu==="cm"?2.54:1/2.54;
+  draft.rows.forEach(r=>{const d=parseFloat(r.d);if(d>0)r.d=String(Math.round(d*k*10)/10)});
+  draft.unit=nu;dlgUnits();renderDraftRows();
+}));
+$("#saveProfile").addEventListener("click",()=>{
+  if(!collect())return;
+  if(!draft.name)draft.name="Panel "+(S.profiles.length);
+  const i=S.profiles.findIndex(p=>p.id===editingId);if(i<0)return;
+  S.profiles[i]=draft;finishEdit();
+});
+$("#savePreset").addEventListener("click",()=>{
+  if(!collect())return;
+  const orig=draft.name||"Panel";
+  let name=orig,n=1;const taken=()=>S.profiles.some(p=>p.name===name)||BUILTIN.some(p=>p.name===name);
+  if(!draft.name||taken()){name=orig+" (copy)";while(taken()){n++;name=orig+" (copy "+n+")"}}
+  if(editingId&&draft.src)draft.src="Based on "+(BUILTIN.find(p=>p.id===editingId)||S.profiles.find(p=>p.id===editingId)||{name:orig}).name+", edited. "+draft.src;
+  draft.name=name;draft.id="p"+Date.now();draft.kind=draft.kind||"user";
+  S.profiles.push(draft);S.active=draft.id;finishEdit();
+});
+$("#delProfile").addEventListener("click",()=>{
+  if(!delArmed){delArmed=true;$("#delProfile").textContent="Tap again to delete";return}
+  S.profiles=S.profiles.filter(p=>p.id!==editingId);
+  if(S.active===editingId)S.active=S.profiles[0].id;
+  finishEdit();
+});
+
+/* ---------- Main events ---------- */
+$("#treatment").addEventListener("change",e=>{S.treatment=e.target.value;fillAreas(true);S.dose=null;S.depthManual=null;S.distManualCm=null;save();render()});
+$("#area").addEventListener("change",e=>{S.area=e.target.value;S.depthManual=null;S.distManualCm=null;save();render()});
+$("#depth").addEventListener("input",e=>{const v=parseFloat(e.target.value);S.depthManual=v>0?v:null;save();render()});
+$("#dose").addEventListener("input",e=>{S.dose=parseFloat(e.target.value);save();render()});
+$("#goal").addEventListener("change",e=>{S.goal=parseInt(e.target.value,10);S.distManualCm=null;save();render()});
+$("#dist").addEventListener("input",e=>{const v=parseFloat(e.target.value);S.distManualCm=v>0?toCm(v):null;save();render()});
+$("#auto").addEventListener("click",()=>{S.distManualCm=null;$("#dist").blur();save();render()});
+
+function setView(v){
+  S.view=v==="lab"?"lab":"simple";showView(S.view);save();
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
+fillSelects();fillProfiles();setView(S.view);render();
+window.__rdlReady=true;
+})();
+</script>
+<script>
+if("serviceWorker" in navigator && location.protocol.indexOf("http")===0){
+  window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
+}
+</script>
+</body>
+</html>
