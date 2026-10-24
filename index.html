@@ -106,13 +106,13 @@ details[open] summary{margin-bottom:14px}
 .refs{margin:8px 0 0;padding-left:18px;font-size:13px}
 .refs li{margin:4px 0}
 .refs a{color:var(--ink);overflow-wrap:anywhere}
-.tabs{display:flex;gap:6px;background:var(--surface);border-radius:12px;padding:5px;overflow-x:auto;scrollbar-width:none}
+.tabs{display:flex;gap:4px;background:var(--surface);border-radius:12px;padding:5px;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .subtabs{display:none;gap:6px;background:var(--surface);border-radius:12px;padding:4px;margin-top:-8px}
 body[data-view="simple"] #subTabs,body[data-view="lab"] #subTabs,body[data-view="lib"] #subTabs2,body[data-view="learn"] #subTabs2{display:flex}
 .subtabs button{flex:1;min-height:40px;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
 .subtabs button[aria-pressed=true]{background:var(--raised);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
-.tabs button{flex:0 0 auto;min-height:44px;padding:0 14px;white-space:nowrap;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-weight:600;cursor:pointer}
+.tabs button{flex:1 1 auto;min-height:44px;padding:0 8px;white-space:nowrap;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-weight:600;cursor:pointer}
 .tabs button[aria-pressed=true]{background:var(--ink);color:var(--ground)}
 body[data-view="simple"] .lab{display:none!important}
 body[data-view="lab"] .simple-only{display:none!important}
@@ -182,7 +182,7 @@ body[data-view="log"] .calc,body[data-view="lib"] .calc,body[data-view="learn"] 
 .topbar input[type=range]{flex:1;min-width:60px;height:28px;margin:0}
 .topbar .btn{min-height:36px;padding:0 12px;font-size:14px;flex:none}
 html.red{background:#080000}
-#redveil{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:multiply;background:#f00;z-index:9999}
+#redveil{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:multiply;background:var(--veil,#f00);z-index:9999}
 html.red #redveil{display:block}
 .imgwrap{position:relative;isolation:isolate;border-radius:12px;overflow:hidden}
 .imgwrap img{display:block;width:100%}
@@ -214,7 +214,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 <main>
 <div class="topbar">
   <label class="sw"><input type="checkbox" id="nightOn" role="switch" aria-label="Red screen"><span>Red screen</span></label>
-  <input type="range" id="nightLevel" min="10" max="100" step="1" aria-label="Red screen brightness">
+  <input type="range" id="nightLevel" min="10" max="100" step="1" aria-label="Red filter strength">
 </div>
 <div id="loadfail" style="display:none;background:#352b2e;border-left:4px solid #ffc266;border-radius:10px;padding:12px 14px;font-size:14px">The calculator did not finish loading. If this was opened from a message, email or file preview, open the web link in Safari instead. Older iPhones need iOS 12 or newer, so a software update may also help.</div>
 <noscript><div style="background:#352b2e;border-left:4px solid #ffc266;border-radius:10px;padding:12px 14px;font-size:14px">This app needs JavaScript. Turn it on in Safari settings, or open the web link in Safari instead of a file preview.</div></noscript>
@@ -396,18 +396,18 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 <section id="pg-set" class="pg" aria-labelledby="h-set">
   <h2 id="h-set">Settings</h2>
   <h3 class="dlg-h">Red screen</h3>
-  <p class="hint">Turns every color on this page into shades of red with no green or blue, for use in the dark. The switch and slider at the top of the page control it. It only affects this app, not the rest of your phone.</p>
+  <p class="hint">Turns every color on this page into shades of red with no green or blue, for use in the dark. The switch turns it on and off. The slider sets the strength: all the way up removes all green and blue, and lower shows more of the normal colors. It only affects this app, not the rest of your phone.</p>
   <h3 class="dlg-h">Safety</h3>
   <button class="btn" id="stSafety" type="button">Open the safety checklist</button>
   <h3 class="dlg-h">Saved data</h3>
   <p class="hint">Profiles, settings and the session log are saved on this device only.</p>
   <div class="acts"><button class="btn danger" id="stClearLog" type="button">Clear session log</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 41. Educational estimates, not medical advice.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 43. Educational estimates, not medical advice.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 41.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 43.</p>
 </main>
 
 <dialog id="editor" aria-labelledby="dlgTitle">
@@ -1285,7 +1285,7 @@ function heatHtml(v){
   const mn=Math.min.apply(null,v),mx=Math.max.apply(null,v);
   return '<div class="heat">'+v.map(function(x){
     const t=mx>mn?(x-mn)/(mx-mn):0.5,hue=Math.round(255-245*t),light=Math.round(30+24*t);
-    const bg=S.night&&S.night.on?'rgb('+Math.round((50+170*t)*nightK())+',0,0)':'hsl('+hue+',70%,'+light+'%)';
+    const bg=S.night&&S.night.on?nightCol(hue,light):'hsl('+hue+',70%,'+light+'%)';
     return '<span style="background:'+bg+'">'+fmt(x,0)+'</span>';
   }).join("")+'</div>';
 }
@@ -1711,20 +1711,26 @@ $("#openWizard").addEventListener("click",function(){closeDlg();wzInit();wzRende
 
 /* ---------- Red screen and settings ---------- */
 const NIGHT_BASE={ground:[29,24,25],surface:[42,34,36],raised:[53,43,46],line:[71,57,60],ink:[244,235,230],muted:[179,163,155],red:[255,82,66],nir:[165,139,255],ok:[143,209,158],warn:[255,194,102]};
+function nightCol(hue,light){
+  const s=0.7,l=light/100,a=s*Math.min(l,1-l),f=function(n){const k=(n+hue/30)%12;return l-a*Math.max(-1,Math.min(k-3,9-k,1))};
+  const keep=1-nightK();return "rgb("+Math.round(f(0)*255)+","+Math.round(f(8)*255*keep)+","+Math.round(f(4)*255*keep)+")";
+}
 function nightK(){return clamp(+S.night.level||100,10,100)/100}
 function applyNight(){
-  const on=!!S.night.on,k=nightK(),root=document.documentElement;
+  // the slider sets how much green and blue is removed: 100% leaves red only, lower shows more of the normal colors
+  const on=!!S.night.on,k=nightK(),keep=1-k,root=document.documentElement;
   root.classList.toggle("red",on);
+  const mix=function(c){return Math.round(c[0])+","+Math.round(c[1]*keep)+","+Math.round(c[2]*keep)};
   Object.keys(NIGHT_BASE).forEach(function(n){
-    if(on)root.style.setProperty("--"+n,"rgb("+Math.round(NIGHT_BASE[n][0]*k)+",0,0)");
+    if(on)root.style.setProperty("--"+n,"rgb("+mix(NIGHT_BASE[n])+")");
     else root.style.removeProperty("--"+n);
   });
   if(on){
-    root.style.setProperty("--veil","rgb("+Math.round(255*k)+",0,0)");
-    root.style.setProperty("--glass","rgba("+Math.round(32*k)+",0,0,.78)");
-    root.style.setProperty("--glassline","rgba("+Math.round(255*k)+",0,0,.14)");
-    root.style.setProperty("--bgop",String(k));
-  }else{["--veil","--glass","--glassline","--bgop"].forEach(function(n){root.style.removeProperty(n)})}
+    root.style.setProperty("--veil","rgb(255,"+Math.round(255*keep)+","+Math.round(255*keep)+")");
+    root.style.setProperty("--glass","rgba(32,"+Math.round(22*keep)+","+Math.round(24*keep)+",.78)");
+    root.style.setProperty("--glassline","rgba(255,"+Math.round(50*keep)+","+Math.round(40*keep)+",.14)");
+  }else{["--veil","--glass","--glassline"].forEach(function(n){root.style.removeProperty(n)})}
+  root.style.removeProperty("--bgop");
   $("#nightOn").checked=on;$("#nightLevel").value=Math.round(k*100);
   const mt=document.querySelector('meta[name="theme-color"]');if(mt)mt.setAttribute("content",on?"#080000":"#050203");
   if(typeof renderUniform==="function"&&LAST)renderUniform(LAST.m);
