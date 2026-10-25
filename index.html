@@ -41,7 +41,36 @@ select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(
   background-position:calc(100% - 20px) 20px,calc(100% - 15px) 20px;background-size:5px 5px;background-repeat:no-repeat;padding-right:36px}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.prow{display:flex;gap:10px}.prow select{flex:1}
+.prow{display:flex;gap:10px}
+.btn.sm{min-height:36px;padding:0 12px;font-size:13px;flex:none}
+body[data-view="simple"] #result .cards{grid-template-columns:1fr}
+body[data-view="simple"] #result .card .pw{display:none}
+.btn:disabled{opacity:.4;cursor:default}
+#phDate{width:100%;box-sizing:border-box;min-height:44px}
+main{grid-template-columns:minmax(0,1fr)}   /* a long photo strip must scroll inside its box, not stretch the whole page */
+.phwrap{position:relative;isolation:isolate;overflow:hidden;background:var(--raised)}
+.phwrap img{display:block;width:100%;height:100%;object-fit:cover}
+html.red .phwrap::after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:var(--veil,#f00);mix-blend-mode:multiply;pointer-events:none}
+html.red .phwrap img{filter:grayscale(1)}
+.phstrip{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.phth{position:relative;flex:none;width:92px;height:92px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--raised);padding:0;cursor:pointer;scroll-snap-align:start;color:var(--ink)}
+.phth .phwrap{width:100%;height:100%}
+.phth span{position:absolute;left:0;right:0;bottom:0;font-size:11px;padding:12px 5px 3px;background:linear-gradient(transparent,var(--ground));color:var(--ink);text-align:left;z-index:3}
+.phth.sm{width:56px;height:56px;border-radius:8px}
+.phrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.phprev{margin:12px 0 4px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.phprev .phwrap{height:min(300px,45vh)}
+.phprev img{object-fit:contain}
+.phbig{border-radius:12px;border:1px solid var(--line);margin-top:6px;touch-action:pan-y}
+.phbig .phwrap{height:min(440px,58vh)}
+.phbig img{object-fit:contain}
+.phcap{font-size:14px;margin:10px 0 0}
+.phcap small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.phba{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.phba figure{margin:0;min-width:0}
+.phba .phwrap{aspect-ratio:3/4;border-radius:10px;border:1px solid var(--line)}
+.phba figcaption{margin-top:6px}
+.phba select{width:100%;min-height:40px;font-size:13px}.prow select{flex:1}
 .chip{display:flex;align-items:center;gap:8px;min-height:46px;margin-top:19px;font-weight:600}
 .dot{width:12px;height:12px;border-radius:50%;display:inline-block}
 .dot.r{background:var(--red)}.dot.n{background:var(--nir)}
@@ -226,6 +255,7 @@ details.sub .paper{background:var(--surface)}
 .card .big small{font-size:.42em;font-weight:600;margin-left:5px;color:var(--muted);letter-spacing:.02em}
 .siderow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
 .siderow[hidden],#rtMini[hidden]{display:none}
+[hidden]{display:none!important}
 .rstep{background:var(--raised);border-radius:12px;padding:12px;margin:10px 0}
 .rstep .seg{margin-top:8px}
 .rstep p{margin:6px 0 0}
@@ -314,9 +344,9 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 
 <section aria-labelledby="h-proto" class="calc">
   <h2 id="h-proto"><span class="simple-only">Recommendation</span><span class="lab">Protocol</span></h2>
-  <div class="dose lab"><span style="color:var(--muted);font-size:14px">Dose per session</span><output id="doseOut" for="dose"></output></div>
-  <input id="dose" class="lab" type="range" aria-label="Dose per session in joules per square centimeter">
-  <div class="range-ends lab"><span id="doseLo"></span><span>published window</span><span id="doseHi"></span></div>
+  <div class="dose"><span style="color:var(--muted);font-size:14px">Dose per session</span><output id="doseOut" for="dose"></output></div>
+  <input id="dose" type="range" aria-label="Dose per session in joules per square centimeter">
+  <div class="range-ends"><span id="doseLo"></span><span>published window</span><span id="doseHi"></span></div>
   <div class="row2" style="margin-bottom:6px">
     <label style="margin:0"><span class="l">Time goal (full power)</span>
       <select id="goal"><option value="3">About 3 min</option><option value="5">About 5 min</option><option value="8">About 8 min</option><option value="10">About 10 min</option><option value="15">About 15 min</option><option value="20">About 20 min</option><option value="30">About 30 min</option><option value="custom" disabled hidden>Set by distance</option></select></label>
@@ -328,14 +358,17 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <div id="timerHolder" hidden>
     <div class="tool" id="timerCard" style="background:var(--raised);border-radius:12px;padding:12px;margin:12px 0" hidden>
       <h3 class="dlg-h" style="margin-top:0">Session timer</h3>
-      <div class="seg" id="tmOpts" role="group" aria-label="Power option"><button type="button" data-p="100" aria-pressed="true">Fast, 100%</button><button type="button" data-p="50" aria-pressed="false">Gentle, 50%</button></div>
+      <div class="seg lab" id="tmOpts" role="group" aria-label="Power option"><button type="button" data-p="100" aria-pressed="true">Fast, 100%</button><button type="button" data-p="50" aria-pressed="false">Gentle, 50%</button></div>
       <div class="clock" id="tmClock">0:00</div>
       <div class="pbar"><b id="tmBar"></b></div>
       <p class="hint" id="tmSeg"></p>
       <label style="display:block;margin:6px 0 10px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>
+      <label class="toggle"><input type="checkbox" class="autoLogChk" data-k="timer"><span>Log automatically when the timer finishes</span></label>
       <div class="siderow" hidden><span class="l">Side</span><div class="seg sideSeg" role="group" aria-label="Side"><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><button type="button" data-side="both">Both</button></div></div>
+      <div class="acts" id="tmLogRow" hidden><button class="btn primary" id="tmLogNow" type="button">Log This Session</button></div>
       <div class="actions"><button class="btn primary" id="tmStart" type="button">Start</button><button class="btn" id="tmStopLog" type="button" hidden>Stop and log</button><button class="btn" id="tmReset" type="button">Reset</button></div>
-      <p class="hint">Finishing the timer logs the session automatically. Keep the screen on while it runs.</p>
+      <div class="acts" id="tmPhotoRow" hidden><button class="btn" id="tmPhoto" type="button" data-photo-sid="">Add Photo to This Session</button></div>
+      <p class="hint" id="tmHint"></p>
     </div>
   </div>
 </section>
@@ -473,9 +506,12 @@ svg text{fill:var(--muted);font:10px var(--sans)}
     <p class="hint" id="pnPlan"></p>
     <div class="seg" id="pnOpts" role="group" aria-label="Power option"><button type="button" data-p="100" aria-pressed="true">Fast, 100%</button><button type="button" data-p="50" aria-pressed="false">Gentle, 50%</button></div>
     <label style="display:block;margin-top:12px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>
+    <label class="toggle"><input type="checkbox" class="autoLogChk" data-k="panel"><span>Log automatically when the panel session finishes</span></label>
     <div class="siderow" hidden style="margin-top:10px"><span class="l">Side</span><div class="seg sideSeg" role="group" aria-label="Side"><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><button type="button" data-side="both">Both</button></div></div>
     <div class="pbar" style="margin-top:12px"><b id="pnBar"></b></div>
     <div class="acts"><button class="btn primary" id="pnStart" type="button">Start on the panel</button><button class="btn danger" id="pnStop" type="button" hidden>Stop and turn off</button></div>
+    <div class="acts" id="pnLogRow" hidden><button class="btn primary" id="pnLogNow" type="button">Log This Session</button></div>
+    <div class="acts" id="pnPhotoRow" hidden><button class="btn" id="pnPhoto" type="button" data-photo-sid="">Add Photo to This Session</button></div>
     <p class="hint">Safety: the panel enforces its own limits and turns itself off when a session ends, when manual control is left unattended, or if it overheats. Protect your eyes before turning it on, and stay within reach of the power switch.</p>
   </div>
 </section>
@@ -519,7 +555,8 @@ svg text{fill:var(--muted);font:10px var(--sans)}
     <ul>
       <li><b>Recommended distance</b> is how far to hold the panel from the skin.</li>
       <li><b>Time goal and Distance:</b> pick a time and the app finds the distance, or type a distance and the times update. Deep targets need a minimum irradiance at the surface, so the app can recommend a session shorter than your goal and says so.</li>
-      <li><b>Fast</b> runs at 100% power and <b>Gentle</b> at 50%. Both deliver the same dose, so pick whichever fits your time.</li>
+      <li>Simple View gives one recommendation, at full power. <b>Lab View (Advanced)</b> shows two: <b>Fast</b> at 100% power and <b>Gentle</b> at 50%. Both deliver the same dose, so pick whichever fits your time. Switching to Simple View puts the timer, the Control Panel and Add to Routine back on full power.</li>
+      <li><b>Dose slider:</b> drag it to change the dose per session within the published window for the treatment. The distance and times update as you drag, and the two ends show the window. It is in both views.</li>
       <li><b>Rounding:</b> every session time is rounded up to the next half minute, so 2:47 becomes 3 min. The Session Timer, the Control Panel and the Protocol Card use exactly the same time as the cards.</li>
       <li><b>Likely</b> under each time is the range it could fall in. The range widens when the panel numbers are a manufacturer claim, when a solar meter correction is applied, and when the distance is outside your readings.</li>
       <li>Warnings appear under the options. Read them, especially cautions for brain and core treatments.</li>
@@ -528,8 +565,8 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   </details>
   <details><summary>Simple View and Lab View</summary>
     <ul>
-      <li><b>Simple View</b> shows the panel, treatment, distance, time, the recommendation and the timer.</li>
-      <li><b>Lab View (Advanced)</b> adds the dose slider, a depth override, the share of light reaching the target, the irradiance at the surface, a chart and table of power against time, and your panel's evenness map.</li>
+      <li><b>Simple View</b> shows the panel, treatment, the dose slider, distance, time, one recommendation and the timer.</li>
+      <li><b>Lab View (Advanced)</b> adds the Gentle half-power option, a depth override, the share of light reaching the target, the irradiance at the surface, a chart and table of power against time, and your panel's evenness map.</li>
       <li>Both views use the same settings, so changes carry over.</li>
     </ul>
   </details>
@@ -551,6 +588,8 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <li>It beeps and vibrates when a part ends or the session finishes. Turn the volume up and the silent switch off. Keep the screen on, because phones can pause timers when the screen locks.</li>
       <li>Two-wavelength sessions run each wavelength in turn.</li>
       <li><b>Stop and log</b> saves the time you actually ran. Finishing the timer saves the whole session automatically.</li>
+      <li><b>Log automatically when the timer finishes</b> is a tick box under Log to. Untick it and a finished session waits for you: tap <b>Log This Session</b> to save it, or Reset to throw it away. It is saved with the time it finished, and the Log to and Side choices are read when you tap, so you can fix them first. Stop and log always saves. The tick box is remembered. A single session run from the Control Panel has its own tick box and Log This Session button, so the two can be set differently. Both options are also in Settings, General, under Session Logging. Routine steps always log themselves.</li>
+      <li>Once a session is logged, <b>Add Photo to This Session</b> appears under the timer buttons. It opens the photo window already linked to that session. It goes away when you start another session or tap Reset. Routines show <b>Add Photo to Last Step</b> between steps and when the routine finishes, and the Control Panel shows the same button after a panel session.</li>
       <li>Use <b>Log to</b> to choose which log the session goes in. For areas that come in pairs, such as the knee or shoulder, a <b>Side</b> choice (Left, Right or Both) appears next to it and is saved with the session.</li>
     </ul>
   </details>
@@ -570,9 +609,21 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <li><b>Log profiles</b> keep separate logs, for example Panel and Mask. Use the picker with New and Edit to add, rename or delete one (deleting also deletes its sessions). Choose where a session goes with <b>Log to</b> on the timer, the Control Panel and the routine runner.</li>
       <li><b>Areas:</b> inside a log, sessions are sorted by treatment area automatically. The first time you log Face, a Face chip appears, and every later Face session goes under it. Tap a chip to see only that area's totals, chart, list and CSV. All Areas shows everything.</li>
       <li><b>Sides:</b> for areas with a left and right, such as the knee, shoulder, elbow, hip and ankle, pick Left, Right or Both before a session. Choosing that area's chip in the log then shows All Sides, Left, Right and Both chips so you can track each side on its own.</li>
-      <li>The page shows the last seven days, a minutes-per-week chart and the list of sessions for whatever you have selected.</li>
+      <li>The page shows the last seven days, a minutes-per-week chart, <b>Progress Photos</b> and the list of sessions for whatever you have selected.</li>
       <li><b>Download CSV</b> and <b>Copy CSV</b> export what you are viewing, with log profile, area and side columns. <b>Clear</b> removes only what is selected (the whole log, one area, or one side of an area) after a second tap. Settings, then General, has Clear All Session Logs.</li>
       <li>Logs live on this phone only. Export them now and then, because a phone can clear saved web app data. <b>Import</b> on this page brings an exported CSV or backup back in.</li>
+    </ul>
+  </details>
+  <details><summary>Progress Photos</summary>
+    <ul>
+      <li>Photos let you see changes that numbers cannot show. Open the gear, then Session Logs, and tap <b>Add Photo</b> under Progress Photos. <b>Take Photo</b> opens the camera and <b>Choose Photo</b> picks one from your gallery.</li>
+      <li>A progress photo needs a date, an area and, for paired areas, a side, so it lands in the right place. It follows the log profile you are viewing, such as Panel or Mask.</li>
+      <li>You can also attach a photo to a session: every entry in the list has <b>Add Photo</b>, and the photo takes that session's date, area and side. Right after a session is logged, <b>Add Photo to This Session</b> on the timer (or <b>Add Photo to Last Step</b> in a routine) does the same without leaving the Calculator. The photos show as small thumbnails on the entry.</li>
+      <li>The strip shows the photos for whatever you have selected, newest first. Tap the Face chip and you see only face photos, and the same goes for each side. Tap a photo to open it, then use <b>Newer</b> and <b>Older</b> (or swipe) to move through them.</li>
+      <li><b>Before and After</b> appears once there are two photos in the selection. It shows the oldest and the newest side by side with the number of days between them, and either side can be changed to any other photo.</li>
+      <li>For comparable photos, use the same spot, distance, lighting and time of day each time, and keep the same pose. Anything you change besides the light can look like a result.</li>
+      <li><b>Save to Device</b> on an open photo downloads a copy. <b>Delete</b> needs a second tap. Settings, then General shows how many photos are saved and has <b>Delete all photos</b>.</li>
+      <li>Photos are shrunk to a web-friendly size and stored on this phone only. They are never uploaded, and they are <b>not</b> part of exports, backups or shared links, so save the ones you care about. Clearing a log's sessions does not remove photos, but deleting a log profile removes that log's photos. If the phone clears saved web app data, the photos go with it, and installing the app to your home screen makes that less likely.</li>
     </ul>
   </details>
   <details><summary>Learning and Resources</summary>
@@ -627,6 +678,10 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <h3 class="dlg-h">Quick Start</h3>
   <label class="toggle"><input type="checkbox" id="stQs"><span>Show the Quick Start when the app opens</span></label>
   <p class="hint">It opens every time the app starts until you tick Don't show this at startup again on it, or turn this off. The full guide is under How to Use.</p>
+  <h3 class="dlg-h">Session Logging</h3>
+  <label class="toggle"><input type="checkbox" class="autoLogChk" data-k="timer"><span>Log automatically when the timer finishes</span></label>
+  <label class="toggle"><input type="checkbox" class="autoLogChk" data-k="panel"><span>Log automatically when a Control Panel session finishes</span></label>
+  <p class="hint">Unticked, a finished session waits for you to tap Log This Session, so you can check Log to and Side first. Both are also on the timer and the Control Panel. Stop and log always saves, and routine steps always log themselves.</p>
   <h3 class="dlg-h">Safety</h3>
   <button class="btn" id="stSafety" type="button">Open the safety checklist</button>
   <h3 class="dlg-h">Back Up and Share</h3>
@@ -634,14 +689,52 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <div class="acts"><button class="btn" id="stExpProf" type="button">Export Panel Profiles</button><button class="btn" id="stExpRout" type="button">Export Routines</button><button class="btn" id="stExpLogs" type="button">Export Session Logs</button><button class="btn" id="stExpAll" type="button">Export Everything</button><button class="btn" id="stImport" type="button">Import</button></div>
   <h3 class="dlg-h">Saved data</h3>
   <p class="hint">Profiles, settings and the session logs are saved on this device only.</p>
-  <div class="acts"><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
+  <p class="hint" id="stPhInfo"></p>
+  <div class="acts"><button class="btn danger" id="stPhClear" type="button" hidden>Delete all photos</button><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 78. Released October 25, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 85. Released October 25, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 78. Released October 25, 2026.<br>© 2026 Redox. All rights reserved.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 85. Released October 25, 2026.<br>© 2026 Redox. All rights reserved.</p>
 </main>
+
+<dialog id="phAdd" aria-labelledby="phAddT">
+  <h2 id="phAddT" tabindex="-1">Add Photo</h2>
+  <p class="hint" id="phAddLink" style="margin:0"></p>
+  <div class="phprev" id="phPrev" hidden><div class="phwrap"><img id="phPrevImg" alt="Preview of the chosen photo"></div></div>
+  <div class="acts"><button class="btn" id="phCam" type="button">Take Photo</button><button class="btn" id="phPick" type="button">Choose Photo</button></div>
+  <input id="phFileCam" type="file" accept="image/*" capture="environment" hidden>
+  <input id="phFile" type="file" accept="image/*" hidden>
+  <div id="phFields" style="margin-top:14px">
+    <label id="phDateRow"><span class="l">Date</span><input id="phDate" type="date"></label>
+    <label id="phAreaRow"><span class="l">Area</span><select id="phArea"></select></label>
+    <label id="phSideRow"><span class="l">Side</span><select id="phSide"><option value="">Not applicable</option><option value="left">Left</option><option value="right">Right</option><option value="both">Both</option></select></label>
+    <label><span class="l">Note (optional)</span><input id="phNote" type="text" maxlength="200" placeholder="For example lighting or time of day"></label>
+  </div>
+  <p class="hint">Photos stay on this device only. They are never sent anywhere and are not part of exports, so use Save to Device on a photo to keep a copy.</p>
+  <p class="err" id="phErr" role="alert"></p>
+  <div class="actions"><button class="btn" id="phCancel" type="button">Cancel</button><button class="btn primary" id="phSave" type="button" disabled>Save Photo</button></div>
+</dialog>
+
+<dialog id="phView" aria-labelledby="phVT">
+  <h2 id="phVT" tabindex="-1">Photo</h2>
+  <div class="phbig" id="phVBox"><div class="phwrap"><img id="phVImg" alt="Progress photo"></div></div>
+  <p class="phcap" id="phVCap"></p>
+  <div class="acts"><button class="btn" id="phVNew" type="button">Newer</button><button class="btn" id="phVOld" type="button">Older</button></div>
+  <div class="acts"><button class="btn" id="phVSave" type="button">Save to Device</button><button class="btn danger" id="phVDel" type="button">Delete</button></div>
+  <div class="actions"><button class="btn primary" id="phVClose" type="button">Close</button></div>
+</dialog>
+
+<dialog id="phBA" aria-labelledby="phBAT">
+  <h2 id="phBAT" tabindex="-1">Before and After</h2>
+  <div class="phba">
+    <figure><div class="phwrap"><img id="phBImg" alt="Before photo"></div><figcaption><select id="phBSel" aria-label="Before photo"></select></figcaption></figure>
+    <figure><div class="phwrap"><img id="phAImg" alt="After photo"></div><figcaption><select id="phASel" aria-label="After photo"></select></figcaption></figure>
+  </div>
+  <p class="hint" id="phBAGap"></p>
+  <div class="actions"><button class="btn primary" id="phBAClose" type="button">Close</button></div>
+</dialog>
 
 <dialog id="editor" aria-labelledby="dlgTitle">
   <h2 id="dlgTitle" tabindex="-1" autofocus></h2>
@@ -1195,12 +1288,12 @@ function render(){
   $("#goal").value=manual?"custom":String(S.goal);
   if(document.activeElement!==$("#dist"))$("#dist").value=fmt(fromCm(dcm),1);
   $("#auto").hidden=!manual;
-  const opt=(p,name)=>{
+  const opt=(p,name,extra)=>{
     const P=m.plan(dcm,p,m.dose),t=m.total(dcm,p,m.dose),uu=unc(m,dcm),lo=halfNear(t/(1+uu)),hi=halfNear(t/(1-uu));
     const cls=m.segs.length===1?m.segs[0].cls:"x";
     const detail=m.segs.length>1?P.segs.map(s=>`${s.label} ${fmtMin(s.sec)}`).join(", then "):"";
     const I=m.segs.length===1?m.irr(m.segs[0].ch,dcm)*p/100:null;
-    return `<div class="card ${cls}"><h3>${name}</h3><div class="big">${fmtMn(P.total)}<small>min</small></div><div class="pw">${p}% power</div>
+    return `<div class="card ${cls}${extra?" "+extra:""}"><h3>${name}</h3><div class="big">${fmtMn(P.total)}<small>min</small></div><div class="pw">${p}% power</div>
       <p>${fmt(m.dose)} J/cm\u00b2${I?` at ${fmt(I)} mW/cm\u00b2`:""}${detail?`<br>${detail}`:""}<br>Likely ${fmtMn(lo)} to ${fmtMin(hi)}</p></div>`;
   };
   const warns=[];
@@ -1225,9 +1318,8 @@ function render(){
   const rows=[100,75,50,25].map(p=>`<tr><td>${p}%</td><td>${fmtMin(m.rtotal(dcm,p,m.dose))}</td><td>${fmt(m.dose*Math.min(1,600/m.total(dcm,p,m.dose)),1)} J/cm\u00b2</td></tr>`).join("");
   box.innerHTML=`
     <div class="hero"><div class="k">${manual?"Distance you picked":"Recommended distance"}</div><div class="v">${fmt(fromCm(dcm),1)} ${prof.unit}</div><div class="k lab" style="margin-top:2px">${m.segs.map(s=>`${fmt(m.irr(s.ch,dcm))} mW/cm\u00b2 ${s.label}`).join(", ")} at the surface, full power</div><div class="k simple-only" style="margin-top:2px">Light: ${m.segs.map(s=>s.label).join(" and ")}${prof.mode==="fixed"?" (together)":""}</div></div>
-    <div class="cards">${opt(100,"Fast")}${opt(50,"Gentle")}</div>
+    <div class="cards">${opt(100,'<span class="lab">Fast</span><span class="simple-only">Recommended</span>')}${opt(50,"Gentle","lab")}</div>
     <p class="hint lab">Pick either. Both deliver the same dose. Irradiance is assumed to scale linearly with the power setting.</p>
-    <p class="hint simple-only">Pick either option. Both deliver the same dose.</p>
     <div id="timerSlot"></div>
     <div class="lab">${chart(m,dcm)}</div>
     <table class="lab" style="margin-top:8px"><thead><tr><th>Power</th><th>Time to dose</th><th>Dose after 10 min</th></tr></thead><tbody>${rows}</tbody></table>
@@ -1261,6 +1353,10 @@ function renderDraftRows(){
 }
 function showView(v){
   document.body.dataset.view=v;
+  if(v==="simple"){
+    if(typeof tm!=="undefined"&&tm.p!==100&&!tm.running&&(tm.acc===0||tm.done)){tm.p=100;if(LAST)tmBuild(100)}
+    if(typeof pn!=="undefined"&&pn.p!==100&&!(pn.st&&pn.st.session&&pn.st.session.active))pn.p=100;
+  }
   const inCalc=v==="simple"||v==="lab"||v==="routines",inLearn=v==="lib"||v==="learn",inSet=v==="set"||v==="log"||v==="how";
   document.querySelectorAll(".tabs button").forEach(b=>{const k=b.dataset.view;b.setAttribute("aria-pressed",String(k==="calc"?inCalc:(k==="settingshub"?inSet:(k==="learnhub"?inLearn:k===v))))});
   if(typeof rtMini==="function")rtMini();
@@ -1671,6 +1767,7 @@ $("#lpSave").addEventListener("click",function(){
 $("#lpDelete").addEventListener("click",function(){
   if(!lpArm){lpArm=true;$("#lpDelete").textContent="Tap again to delete";return}
   const id=lpEditId;
+  phDelWhere(function(x){return x.lp===id});
   putLog(getLog().filter(function(e){return lpOf(e)!==id}));
   S.logProfiles=S.logProfiles.filter(function(p){return p.id!==id});
   S.logActive=S.logProfiles[0].id;
@@ -1752,6 +1849,7 @@ function renderLog(){
     if(w.min>0)bars+='<text x="'+(x+15)+'" y="'+(104-hh)+'" text-anchor="middle" style="fill:#f4ebe6">'+fmt(w.min,0)+'</text>';
   });
   h+='<h3 class="dlg-h">Minutes per week</h3><svg viewBox="0 0 360 134" role="img" aria-label="Minutes of light per week for the last eight weeks">'+bars+'</svg>';
+  h+=phBlockHtml(scoped);
   h+='<div class="acts"><button class="btn" id="logDl" type="button">Download CSV</button><button class="btn" id="logCopy" type="button">Copy CSV</button><button class="btn" id="logShare" type="button">Share</button><button class="btn" id="logImp" type="button">Import</button><button class="btn danger" id="logClear" type="button">'+(scoped?"Clear "+escH(logScopeName())+" sessions":"Clear this log")+'</button></div>';
   h+='<p class="hint">Saved on this device only. Export now and then, because a phone can clear saved web app data.</p>';
   if(!a.length)h+='<p class="empty">No sessions in this log yet. Finish a session with the timer on the Calculator tab and it is logged here automatically.</p>';
@@ -1762,7 +1860,7 @@ function renderLog(){
     h+='<div class="entry"><div class="eh"><b>'+escH(e.trn)+', '+escH(e.arn)+(e.side?' ('+SIDE_NAMES[e.side]+')':'')+'</b><button class="rm" type="button" data-del="'+escH(e.id)+'" aria-label="Delete this entry">&times;</button></div>'
       +'<p>'+escH(d.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"}))+', '+fmt(e.sec/60,1)+' min at '+e.power+'% power, '+(e.dose!=null&&e.dose!==""?fmt(e.dose,1)+' J/cm\u00b2':'dose not recorded')+'</p>'
       +'<p>'+escH(e.panel)+', '+escH(e.light)+(e.dist!==""&&e.dist!=null?', '+e.dist+' '+e.unit:', distance not recorded')+'</p>'
-      +(e.note?'<p class="note">'+escH(e.note)+'</p>':'')+'</div>';
+      +(e.note?'<p class="note">'+escH(e.note)+'</p>':'')+phRowHtml(e)+'</div>';
   });
   $("#logBody").innerHTML=h;
   $("#logDl").onclick=function(){
@@ -1791,6 +1889,273 @@ $("#logBody").addEventListener("click",function(e){
   const b=e.target.closest("[data-del]");if(!b)return;
   putLog(getLog().filter(function(x){return x.id!==b.dataset.del}));renderLog();
 });
+
+
+/* ---------- Progress photos (kept on this device in IndexedDB, never uploaded) ---------- */
+const PH={ok:true,db:null,list:[],ready:false,busy:false},PH_MAX=400;
+let phArm=false,phCtx=null,phV={list:[],i:0,url:"",armed:false},phBA={list:[],ub:"",ua:""};
+const phReq=function(r){return new Promise(function(res,rej){r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}})};
+const phTx=function(tx){return new Promise(function(res,rej){tx.oncomplete=function(){res()};tx.onerror=function(){rej(tx.error)};tx.onabort=function(){rej(tx.error||new Error("aborted"))}})};
+function phOpen(){
+  return new Promise(function(res,rej){
+    if(typeof indexedDB==="undefined"||!indexedDB){rej(new Error("no idb"));return}
+    let rq;try{rq=indexedDB.open("rdl-photos",1)}catch(e){rej(e);return}
+    rq.onupgradeneeded=function(){const db=rq.result;if(!db.objectStoreNames.contains("meta"))db.createObjectStore("meta",{keyPath:"id"});if(!db.objectStoreNames.contains("data"))db.createObjectStore("data",{keyPath:"id"})};
+    rq.onsuccess=function(){res(rq.result)};rq.onerror=function(){rej(rq.error)};rq.onblocked=function(){rej(new Error("blocked"))};
+  });
+}
+async function phInit(){
+  try{PH.db=await phOpen();PH.list=await phReq(PH.db.transaction("meta").objectStore("meta").getAll());PH.ok=true}
+  catch(e){PH.ok=false;PH.list=[]}
+  PH.ready=true;phRefresh();
+}
+function phRefresh(){if(document.body.dataset.view==="log")renderLog();phSettings()}
+async function phPut(meta,buf){
+  const tx=PH.db.transaction(["meta","data"],"readwrite");
+  tx.objectStore("meta").put(meta);tx.objectStore("data").put({id:meta.id,buf:buf,type:meta.type});
+  await phTx(tx);
+}
+async function phGetData(id){return phReq(PH.db.transaction("data").objectStore("data").get(id))}
+async function phDelIds(ids){
+  if(!PH.db||!ids.length)return;
+  const tx=PH.db.transaction(["meta","data"],"readwrite");
+  ids.forEach(function(id){tx.objectStore("meta").delete(id);tx.objectStore("data").delete(id)});
+  await phTx(tx);
+  PH.list=PH.list.filter(function(p){return ids.indexOf(p.id)<0});
+}
+function phDelWhere(fn){
+  const ids=PH.list.filter(fn).map(function(p){return p.id});
+  phDelIds(ids).then(phRefresh,function(){});
+}
+const phLp=function(p){return p.lp&&S.logProfiles.some(function(x){return x.id===p.lp})?p.lp:S.logProfiles[0].id};
+function phScope(){
+  return PH.list.filter(function(p){
+    if(phLp(p)!==S.logActive)return false;
+    if(!S.logArea||S.logArea==="all")return true;
+    return p.ar===S.logArea&&(!S.logSide||S.logSide==="all"||(p.side||"")===S.logSide);
+  }).sort(function(a,b){return b.ts-a.ts});
+}
+const phDay=function(ts){return new Date(ts).toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"})};
+const phDayKey=function(ts){const d=new Date(ts);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+function phThumb(p,cls,label){
+  return '<button class="phth'+(cls?' '+cls:'')+'" type="button" data-ph="'+escH(p.id)+'" aria-label="'+escH(label||("Open photo from "+phDay(p.ts)))+'"><div class="phwrap"><img src="'+p.thumb+'" alt=""></div>'+(cls?'':'<span>'+escH(phDay(p.ts))+'</span>')+'</button>';
+}
+function phBlockHtml(scoped){
+  let s='<h3 class="dlg-h">Progress Photos</h3>';
+  if(!PH.ok){return s+'<p class="hint">'+(PH.ready?'This browser cannot save photos here. Open the hosted link or the home-screen app.':'Loading photos...')+'</p>'}
+  const list=phScope();
+  s+='<div class="acts"><button class="btn" id="phAddBtn" type="button">Add Photo</button>'+(list.length>=2?'<button class="btn" id="phBaBtn" type="button">Before and After</button>':'')+'</div>';
+  if(list.length)s+='<div class="phstrip">'+list.map(function(p){return phThumb(p)}).join("")+'</div><p class="hint">'+plural(list.length,"photo")+(scoped?" for "+escH(logScopeName()):"")+", newest first. Tap one to open it. Photos stay on this device only.</p>";
+  else s+='<p class="hint">No photos here yet. Add one now and again to see how things change over time. Photos stay on this device only.</p>';
+  return s;
+}
+function phRowHtml(e){
+  if(!PH.ok)return "";
+  const mine=PH.list.filter(function(p){return p.sid===e.id}).sort(function(a,b){return a.ts-b.ts||a.id.localeCompare(b.id)});
+  return '<div class="phrow">'+mine.map(function(p){return phThumb(p,"sm","Open photo attached to this session")}).join("")+'<button class="btn sm" type="button" data-addph="'+escH(e.id)+'">'+(mine.length?"Add Another Photo":"Add Photo")+'</button></div>';
+}
+/* turning a camera photo into a smaller JPEG plus a thumbnail */
+function phLoadImg(file){
+  return new Promise(function(res,rej){
+    const u=URL.createObjectURL(file),i=new Image();
+    i.onload=function(){URL.revokeObjectURL(u);res(i)};i.onerror=function(){URL.revokeObjectURL(u);rej(new Error("bad image"))};i.src=u;
+  });
+}
+const phBytes=function(blob){return new Promise(function(res,rej){const r=new FileReader();r.onload=function(){res(r.result)};r.onerror=function(){rej(r.error)};r.readAsArrayBuffer(blob)})};
+async function phPrepare(file){
+  if(!(/^image\//.test(file.type||"")||/\.(jpe?g|png|webp|gif|heic|heif)$/i.test(file.name||"")))throw new Error("type");
+  if(file.size>60*1024*1024)throw new Error("big");
+  let src;
+  try{src=await createImageBitmap(file,{imageOrientation:"from-image"})}catch(e){src=await phLoadImg(file)}
+  const iw=src.width||src.naturalWidth,ih=src.height||src.naturalHeight;
+  if(!iw||!ih)throw new Error("bad");
+  const draw=function(max){
+    const k=Math.min(1,max/Math.max(iw,ih)),w=Math.max(1,Math.round(iw*k)),h2=Math.max(1,Math.round(ih*k));
+    const c=document.createElement("canvas");c.width=w;c.height=h2;
+    const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,w,h2);x.drawImage(src,0,0,w,h2);
+    return {c:c,w:w,h:h2};
+  };
+  const big=draw(1280),th=draw(240);
+  const blob=await new Promise(function(res){if(big.c.toBlob)big.c.toBlob(function(b){res(b)},"image/jpeg",0.82);else res(null)});
+  let buf;
+  if(blob)buf=await phBytes(blob);
+  else{const b64=big.c.toDataURL("image/jpeg",0.82).split(",")[1],bin=atob(b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);buf=u.buffer}
+  if(src.close)try{src.close()}catch(e){}
+  return {buf:buf,type:"image/jpeg",thumb:th.c.toDataURL("image/jpeg",0.7),w:big.w,h:big.h,size:buf.byteLength};
+}
+/* adding */
+function phSideUi(){
+  const linked=!!(phCtx&&phCtx.sid&&phCtx.sess);
+  $("#phDateRow").hidden=linked;$("#phAreaRow").hidden=linked;
+  $("#phSideRow").hidden=linked||!SIDED.has($("#phArea").value);
+}
+function phOpenAdd(sid){
+  const e=sid?getLog().find(function(x){return x.id===sid}):null;
+  phCtx={sid:e?e.id:"",sess:e||null,lp:e?lpOf(e):S.logActive,prep:null,url:""};
+  $("#phErr").textContent="";$("#phPrev").hidden=true;$("#phPrevImg").removeAttribute("src");$("#phSave").disabled=true;$("#phNote").value="";
+  $("#phArea").innerHTML=AREAS.map(function(a){return '<option value="'+escH(a.id)+'">'+escH(a.name)+'</option>'}).join("");
+  const today=phDayKey(Date.now());
+  $("#phDate").max=today;$("#phDate").value=e?phDayKey(e.ts):today;
+  const dflt=(S.logArea&&S.logArea!=="all"&&AREAS.some(function(a){return a.id===S.logArea}))?S.logArea:S.area;
+  $("#phArea").value=AREAS.some(function(a){return a.id===dflt})?dflt:AREAS[0].id;
+  $("#phSide").value=(S.logSide&&S.logSide!=="all"&&SIDED.has($("#phArea").value))?S.logSide:"";
+  $("#phAddLink").textContent=e?"For the "+phDay(e.ts)+" session: "+e.trn+", "+e.arn+(e.side?" ("+SIDE_NAMES[e.side]+")":"")+".":"A progress photo, not tied to one session. Pick the date and area so it lands in the right place.";
+  phSideUi();
+  openD("#phAdd");
+  const t=$("#phAddT");if(t&&t.focus)t.focus();
+}
+function phChosen(file){
+  $("#phErr").textContent="";$("#phSave").disabled=true;
+  if(!file||!phCtx)return;
+  const ctx=phCtx;
+  phPrepare(file).then(function(prep){
+    if(phCtx!==ctx)return;
+    ctx.prep=prep;
+    if(ctx.url)try{URL.revokeObjectURL(ctx.url)}catch(e){}
+    ctx.url=URL.createObjectURL(new Blob([prep.buf],{type:prep.type}));
+    $("#phPrevImg").src=ctx.url;$("#phPrev").hidden=false;$("#phSave").disabled=false;
+  }).catch(function(err){
+    $("#phErr").textContent=err&&err.message==="big"?"That photo is too large. Try a smaller one.":"That file could not be read as a photo.";
+  });
+}
+function phDateTs(str){
+  const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(str||""),now=new Date();
+  if(!m)return now.getTime();
+  const d=new Date(+m[1],+m[2]-1,+m[3],12,0,0);
+  if(phDayKey(d.getTime())===phDayKey(now.getTime()))return now.getTime();
+  return Math.min(d.getTime(),now.getTime());
+}
+function phCloseAdd(){if(phCtx&&phCtx.url)try{URL.revokeObjectURL(phCtx.url)}catch(e){}phCtx=null;closeD("#phAdd")}
+async function phSave(){
+  if(!phCtx||!phCtx.prep||PH.busy)return;
+  if(PH.list.length>=PH_MAX){$("#phErr").textContent="The limit is "+PH_MAX+" photos. Delete some to add more.";return}
+  PH.busy=true;$("#phSave").disabled=true;
+  try{
+    const e=phCtx.sess&&getLog().find(function(x){return x.id===phCtx.sess.id})||phCtx.sess;
+    const ar=e?areaKey(e):$("#phArea").value,A=AREAS.find(function(a){return a.id===ar});
+    const meta={id:"ph"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),ts:e?e.ts:phDateTs($("#phDate").value),sid:phCtx.sid,ar:ar,
+      arn:e?(e.arn||ar):(A?A.name:ar),side:e?(e.side||""):(SIDED.has(ar)?$("#phSide").value:""),lp:phCtx.lp,note:$("#phNote").value.trim().slice(0,200),
+      w:phCtx.prep.w,h:phCtx.prep.h,size:phCtx.prep.size,type:phCtx.prep.type,thumb:phCtx.prep.thumb};
+    await phPut(meta,phCtx.prep.buf);
+    PH.list.push(meta);
+    try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(x){}
+    phCloseAdd();phRefresh();toast("Photo saved");
+  }catch(err){
+    $("#phErr").textContent=err&&err.name==="QuotaExceededError"?"There is not enough storage on this device for that photo.":"The photo could not be saved.";
+    $("#phSave").disabled=false;
+  }finally{PH.busy=false}
+}
+/* viewing */
+function phRevoke(){if(phV.url){try{URL.revokeObjectURL(phV.url)}catch(e){}phV.url=""}}
+async function phOpenView(id){
+  let list=phScope(),i=list.findIndex(function(p){return p.id===id});
+  if(i<0){const one=PH.list.find(function(p){return p.id===id});if(!one)return;list=[one];i=0}
+  phV={list:list,i:i,url:"",armed:false};
+  openD("#phView");
+  await phShow();
+}
+async function phShow(){
+  const p=phV.list[phV.i];if(!p){closeD("#phView");return}
+  phV.armed=false;$("#phVDel").textContent="Delete";
+  phRevoke();$("#phVImg").removeAttribute("src");
+  const s=p.sid?getLog().find(function(x){return x.id===p.sid}):null,d=new Date(p.ts);
+  $("#phVCap").innerHTML='<b>'+escH(phDay(p.ts))+', '+escH(d.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"}))+'</b> &middot; '+escH(p.arn)+(p.side?' ('+SIDE_NAMES[p.side]+')':'')
+    +'<small>'+(s?'Taken with the '+escH(s.trn)+' session ('+fmt(s.sec/60,1)+' min).':'Progress photo.')+' '+(phV.i+1)+' of '+phV.list.length+'</small>'+(p.note?'<small>'+escH(p.note)+'</small>':'');
+  $("#phVNew").disabled=phV.i<=0;$("#phVOld").disabled=phV.i>=phV.list.length-1;
+  const at=phV.i;
+  try{
+    const rec=await phGetData(p.id);
+    if(at!==phV.i||!rec)return;
+    phV.url=URL.createObjectURL(new Blob([rec.buf],{type:rec.type||"image/jpeg"}));
+    $("#phVImg").src=phV.url;
+  }catch(e){$("#phVCap").insertAdjacentHTML("beforeend",'<small>This photo could not be loaded.</small>')}
+}
+function phStep(n){const j=phV.i+n;if(j<0||j>=phV.list.length)return;phV.i=j;phShow()}
+async function phDownload(){
+  const p=phV.list[phV.i];if(!p)return;
+  try{
+    const rec=await phGetData(p.id);if(!rec)return;
+    const url=URL.createObjectURL(new Blob([rec.buf],{type:rec.type||"image/jpeg"})),a=document.createElement("a");
+    a.href=url;a.download="redox-"+slugOf(p.arn)+(p.side?"-"+p.side:"")+"-"+phDayKey(p.ts)+".jpg";document.body.appendChild(a);a.click();a.remove();
+    setTimeout(function(){URL.revokeObjectURL(url)},2000);
+  }catch(e){toast("Could not save that photo")}
+}
+async function phDeleteCurrent(){
+  const p=phV.list[phV.i];if(!p)return;
+  if(!phV.armed){phV.armed=true;$("#phVDel").textContent="Tap again to delete";return}
+  try{await phDelIds([p.id])}catch(e){toast("Could not delete that photo");return}
+  phV.list.splice(phV.i,1);
+  if(!phV.list.length){phRevoke();closeD("#phView")}
+  else{if(phV.i>=phV.list.length)phV.i=phV.list.length-1;await phShow()}
+  phRefresh();toast("Photo deleted");
+}
+/* before and after */
+function phRevokeBA(){["ub","ua"].forEach(function(k){if(phBA[k]){try{URL.revokeObjectURL(phBA[k])}catch(e){}phBA[k]=""}})}
+async function phOpenBA(){
+  const list=phScope().slice().sort(function(a,b){return a.ts-b.ts});
+  if(list.length<2)return;
+  phBA.list=list;
+  const opt=function(p){return '<option value="'+escH(p.id)+'">'+escH(phDay(p.ts))+(p.side?' ('+SIDE_NAMES[p.side]+')':'')+'</option>'};
+  $("#phBSel").innerHTML=list.map(opt).join("");$("#phASel").innerHTML=list.map(opt).join("");
+  $("#phBSel").value=list[0].id;$("#phASel").value=list[list.length-1].id;
+  openD("#phBA");
+  await phBAShow();
+}
+async function phBAShow(){
+  const find=function(id){return phBA.list.find(function(p){return p.id===id})};
+  const b=find($("#phBSel").value),a=find($("#phASel").value);
+  phRevokeBA();["#phBImg","#phAImg"].forEach(function(s){$(s).removeAttribute("src")});
+  if(!b||!a)return;
+  const days=Math.round((a.ts-b.ts)/864e5);
+  $("#phBAGap").textContent=days===0?"Both photos are from the same day.":(days>0?plural(days,"day")+" between the two photos.":"The After photo is older than the Before photo.");
+  try{
+    const rb=await phGetData(b.id),ra=await phGetData(a.id);
+    if($("#phBSel").value!==b.id||$("#phASel").value!==a.id)return;
+    if(rb){phBA.ub=URL.createObjectURL(new Blob([rb.buf],{type:rb.type||"image/jpeg"}));$("#phBImg").src=phBA.ub}
+    if(ra){phBA.ua=URL.createObjectURL(new Blob([ra.buf],{type:ra.type||"image/jpeg"}));$("#phAImg").src=phBA.ua}
+  }catch(e){}
+}
+/* settings */
+function phSettings(){
+  const info=$("#stPhInfo"),btn=$("#stPhClear");if(!info)return;
+  if(!PH.ok){info.textContent=PH.ready?"Photos cannot be saved in this browser. Open the hosted link or the home-screen app to use them.":"";btn.hidden=true;return}
+  const n=PH.list.length,mb=PH.list.reduce(function(s,p){return s+(p.size||0)},0)/1048576;
+  info.textContent=n?plural(n,"photo")+" saved, "+(mb<0.1?"under 0.1":"about "+fmt(mb,mb<10?1:0))+" MB. They stay on this device, are not part of exports, and clearing the session logs does not remove them.":"Progress photos stay on this device only and are not part of exports.";
+  btn.hidden=!n;
+}
+$("#stPhClear").addEventListener("click",function(){
+  if(!phArm){phArm=true;$("#stPhClear").textContent="Tap again to delete all photos";return}
+  phArm=false;$("#stPhClear").textContent="Delete all photos";
+  phDelIds(PH.list.map(function(p){return p.id})).then(function(){phRefresh();toast("All photos deleted")},function(){toast("Could not delete the photos")});
+});
+$("#logBody").addEventListener("click",function(e){
+  const t=e.target.closest("[data-ph],[data-addph],#phAddBtn,#phBaBtn");if(!t)return;
+  if(t.id==="phAddBtn")phOpenAdd(null);
+  else if(t.id==="phBaBtn")phOpenBA();
+  else if(t.dataset.addph)phOpenAdd(t.dataset.addph);
+  else if(t.dataset.ph)phOpenView(t.dataset.ph);
+});
+document.addEventListener("click",function(e){const b=e.target.closest("[data-photo-sid]");if(b&&b.dataset.photoSid)phOpenAdd(b.dataset.photoSid)});
+$("#phCam").addEventListener("click",function(){$("#phFileCam").click()});
+$("#phPick").addEventListener("click",function(){$("#phFile").click()});
+[$("#phFile"),$("#phFileCam")].forEach(function(inp){inp.addEventListener("change",function(e){const f=e.target.files&&e.target.files[0];phChosen(f);try{e.target.value=""}catch(x){}})});
+$("#phArea").addEventListener("change",phSideUi);
+$("#phCancel").addEventListener("click",phCloseAdd);
+$("#phAdd").addEventListener("close",function(){if(phCtx)phCloseAdd()});
+$("#phSave").addEventListener("click",phSave);
+$("#phVNew").addEventListener("click",function(){phStep(-1)});
+$("#phVOld").addEventListener("click",function(){phStep(1)});
+$("#phVSave").addEventListener("click",phDownload);
+$("#phVDel").addEventListener("click",phDeleteCurrent);
+$("#phVClose").addEventListener("click",function(){phRevoke();closeD("#phView")});
+$("#phView").addEventListener("close",phRevoke);
+(function(){let x0=null,y0=0;const box=$("#phVBox");
+  box.addEventListener("touchstart",function(e){const t=e.touches[0];x0=t.clientX;y0=t.clientY},{passive:true});
+  box.addEventListener("touchend",function(e){if(x0==null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Math.abs(dx)>50&&Math.abs(dy)<60)phStep(dx>0?-1:1)},{passive:true});
+})();
+$("#phBSel").addEventListener("change",phBAShow);$("#phASel").addEventListener("change",phBAShow);
+$("#phBAClose").addEventListener("click",function(){phRevokeBA();closeD("#phBA")});
+$("#phBA").addEventListener("close",phRevokeBA);
 
 /* ---------- Session timer (inline in the calculator) ---------- */
 const tmCard=$("#timerCard");
@@ -1828,17 +2193,28 @@ function tmRender(){
   $("#tmSeg").textContent=tm.segs.length>1?"Now: "+tm.segs[s.i].label+", "+fmtT(Math.ceil(s.left))+" left in this part":tm.segs[0].label;
   $("#tmStart").textContent=tm.running?"Pause":(tm.done?"Start again":(e>0?"Resume":"Start"));
   $("#tmStopLog").hidden=!(e>0&&!tm.done);
+  $("#tmLogRow").hidden=!tm.pending;
+  $("#tmHint").textContent=tm.pending?"This session is not logged yet. Tap Log This Session to save it, or Reset to throw it away.":(autoLogOn("timer")?"Finishing the timer logs the session automatically. Keep the screen on while it runs.":"Finishing the timer does not log it by itself. Tap Log This Session afterwards to save it. Keep the screen on while it runs.");
+  const tp=!!(tm.lastSid&&PH.ok&&!tm.running&&(tm.done||e<=0));$("#tmPhotoRow").hidden=!tp;if(tp)$("#tmPhoto").dataset.photoSid=tm.lastSid;
   document.querySelectorAll("#tmOpts button").forEach(function(b){b.setAttribute("aria-pressed",String(+b.dataset.p===tm.p))});
   $("#tmBar").style.width=(tm.total?e/tm.total*100:0)+"%";
 }
-function logSession(sec){
-  const c=tm.ctx;if(!c||!(sec>=1))return;
+function autoLogOn(k){
+  const v=k==="panel"?S.autoLogPanel:S.autoLogTimer;
+  return v!=null?v!==false:S.autoLog!==false;       // S.autoLog is the single setting that build 83 saved
+}
+function syncAutoLog(){document.querySelectorAll(".autoLogChk").forEach(function(c){c.checked=autoLogOn(c.dataset.k)})}
+function pushEntry(e){const a=getLog();a.push(e);putLog(a);return e.id}
+function sessionEntry(sec){
+  const c=tm.ctx;if(!c||!(sec>=1))return null;
   const m=c.m,frac=tm.raw?sec/tm.raw:1;
-  const e={id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:sideFor(m.A.id),panel:m.prof.name,
+  return {id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:sideFor(m.A.id),panel:m.prof.name,
     light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(c.dcm,m.prof.unit),1),unit:m.prof.unit,power:tm.p,
     sec:Math.round(sec),dose:+fmt(m.dose*frac,1),note:"",lp:S.logActive};
-  const a=getLog();a.push(e);putLog(a);
 }
+function logSession(sec){const e=sessionEntry(sec);return e?pushEntry(e):""}
+/* a finished session that is waiting to be logged by hand: Log to and Side are read when it is saved */
+function logPending(e){e.lp=S.logActive;e.side=sideFor(e.ar);return pushEntry(e)}
 function tmTick(){
   const e=elapsed();
   if(e>=tm.total){tmFinish();return}
@@ -1850,18 +2226,22 @@ function tmToggle(){
   if(tm.running){tm.acc=elapsed();tm.running=false;clearInterval(tm.iv);wake(false);tmRender();return}
   if(rt.phase!=="idle"&&rt.phase!=="done"){toast("A routine is running. Stop it first.");return}
   if(tm.done)tmBuild(tm.p);
+  if(tm.pending)toast("The last session was not logged");
+  tm.lastSid="";tm.pending=null;
   beep(1,.01);tm.t0=Date.now();tm.running=true;tm.iv=setInterval(tmTick,250);wake(true);tmRender();
 }
 function tmFinish(){
   clearInterval(tm.iv);tm.running=false;tm.acc=tm.total;tm.done=true;wake(false);
-  logSession(tm.total);tmRender();
+  if(autoLogOn("timer")){tm.lastSid=logSession(tm.total);tm.pending=null}
+  else{tm.pending=sessionEntry(tm.total);tm.lastSid=""}
+  tmRender();
   beep(880,.25);setTimeout(function(){beep(880,.25)},350);setTimeout(function(){beep(1175,.4)},700);buzz([250,120,250,120,400]);
-  toast("Session complete and logged");
+  toast(tm.pending?"Session complete. Tap Log This Session to save it.":"Session complete and logged");
 }
 function tmStopLog(){
   const e=elapsed();
   if(tm.running){tm.running=false;clearInterval(tm.iv);wake(false)}
-  logSession(Math.min(e,tm.total));toast("Session logged");tmBuild(tm.p);
+  const sid=logSession(Math.min(e,tm.total));toast("Session logged");tmBuild(tm.p);tm.lastSid=sid;tmRender();
 }
 $("#tmOpts").addEventListener("click",function(e){
   const b=e.target.closest("button");if(!b||!LAST)return;
@@ -1870,7 +2250,12 @@ $("#tmOpts").addEventListener("click",function(e){
 });
 $("#tmStart").addEventListener("click",tmToggle);
 $("#tmStopLog").addEventListener("click",tmStopLog);
-$("#tmReset").addEventListener("click",function(){tmBuild(tm.p)});
+$("#tmReset").addEventListener("click",function(){if(tm.pending)toast("The last session was not logged");tm.lastSid="";tm.pending=null;tmBuild(tm.p)});
+$("#tmLogNow").addEventListener("click",function(){
+  if(!tm.pending)return;
+  tm.lastSid=logPending(tm.pending);tm.pending=null;toast("Session logged");tmRender();
+});
+document.querySelectorAll(".autoLogChk").forEach(function(c){c.addEventListener("change",function(e){if(e.target.dataset.k==="panel")S.autoLogPanel=e.target.checked;else S.autoLogTimer=e.target.checked;save();syncAutoLog();tmRender()})});
 
 /* ---------- Protocol card ---------- */
 const LOGO_URL="data:image/png;base64,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";
@@ -1883,7 +2268,7 @@ function cardText(){
   const m=LAST.m,d=LAST.dcm,u=unc(m,d),t1=m.rtotal(d,100,m.dose),t2=m.rtotal(d,50,m.dose),r1=m.total(d,100,m.dose),r2=m.total(d,50,m.dose);
   return {title:m.T.name+", "+m.A.name,
     rows:[["Panel",m.prof.name],["Light",m.segs.map(function(s){return s.label}).join(" and ")],["Distance",fmt(fromCm(d),1)+" "+m.prof.unit+" from the surface"],["Dose",fmt(m.dose,1)+" J/cm\u00b2 per session"],
-      ["Full power",fmtMin(t1)+" (likely "+fmtMn(halfNear(r1/(1+u)))+" to "+fmtMin(halfNear(r1/(1-u)))+")"],["Half power",fmtMin(t2)+" (likely "+fmtMn(halfNear(r2/(1+u)))+" to "+fmtMin(halfNear(r2/(1-u)))+")"],["How often",m.T.freq]],
+      [S.view==="simple"?"Time":"Full power",fmtMin(t1)+" (likely "+fmtMn(halfNear(r1/(1+u)))+" to "+fmtMin(halfNear(r1/(1-u)))+")"],["Half power",fmtMin(t2)+" (likely "+fmtMn(halfNear(r2/(1+u)))+" to "+fmtMin(halfNear(r2/(1-u)))+")"],["How often",m.T.freq]].filter(function(r){return !(S.view==="simple"&&r[0]==="Half power")}),
     status:STATUS[m.T.id]?STATUS[m.T.id][1]:"",caution:m.T.caution||""};
 }
 function drawCard(cb){
@@ -2174,6 +2559,7 @@ function renderSet(){
   stArm.log=false;stArm.reset=false;
   $("#stClearLog").textContent="Clear all session logs";$("#stReset").textContent="Reset profiles and settings";
   $("#stQs").checked=!qsOff();
+  phArm=false;$("#stPhClear").textContent="Delete all photos";phSettings();
 }
 $("#stSafety").addEventListener("click",function(){openD("#safeDlg")});
 $("#stClearLog").addEventListener("click",function(){
@@ -2231,11 +2617,19 @@ function pnRender(st){
   $("#pnBar").style.width=(s.active&&s.total?Math.min(100,s.elapsed/s.total*100):0)+"%";
   $("#pnStop").hidden=!(s.active||st.on);
   $("#pnStart").disabled=!!s.active;
+  pnPhotoUi(!!s.active);
   if(s.active){pn.wasActive=true}
   else if(pn.wasActive){
     pn.wasActive=false;
-    if(s.done&&pn.ctx&&!pn.logged){pn.logged=true;logPanelSession(Math.min(s.elapsed||pn.ctx.total,pn.ctx.total));toast("Session finished and logged")}
+    if(s.done&&pn.ctx&&!pn.logged){pn.logged=true;const secs=Math.min(s.elapsed||pn.ctx.total,pn.ctx.total);
+      if(autoLogOn("panel")){pn.lastSid=logPanelSession(secs);pn.pending=null}else{pn.pending=panelEntry(secs);pn.lastSid=""}
+      pnPhotoUi(false);toast(pn.pending?"Session finished. Tap Log This Session to save it.":"Session finished and logged")}
   }
+}
+function pnPhotoUi(active){
+  const lr=$("#pnLogRow");if(lr)lr.hidden=!(pn.pending&&!active);
+  const pr=$("#pnPhotoRow");if(!pr)return;
+  const on=!!(pn.lastSid&&PH.ok&&!active);pr.hidden=!on;if(on)$("#pnPhoto").dataset.photoSid=pn.lastSid;
 }
 function pnPoll(){
   pnReq("/api/state").then(function(st){pn.connected=true;pnRender(st)}).catch(function(e){
@@ -2268,6 +2662,7 @@ function pnPlan(){
 }
 function renderPanel(){
   sideUi();
+  const simpleP=S.view==="simple";$("#pnOpts").hidden=simpleP;if(simpleP&&!(pn.st&&pn.st.session&&pn.st.session.active))pn.p=100;
   $("#pnAddr").value=pn.addr;$("#pnKey").value=pn.key;$("#pnSwap").checked=pn.swap;
   $("#pnAddrRow").hidden=SAMEORIGIN;
   $("#pnL1").textContent="Channel 1 ("+(pn.swap?"850":"660")+" nm)";$("#pnL2").textContent="Channel 2 ("+(pn.swap?"660":"850")+" nm)";
@@ -2280,18 +2675,22 @@ function renderPanel(){
 function pnStart(){
   if(rt.phase!=="idle"&&rt.phase!=="done"){toast("A routine is running. Stop it first.");return}
   const pl=pnPlan();if(!pl){toast("Set up a protocol on the Calculator tab first");return}
-  pn.ctx=pl;pn.logged=false;pn.wasActive=false;
+  pn.ctx=pl;pn.logged=false;pn.wasActive=false;pn.lastSid="";pn.pending=null;pnPhotoUi(true);
   pnReq("/api/session",{segs:pl.segs.map(function(s){return s.c1+":"+s.c2+":"+s.sec}).join(";")}).then(function(st){pn.wasActive=true;pnRender(st);toast("Session started on the panel")}).catch(function(e){pnMsg(pnHelp(e),true)});
 }
-function logPanelSession(sec){
-  const c=pn.ctx;if(!c)return;const m=c.m;
-  const e={id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:sideFor(m.A.id),panel:m.prof.name,
+function panelEntry(sec){
+  const c=pn.ctx;if(!c)return null;const m=c.m;
+  return {id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:sideFor(m.A.id),panel:m.prof.name,
     light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(c.dcm,m.prof.unit),1),unit:m.prof.unit,power:c.p,
     sec:Math.round(sec),dose:+fmt(m.dose*(c.raw?sec/c.raw:1),1),note:"Run by the panel",lp:S.logActive};
-  const a=getLog();a.push(e);putLog(a);
 }
+function logPanelSession(sec){const e=panelEntry(sec);return e?pushEntry(e):""}
 pnLock();
 $("#pnConnect").addEventListener("click",pnConnect);
+$("#pnLogNow").addEventListener("click",function(){
+  if(!pn.pending)return;
+  pn.lastSid=logPending(pn.pending);pn.pending=null;toast("Session logged");pnPhotoUi(false);
+});
 $("#pnC1").addEventListener("input",function(){$("#pnC1v").textContent=$("#pnC1").value+"%"});
 $("#pnC2").addEventListener("input",function(){$("#pnC2v").textContent=$("#pnC2").value+"%"});
 $("#pnC1").addEventListener("change",pnSet);$("#pnC2").addEventListener("change",pnSet);
@@ -2309,10 +2708,10 @@ const QS=[
  {t:"Welcome",h:"<p>This app turns your panel's readings into a session plan: how far to hold the panel, which light to use and how long to run it.</p><p>This quick tour takes about a minute. Every number is an educational estimate, not medical advice.</p>"},
  {t:"1. Set Up Your Panel",h:"<p>On the <b>Calculator</b> tab, pick your panel under Panel Profile. Choose a built-in preset, or tap <b>Edit</b> to enter your own readings. Readings can be in mW/cm\u00b2, W/m\u00b2 or Btu/(ft\u00b2\u00b7h), and the app converts them.</p><p>More readings at more distances means better numbers. The Measure My Panel guide in the Edit window walks you through it.</p>"},
  {t:"2. Choose a Treatment",h:"<p>Pick what you are treating and the target area. The app chooses the wavelength and shows a published dose window.</p><p>The Evidence section below shows how strong the research is and links the sources.</p>"},
- {t:"3. Read the Recommendation",h:"<p>You get a distance and two options: <b>Fast</b> at full power and <b>Gentle</b> at half power. Both deliver the same dose, and times are rounded up to the next half minute.</p><p>Change the time goal or type a distance to adjust it. <b>Lab View (Advanced)</b> adds depth, a dose slider and charts.</p>"},
- {t:"4. Run a Session",h:"<p>Tap <b>Start</b> on the Session Timer. It beeps when a part ends and logs the session for you when it finishes.</p><p>For paired areas like the knee or shoulder, pick <b>Left</b>, <b>Right</b> or <b>Both</b> next to Log to. Have a compatible Redox panel? The <b>Control Panel</b> tab can run the session for you.</p>"},
+ {t:"3. Read the Recommendation",h:"<p>You get a distance and one recommended time at full power, rounded up to the next half minute.</p><p>Drag the <b>dose</b> slider to change how much light you want, or change the time goal or type a distance to adjust it. <b>Lab View (Advanced)</b> adds the half-power Gentle option, depth and charts.</p>"},
+ {t:"4. Run a Session",h:"<p>Tap <b>Start</b> on the Session Timer. It beeps when a part ends and logs the session for you when it finishes (untick <b>Log automatically</b> under the timer to log by hand instead). Then tap <b>Add Photo to This Session</b> if you want a progress photo with it.</p><p>For paired areas like the knee or shoulder, pick <b>Left</b>, <b>Right</b> or <b>Both</b> next to Log to. Have a compatible Redox panel? The <b>Control Panel</b> tab can run the session for you.</p>"},
  {t:"5. Build a Routine",h:"<p>Chain up to 10 protocols like a playlist. Set up each protocol on the Calculator and tap <b>Add to Routine</b>, then open <b>Calculator, Routines</b> to name it, reorder it and tap <b>Start Routine</b>.</p><p>Each step tells you where to place the panel, with a pause between steps. With a panel connected, the routine runs the panel for you. Not sure where to start? Try a <b>Preset Routine</b>, such as Knee Care or Leg Recovery.</p>"},
- {t:"6. Track Your Sessions",h:"<p>Every finished session is logged automatically, with its side and the routine it came from. Use <b>Log to</b> to keep separate logs, such as Panel and Mask.</p><p>Inside each log, sessions are sorted by treatment area, and paired areas split into Left and Right. Tap a chip to see just that area. Find it all under the gear, <b>Session Logs</b>.</p>"},
+ {t:"6. Track Your Sessions",h:"<p>Every finished session is logged automatically, with its side and the routine it came from. Use <b>Log to</b> to keep separate logs, such as Panel and Mask.</p><p>Inside each log, sessions are sorted by treatment area, and paired areas split into Left and Right. Tap a chip to see just that area. Find it all under the gear, <b>Session Logs</b>.</p><p>Want to see change over time? Tap <b>Add Photo</b> there to keep progress photos, then compare them with <b>Before and After</b>. Photos stay on your phone.</p>"},
  {t:"7. Explore",h:"<p>The <b>book icon</b> opens Learning and Resources: short guides and a research library.</p><p>The <b>gear</b> opens Settings: Session Logs, the full How to Use guide, and the safety checklist. The switch at the very top turns on the Red Screen Filter for night use.</p>"}
 ];
 let qsI=0;
@@ -2337,7 +2736,7 @@ $("#howQs").addEventListener("click",openQs);
 const RT_MAX=10;
 const uid=function(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,7)};
 const rt={phase:"idle",i:0,steps:[],plans:[],titles:[],gap:20,acc:0,left:0,t0:0,running:false,iv:null,panel:false,panelOk:true,name:"",fired:0,lastBeep:-1};
-window.__rdlBusy=function(){return rt.phase!=="idle"&&rt.phase!=="done"||tm.running};
+window.__rdlBusy=function(){return rt.phase!=="idle"&&rt.phase!=="done"||tm.running||!!tm.pending||!!pn.pending};
 function profById(id){return S.profiles.find(function(p){return p.id===id})||BUILTIN.find(function(p){return p.id===id})||null}
 /* Preset routines: assembled from the app's own protocols. The distance is picked for whatever panel is active. */
 const PRESET_ROUTINES=[
@@ -2503,7 +2902,7 @@ function rtStart(){
   if(tm.running||(tm.acc>0&&!tm.done)){toast("Finish or reset the session timer first");return}
   const plans=steps.map(stepModel),bad=plans.findIndex(function(x){return !x.pl});
   if(bad>=0){toast("Step "+(bad+1)+" needs panel readings. Replace it first.");return}
-  rt.steps=steps.map(function(s){return Object.assign({},s)});rt.plans=plans;rt.name=r.name;rt.gap=r.gap;
+  rt.steps=steps.map(function(s){return Object.assign({},s)});rt.plans=plans;rt.name=r.name;rt.gap=r.gap;rt.lastSid="";
   rt.titles=rt.steps.map(function(s,i){return stepTitle(plans[i].m,s)});
   const cb=$("#rtPanel");rt.panel=!!(cb&&cb.checked)&&pn.connected;rt.panelOk=true;
   beep(1,.01);wake(true);
@@ -2539,13 +2938,16 @@ function rtPanelStart(el){
 }
 function rtPanelStop(){if(rt.panel)pnReq("/api/stop").then(pnRender).catch(function(){})}
 function rtLog(sec,early){
+  rt.lastSid="";
   if(!(sec>=5))return;
   const st=rt.steps[rt.i],x=rt.plans[rt.i],m=x.m;
   const e={id:"l"+Date.now()+"r"+rt.i,ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:st.side||"",panel:x.prof.name,
     light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(x.dcm,x.prof.unit),1),unit:x.prof.unit,power:st.p,
     sec:Math.round(sec),dose:+fmt(m.dose*sec/x.raw,1),note:"Routine: "+rt.name+", step "+(rt.i+1)+" of "+rt.steps.length+(early?" (ended early)":""),lp:S.logActive};
   const a=getLog();a.push(e);putLog(a);
+  rt.lastSid=e.id;
 }
+const rtPhotoBtn=function(){return rt.lastSid&&PH.ok?'<div class="acts"><button class="btn" type="button" data-photo-sid="'+escH(rt.lastSid)+'">Add Photo to Last Step</button></div>':""};
 function rtTick(){
   if(!rt.running)return;
   if(rt.phase==="run"){
@@ -2612,7 +3014,7 @@ function rtRender(full){
   if(full||!$("#rtClock")){
     let h="";
     if(rt.phase==="done"){
-      h='<div class="rtrun"><h3 class="rtt">Routine Complete</h3><p class="hint">'+escH(rt.name)+': '+n+' steps finished and logged.</p><div class="actions"><button class="btn primary" type="button" data-rtrun="close">Close</button></div></div>';
+      h='<div class="rtrun"><h3 class="rtt">Routine Complete</h3><p class="hint">'+escH(rt.name)+': '+n+' steps finished and logged.</p>'+rtPhotoBtn()+'<div class="actions"><button class="btn primary" type="button" data-rtrun="close">Close</button></div></div>';
     }else{
       const nxt=rt.i+1<n?rt.titles[rt.i+1]:"";
       const showI=(rt.phase==="gap"||rt.phase==="wait")?rt.i+1:rt.i;
@@ -2621,6 +3023,7 @@ function rtRender(full){
         +'<h3 class="rtt">'+escH(rt.titles[showI])+'</h3><p class="hint">'+escH(rtWhere(showI))+'</p>'
         +(rt.phase==="wait"?'<div class="clock">Ready</div>':'<div class="clock" id="rtClock">'+rtClockText()+'</div><div class="pbar"><b id="rtBar"></b></div>')
         +(rt.phase==="run"&&nxt?'<p class="hint">Up next: '+escH(nxt)+'</p>':'')
+        +((rt.phase==="gap"||rt.phase==="wait")?rtPhotoBtn():"")
         +'<div class="actions">'
         +(rt.phase==="wait"?'<button class="btn primary" type="button" data-rtrun="next">Start Next Step</button>':pauseBtn)
         +(rt.phase==="run"?'<button class="btn" type="button" data-rtrun="skip">Skip Step</button>':'')
@@ -3066,12 +3469,13 @@ $("#impGo").addEventListener("click",function(){
 
 function initFeatures(){
   $("#hdrLogo").src=LOGO_URL;   // the same Redox wordmark that is on the protocol cards
-  fillLogProfiles();initLib();applyNight();
+  fillLogProfiles();initLib();applyNight();syncAutoLog();
   if(!safeAck()){$("#safeOk").disabled=true;openD("#safeDlg")}else maybeQs();
   flushShare();
 }
 
 fillSelects();fillProfiles();initFeatures();setView(S.view);render();
+phInit();
 window.__rdlReady=true;
 })();
 </script>
