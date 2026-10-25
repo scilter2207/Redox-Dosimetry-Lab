@@ -111,7 +111,7 @@ details[open] summary{margin-bottom:14px}
 .tabs button.ico{flex:0 0 56px;padding:0;display:flex;align-items:center;justify-content:center}
 .ico svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .subtabs{display:none;gap:4px;background:var(--surface);border-radius:10px;padding:3px;margin-top:-10px}
-body[data-view="simple"] #subTabs,body[data-view="lab"] #subTabs,body[data-view="lib"] #subTabs2,body[data-view="learn"] #subTabs2,body[data-view="set"] #subTabs3,body[data-view="log"] #subTabs3,body[data-view="how"] #subTabs3{display:flex}
+body[data-view="simple"] #subTabs,body[data-view="lab"] #subTabs,body[data-view="routines"] #subTabs,body[data-view="lib"] #subTabs2,body[data-view="learn"] #subTabs2,body[data-view="set"] #subTabs3,body[data-view="log"] #subTabs3,body[data-view="how"] #subTabs3{display:flex}
 .subtabs button{flex:1;min-height:32px;padding:0 6px;border:0;border-radius:7px;background:transparent;color:var(--muted);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
 .subtabs button[aria-pressed=true]{background:var(--raised);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
 .tabs button{flex:1 1 auto;min-height:54px;padding:0 12px;font-size:16px;white-space:normal;line-height:1.15;text-align:center;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-weight:600;cursor:pointer}
@@ -125,8 +125,8 @@ body[data-view="lab"] .simple-only{display:none!important}
 .actions{flex-wrap:wrap}
 
 .pg{display:none}
-body[data-view="log"] #pg-log,body[data-view="lib"] #pg-lib,body[data-view="learn"] #pg-learn,body[data-view="set"] #pg-set,body[data-view="how"] #pg-how,body[data-view="panel"] #pg-panel{display:block}
-body[data-view="log"] .calc,body[data-view="lib"] .calc,body[data-view="learn"] .calc,body[data-view="set"] .calc,body[data-view="how"] .calc,body[data-view="panel"] .calc{display:none!important}
+body[data-view="log"] #pg-log,body[data-view="lib"] #pg-lib,body[data-view="learn"] #pg-learn,body[data-view="set"] #pg-set,body[data-view="how"] #pg-how,body[data-view="routines"] #pg-routines,body[data-view="panel"] #pg-panel{display:block}
+body[data-view="log"] .calc,body[data-view="lib"] .calc,body[data-view="learn"] .calc,body[data-view="set"] .calc,body[data-view="how"] .calc,body[data-view="routines"] .calc,body[data-view="panel"] .calc{display:none!important}
 .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .acts .btn{flex:1;min-width:110px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
@@ -213,7 +213,7 @@ details.sub .paper{background:var(--surface)}
 .tabs{border-radius:18px;padding:5px;gap:4px}
 .tabs button,.tabs button.gear{border-radius:13px}   /* 18px bar minus 5px padding, so each highlight is concentric with its bar */
 .subtabs{background:transparent;border-radius:0;padding:0;gap:0;border-bottom:1px solid var(--line);margin-top:-8px}
-.subtabs button{min-height:40px;padding:0 8px;border:0;border-bottom:3px solid transparent;border-radius:0;margin-bottom:-1px;background:transparent;box-shadow:none;color:var(--muted);font-size:13.5px;white-space:nowrap}
+.subtabs button{flex:1 1 0;min-height:40px;padding:2px 6px;border:0;border-bottom:3px solid transparent;border-radius:0;margin-bottom:-1px;background:transparent;box-shadow:none;color:var(--muted);font-size:13.5px;white-space:normal;line-height:1.15;text-align:center;min-width:0}
 .subtabs button[aria-pressed=true]{background:transparent;box-shadow:none;color:var(--ink);border-bottom-color:var(--red)}
 .hubtitle{font:600 26px var(--serif);margin:4px 2px -2px}
 .qsdots{display:flex;gap:7px;justify-content:center;margin:14px 0 8px}
@@ -222,6 +222,22 @@ details.sub .paper{background:var(--surface)}
 #qsBody p{margin:8px 0}
 .card .big{white-space:nowrap}
 .card .big small{font-size:.42em;font-weight:600;margin-left:5px;color:var(--muted);letter-spacing:.02em}
+.siderow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
+.siderow[hidden],#rtMini[hidden]{display:none}
+.rstep{background:var(--raised);border-radius:12px;padding:12px;margin:10px 0}
+.rstep .seg{margin-top:8px}
+.rstep p{margin:6px 0 0}
+.rbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.rbtns .btn{min-height:36px;padding:0 14px;font-size:13px}
+.rtbox{background:var(--raised);border-radius:12px;padding:12px;margin:14px 0}
+.rtrun{background:var(--raised);border-radius:12px;padding:14px;margin:8px 0}
+.rtt{font:600 21px var(--serif);margin:2px 0 6px}
+#rtMini{position:fixed;left:12px;right:12px;bottom:12px;z-index:9000;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px 10px 14px;border-radius:14px;background:var(--raised);color:var(--ink);border:1px solid var(--red);box-shadow:0 6px 24px rgba(0,0,0,.5);font-size:14px}
+#rtMini button{min-height:36px;padding:0 14px;border:0;border-radius:10px;background:var(--ink);color:var(--ground);font:inherit;font-weight:600;cursor:pointer}
+#impText{width:100%;min-height:96px;background:var(--raised);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:13px/1.35 ui-monospace,Menlo,Consolas,monospace;resize:vertical}
+.areachips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.conv{display:block;margin-top:3px;font-size:12px;color:var(--muted)}
+#rows td{vertical-align:top}
 .lprow{display:flex;gap:8px;margin-bottom:12px}
 .lprow select{flex:1;min-width:0}
 .lprow .btn{flex:none}
@@ -254,6 +270,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 <div class="subtabs" id="subTabs" role="group" aria-label="Calculator view">
   <button type="button" data-sub="simple" aria-pressed="true">Simple View</button>
   <button type="button" data-sub="lab" aria-pressed="false">Lab View (Advanced)</button>
+  <button type="button" data-sub="routines" aria-pressed="false">Routines</button>
 </div>
 <div class="subtabs" id="subTabs3" role="group" aria-label="Settings section">
   <button type="button" data-sub="set" aria-pressed="true">General</button>
@@ -310,6 +327,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <div class="pbar"><b id="tmBar"></b></div>
       <p class="hint" id="tmSeg"></p>
       <label style="display:block;margin:6px 0 10px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>
+      <div class="siderow" hidden><span class="l">Side</span><div class="seg sideSeg" role="group" aria-label="Side"><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><button type="button" data-side="both">Both</button></div></div>
       <div class="actions"><button class="btn primary" id="tmStart" type="button">Start</button><button class="btn" id="tmStopLog" type="button" hidden>Stop and log</button><button class="btn" id="tmReset" type="button">Reset</button></div>
       <p class="hint">Finishing the timer logs the session automatically. Keep the screen on while it runs.</p>
     </div>
@@ -321,6 +339,14 @@ svg text{fill:var(--muted);font:10px var(--sans)}
     <summary>Evidence and reasoning</summary>
     <div id="evidence"></div>
   </details>
+</section>
+
+
+<section id="pg-routines" class="pg" aria-labelledby="h-routines">
+  <h2 id="h-routines">Routines</h2>
+  <p class="hint">Line up to 10 protocols back to back, like a playlist, and run them start to finish. With a panel connected on the Control Panel tab, each step runs the panel for you.</p>
+  <div class="lprow"><select id="rtSelect" aria-label="Routine"></select><button class="btn" id="rtNew" type="button">New</button><button class="btn" id="rtEdit" type="button">Edit</button></div>
+  <div id="rtBody"></div>
 </section>
 
 <section id="pg-log" class="pg" aria-labelledby="h-log">
@@ -441,6 +467,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
     <p class="hint" id="pnPlan"></p>
     <div class="seg" id="pnOpts" role="group" aria-label="Power option"><button type="button" data-p="100" aria-pressed="true">Fast, 100%</button><button type="button" data-p="50" aria-pressed="false">Gentle, 50%</button></div>
     <label style="display:block;margin-top:12px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>
+    <div class="siderow" hidden style="margin-top:10px"><span class="l">Side</span><div class="seg sideSeg" role="group" aria-label="Side"><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><button type="button" data-side="both">Both</button></div></div>
     <div class="pbar" style="margin-top:12px"><b id="pnBar"></b></div>
     <div class="acts"><button class="btn primary" id="pnStart" type="button">Start on the panel</button><button class="btn danger" id="pnStop" type="button" hidden>Stop and turn off</button></div>
     <p class="hint">Safety: the panel enforces its own limits and turns itself off when a session ends, when manual control is left unattended, or if it overheats. Protect your eyes before turning it on, and stay within reach of the power switch.</p>
@@ -451,7 +478,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 <section id="pg-how" class="pg learn" aria-labelledby="h-how">
   <h2 id="h-how">How to Use</h2>
   <details open><summary>Quick start</summary>
-    <p>A one-minute tour of the app. It also opens by itself the first time you launch.</p>
+    <p>A one-minute tour of the app. It opens every time you start the app, right after the safety checklist the first time, until you tick <b>Don't show this at startup again</b> on it. You can turn it back on any time in Settings, General, under Quick Start, and Replay the Quick Start opens it whenever you like.</p>
     <button class="btn" id="howQs" type="button">Replay the Quick Start</button>
   </details>
   <details><summary>Install it on your phone</summary>
@@ -471,6 +498,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <li><b>Solar meter correction:</b> solar meters read high on LEDs. Use 0.5 for solar meter readings and 1.0 for spectrometer or lab numbers.</li>
       <li><b>Measure My Panel (guided)</b> is a button in the Edit window. It walks you through the readings, an optional red-only and near-infrared-only pair to find the wavelength split, and an optional 3 by 3 evenness test.</li>
       <li>Built-in presets cannot be changed. Save as New Preset makes an editable copy.</li>
+      <li><b>Reading unit:</b> choose mW/cm², W/m² or Btu/(ft²·h) to match your meter, in the Edit window or the guided measurement. The app converts to mW/cm² automatically (1 W/m² = 0.1 mW/cm², and 1 Btu/(ft²·h) = 0.3155 mW/cm²). Use a unit your meter shows without OL. Switching the unit converts the numbers you already typed.</li>
       <li>More readings at more distances means better numbers. One reading means every other distance is a guess.</li>
     </ul>
   </details>
@@ -499,13 +527,24 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <li>Both views use the same settings, so changes carry over.</li>
     </ul>
   </details>
+  <details><summary>Routines (playlists of protocols)</summary>
+    <ul>
+      <li>Open them from the Calculator tab, then the Routines sub tab. A routine is a playlist of up to 10 protocols that run back to back, for example Face, then Neck, then Left Knee, then Right Knee.</li>
+      <li><b>Build one:</b> tap New, name it and pick the pause between steps. Then set up a protocol on the Calculator and tap Add to Routine (or Add Current Protocol on the Routines page). Each step keeps its treatment, area, distance, power option and side, and the times are worked out from your panel's readings.</li>
+      <li><b>Customize:</b> every step can be switched between Fast and Gentle and, for areas that come in pairs, between Left, Right and Both. Use Up and Down to reorder, Copy to repeat a step, Replace to swap it for what is set up now, and Remove to drop it. Edit renames the routine or changes the pause.</li>
+      <li><b>Run it:</b> tap Start Routine. Each step shows where to place the panel and counts down, with a beep when it ends. Between steps there is a pause so you can move, or you can choose to tap Next yourself. Pause, Skip Step and Stop Routine are always available.</li>
+      <li><b>Panel control:</b> with a panel connected on the Control Panel tab, tick Run the Panel for Each Step. The app sends one step at a time, so the panel is off during pauses and stops if the app stops checking in. Pause turns the panel off and Resume continues with the time that is left.</li>
+      <li>Every finished step is logged with its side and a note naming the routine and step. Pick the log with Log to before you start.</li>
+      <li>A routine and the single Session Timer cannot run at the same time. While a routine runs, a bar at the bottom lets you jump back to it from other tabs.</li>
+    </ul>
+  </details>
   <details><summary>Run a session</summary>
     <ul>
       <li>The <b>Session Timer</b> sits under the recommendation. Choose Fast or Gentle, then tap Start.</li>
       <li>It beeps and vibrates when a part ends or the session finishes. Turn the volume up and the silent switch off. Keep the screen on, because phones can pause timers when the screen locks.</li>
       <li>Two-wavelength sessions run each wavelength in turn.</li>
       <li><b>Stop and log</b> saves the time you actually ran. Finishing the timer saves the whole session automatically.</li>
-      <li>Use <b>Log to</b> to choose which log the session goes in.</li>
+      <li>Use <b>Log to</b> to choose which log the session goes in. For areas that come in pairs, such as the knee or shoulder, a <b>Side</b> choice (Left, Right or Both) appears next to it and is saved with the session.</li>
     </ul>
   </details>
   <details><summary>Control Panel (ESP32 panel)</summary>
@@ -520,11 +559,13 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   </details>
   <details><summary>Session Logs</summary>
     <ul>
-      <li>Open them from the gear, then Session Logs. Each session is saved with treatment, area, panel, light, distance, power, minutes and dose.</li>
-      <li><b>Log profiles</b> keep separate logs, for example Panel and Mask. Use the picker with New and Edit. The timer and Control Panel each have a Log to picker.</li>
-      <li>The page shows the last seven days, a minutes-per-week chart and the list of sessions.</li>
-      <li><b>Download CSV</b> and <b>Copy CSV</b> export the log you are viewing. <b>Clear this log</b> clears only that log. Settings, then General, has Clear all session logs.</li>
-      <li>Logs live on this phone only. Export them now and then, because a phone can clear saved web app data.</li>
+      <li>Open them from the gear, then Session Logs. Every finished session is saved with treatment, area, side, panel, light, distance, power, minutes and dose. Timer sessions, Control Panel sessions and each step of a routine all log automatically. Routine steps carry a note with the routine name and step number.</li>
+      <li><b>Log profiles</b> keep separate logs, for example Panel and Mask. Use the picker with New and Edit to add, rename or delete one (deleting also deletes its sessions). Choose where a session goes with <b>Log to</b> on the timer, the Control Panel and the routine runner.</li>
+      <li><b>Areas:</b> inside a log, sessions are sorted by treatment area automatically. The first time you log Face, a Face chip appears, and every later Face session goes under it. Tap a chip to see only that area's totals, chart, list and CSV. All Areas shows everything.</li>
+      <li><b>Sides:</b> for areas with a left and right, such as the knee, shoulder, elbow, hip and ankle, pick Left, Right or Both before a session. Choosing that area's chip in the log then shows All Sides, Left, Right and Both chips so you can track each side on its own.</li>
+      <li>The page shows the last seven days, a minutes-per-week chart and the list of sessions for whatever you have selected.</li>
+      <li><b>Download CSV</b> and <b>Copy CSV</b> export what you are viewing, with log profile, area and side columns. <b>Clear</b> removes only what is selected (the whole log, one area, or one side of an area) after a second tap. Settings, then General, has Clear All Session Logs.</li>
+      <li>Logs live on this phone only. Export them now and then, because a phone can clear saved web app data. <b>Import</b> on this page brings an exported CSV or backup back in.</li>
     </ul>
   </details>
   <details><summary>Learning and Resources</summary>
@@ -540,6 +581,16 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <li>The switch at the very top turns the filter on. It removes green and blue so the screen is easier on your eyes in the dark.</li>
       <li>The slider sets the strength. All the way up removes all green and blue. Lower shows more of the normal colors.</li>
       <li>It only affects this app, not the rest of your phone.</li>
+    </ul>
+  </details>
+  <details><summary>Back up, share and import</summary>
+    <ul>
+      <li>Open Settings, General, then Back Up and Share.</li>
+      <li><b>Export Panel Profiles</b> lets you tick the profiles to put in a file. Download it, Share it (where your phone offers that) or Copy it. Send the file to another phone, such as a family member's, to share a measured panel. Built-in presets are not needed in the file because every copy of the app has them.</li>
+      <li><b>Export Session Logs</b> makes a backup of every log, area and side that keeps exact times. For a spreadsheet, use Download CSV on the Session Logs page instead.</li>
+      <li><b>Import</b> (also a button on the Session Logs page) takes a panel profiles file, a session log backup or a session log CSV. Choose the file or paste its text, check the summary line, then tap Import.</li>
+      <li>Imported panel profiles appear under My Presets, with the reading unit, correction and wavelengths intact. A name that is already taken gets (imported) added.</li>
+      <li>Imported sessions go into the log profile named in the file, and a missing log profile is created. Before you import, the summary tells you how many sessions are already in your logs and which log holds them, and sessions that are already there are skipped so importing the same file twice does not double anything. Untick Skip Sessions That Are Already in My Logs to add them again anyway. When the import finishes, the app shows the log that received the sessions. A CSV from before log profiles existed goes into the log you are viewing.</li>
     </ul>
   </details>
   <details><summary>Your data</summary>
@@ -561,17 +612,23 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <h2 id="h-set">General</h2>
   <h3 class="dlg-h">Red Screen Filter</h3>
   <p class="hint">Turns every color on this page into shades of red with no green or blue, for use in the dark. The switch turns it on and off. The slider sets the strength: all the way up removes all green and blue, and lower shows more of the normal colors. It only affects this app, not the rest of your phone.</p>
+  <h3 class="dlg-h">Quick Start</h3>
+  <label class="toggle"><input type="checkbox" id="stQs"><span>Show the Quick Start when the app opens</span></label>
+  <p class="hint">It opens every time the app starts until you tick Don't show this at startup again on it, or turn this off. The full guide is under How to Use.</p>
   <h3 class="dlg-h">Safety</h3>
   <button class="btn" id="stSafety" type="button">Open the safety checklist</button>
+  <h3 class="dlg-h">Back Up and Share</h3>
+  <p class="hint">Move your panel profiles and session logs to another phone, share a panel profile, or restore a backup.</p>
+  <div class="acts"><button class="btn" id="stExpProf" type="button">Export Panel Profiles</button><button class="btn" id="stExpLogs" type="button">Export Session Logs</button><button class="btn" id="stImport" type="button">Import</button></div>
   <h3 class="dlg-h">Saved data</h3>
   <p class="hint">Profiles, settings and the session logs are saved on this device only.</p>
   <div class="acts"><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 62. Educational estimates, not medical advice.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 70. Educational estimates, not medical advice.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 62.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 70.</p>
 </main>
 
 <dialog id="editor" aria-labelledby="dlgTitle">
@@ -589,11 +646,12 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <p class="hint">Share of the panel's total output at each wavelength with everything on. If the maker does not publish it, split evenly or use LED counts.</p>
   <button class="btn" id="addBand" type="button" style="margin-top:10px">Add wavelength</button>
   <h3 class="dlg-h">Irradiance readings</h3>
+  <label><span class="l">Reading unit</span><select id="pru"><option value="mw">mW/cm²</option><option value="wm2">W/m²</option><option value="btu">Btu/(ft²·h)</option></select></label>
   <table class="cal" aria-label="Irradiance readings">
-    <thead><tr><th>Distance</th><th>Total mW/cm²</th><th></th></tr></thead>
+    <thead><tr><th>Distance</th><th id="thRead">Total mW/cm²</th><th></th></tr></thead>
     <tbody id="rows"></tbody>
   </table>
-  <p class="hint">Total irradiance in mW/cm² with all wavelengths on at 100% power, centered on the panel. More distances means better numbers between them.</p>
+  <p class="hint" id="readHint">Total irradiance in mW/cm² with all wavelengths on at 100% power, centered on the panel. More distances means better numbers between them.</p>
   <button class="btn" id="addRow" type="button" style="margin-top:10px">Add distance</button>
   <button class="btn" id="openWizard" type="button" style="margin-top:10px">Measure my panel (guided)</button>
   <label style="margin-top:18px"><span class="l">Solar meter correction</span><input id="pfactor" type="number" inputmode="decimal" step="0.05" min="0.2" max="1.5"></label>
@@ -622,12 +680,41 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 
 
 <dialog id="qsDlg" aria-labelledby="qsTitle">
-  <p class="hint" id="qsStep" style="margin:0 0 6px">Step 1 of 6</p>
+  <p class="hint" id="qsStep" style="margin:0 0 6px">Step 1 of 8</p>
   <h2 id="qsTitle" tabindex="-1" autofocus>Welcome</h2>
   <div id="qsBody"></div>
   <div class="qsdots" id="qsDots" aria-hidden="true"></div>
   <p class="hint" id="qsNote">Skip anytime. You can find this guide again in Settings, under How to Use.</p>
+  <label class="toggle" style="margin:4px 0 8px"><input type="checkbox" id="qsNever"><span>Don't show this at startup again</span></label>
   <div class="actions"><button class="btn" id="qsBack" type="button">Back</button><button class="btn primary" id="qsNext" type="button">Next</button><button class="btn" id="qsSkip" type="button">Skip</button></div>
+</dialog>
+
+
+<dialog id="rtDlg" aria-labelledby="rtTitle">
+  <h2 id="rtTitle" tabindex="-1" autofocus>New routine</h2>
+  <label><span class="l">Name</span><input id="rtName" type="text" maxlength="40" placeholder="For example Morning Routine"></label>
+  <label><span class="l">Pause between steps</span><select id="rtGap"><option value="-1">Wait for me to tap Next</option><option value="10">10 seconds</option><option value="20">20 seconds</option><option value="30">30 seconds</option><option value="60">60 seconds</option></select></label>
+  <p class="hint">The pause gives you time to move the panel and get into position. The panel is off during it.</p>
+  <div class="actions"><button class="btn primary" id="rtSave" type="button">Save</button><button class="btn danger" id="rtDelete" type="button" hidden>Delete</button><button class="btn" id="rtCancel" type="button">Cancel</button></div>
+</dialog>
+<div id="rtMini" role="status" hidden><span id="rtMiniTxt"></span><button type="button" id="rtMiniBtn">Open</button></div>
+
+
+<dialog id="expDlg" aria-labelledby="expTitle">
+  <h2 id="expTitle" tabindex="-1" autofocus>Export</h2>
+  <p class="hint" id="expHint"></p>
+  <div id="expList"></div>
+  <div class="actions"><button class="btn primary" id="expDl" type="button">Download File</button><button class="btn" id="expShare" type="button" hidden>Share</button><button class="btn" id="expCopy" type="button">Copy</button><button class="btn" id="expClose" type="button">Close</button></div>
+</dialog>
+<dialog id="impDlg" aria-labelledby="impTitle">
+  <h2 id="impTitle" tabindex="-1" autofocus>Import</h2>
+  <p class="hint">Choose a file made by this app: panel profiles (.json), a session log backup (.json) or a session log CSV. You can also paste the contents below.</p>
+  <button class="btn" id="impPick" type="button">Choose a File</button>
+  <input id="impFile" type="file" accept=".json,.csv,.txt,application/json,text/csv,text/plain" hidden>
+  <label style="margin-top:12px"><span class="l">Or paste here</span><textarea id="impText" rows="5" spellcheck="false" autocapitalize="none" autocorrect="off" placeholder="Paste exported text"></textarea></label>
+  <label class="toggle" id="impSkipRow" hidden><input type="checkbox" id="impSkip" checked><span>Skip sessions that are already in my logs</span></label>
+  <p class="hint" id="impMsg" aria-live="polite"></p>
+  <div class="actions"><button class="btn primary" id="impGo" type="button" disabled>Import</button><button class="btn" id="impCancel" type="button">Cancel</button></div>
 </dialog>
 
 <div id="toast" role="status" aria-live="polite"></div>
@@ -775,10 +862,11 @@ const PRESETS=[
 
 PRESETS.forEach(p=>{p.name=titleCase(p.name)});
 const BUILTIN=PRESETS.map(presetToProfile);
-const DEFAULT={logProfiles:[{id:"panel",name:"Panel"}],logActive:"panel",night:{on:false,level:100},view:"simple",profiles:[DEFAULT_PROFILE],active:"default",goal:10,treatment:"skin",area:"face",depthManual:null,distManualCm:null,dose:null};
+const DEFAULT={side:"left",routines:[],routineActive:null,logSide:"all",logProfiles:[{id:"panel",name:"Panel"}],logActive:"panel",night:{on:false,level:100},view:"simple",profiles:[DEFAULT_PROFILE],active:"default",goal:10,treatment:"skin",area:"face",depthManual:null,distManualCm:null,dose:null};
 let S=Object.assign({},DEFAULT,store.get()||{});
 if(!Array.isArray(S.profiles)||!S.profiles.length)S.profiles=[JSON.parse(JSON.stringify(DEFAULT_PROFILE))];
 S.night=Object.assign({on:false,level:100},S.night||{});
+if(!Array.isArray(S.routines))S.routines=[];
 if(!Array.isArray(S.logProfiles)||!S.logProfiles.length)S.logProfiles=[{id:"panel",name:"Panel"}];
 if(!S.logProfiles.some(p=>p.id===S.logActive))S.logActive=S.logProfiles[0].id;
 S.profiles=S.profiles.map(migrate);
@@ -817,11 +905,15 @@ function fitExponent(pts){
 function points(prof){
   prof=prof||P();
   const m=new Map();
-  prof.rows.forEach(r=>{const d=parseFloat(r.d),i=parseFloat(r.t);if(d>0&&i>0)m.set(toCm(d,prof.unit),i)});
+  prof.rows.forEach(r=>{const d=parseFloat(r.d),i=parseFloat(r.t)*ruF(prof.ru);if(d>0&&i>0)m.set(toCm(d,prof.unit),i)});
   return [...m.entries()].sort((a,b)=>a[0]-b[0]).map(([d,i])=>({d,i}));
 }
 const fmtT=s=>{if(!isFinite(s))return"-";s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
 const fmt=(x,n=1)=>(+x).toFixed(n).replace(/\.0+$/,"");
+const RUNITS={mw:{label:"mW/cm\u00b2",f:1},wm2:{label:"W/m\u00b2",f:0.1},btu:{label:"Btu/(ft\u00b2\u00b7h)",f:0.3154591}};   // f converts a reading to mW/cm2
+const ruF=ru=>(RUNITS[ru]||RUNITS.mw).f;
+const ruLabel=ru=>(RUNITS[ru]||RUNITS.mw).label;
+const fmtConv=(t,ru)=>{const v=parseFloat(t);return v>0?fmt(v*ruF(ru),1):"-"};
 const halfUp=s=>isFinite(s)?Math.max(30,Math.ceil((s-1e-6)/30)*30):s;     // protocol times round up to the next half minute
 const halfNear=s=>isFinite(s)?Math.max(30,Math.round(s/30)*30):s;         // used for the "likely" range ends
 const fmtMn=s=>{if(!isFinite(s))return "-";const m=s/60;return Number.isInteger(m)?String(m):m.toFixed(1)};
@@ -840,12 +932,13 @@ function bandLabel(arr,kind){
   const lo=Math.min(...arr.map(b=>b.nm)),hi=Math.max(...arr.map(b=>b.nm));
   return kind+" "+lo+"-"+hi+" nm";
 }
-function model(){
-  const prof=P(),G=groupsOf(prof);
-  const T=TREATMENTS.find(t=>t.id===S.treatment)||TREATMENTS[0];
-  const A=AREAS.find(a=>a.id===S.area)||AREAS[0];
+function model(o){
+  o=o||{};   // optional overrides {prof,treatment,area,dose,depth}, used by routines to evaluate any saved step
+  const prof=o.prof||P(),G=groupsOf(prof);
+  const T=TREATMENTS.find(t=>t.id===(o.treatment||S.treatment))||TREATMENTS[0];
+  const A=AREAS.find(a=>a.id===(o.area||S.area))||AREAS[0];
   const au=A.d[LAYER_IDX[T.layer]],auto=au!=null?au:A.d[1];
-  const depth=S.depthManual!=null&&S.depthManual>0?S.depthManual:auto;
+  const dmSel="depth" in o?o.depth:S.depthManual,depth=dmSel!=null&&dmSel>0?dmSel:auto;
   let wave=depth<4?"660":depth<13?"blend":"850",subst=null;
   const fixed=prof.mode==="fixed";
   if(!fixed){
@@ -855,7 +948,7 @@ function model(){
   }
   const s660=clamp(0.7-0.5*(depth-4)/8,0.2,0.7);
   const [lo,hi]=T.dose;
-  const dose=clamp(S.dose!=null?S.dose:(T.def!=null?T.def:(lo+hi)/2),lo,hi);
+  const dSel="dose" in o?o.dose:S.dose,dose=clamp(dSel!=null?dSel:(T.def!=null?T.def:(lo+hi)/2),lo,hi);
   const f=makeIrr(points(prof)),k=clamp(parseFloat(prof.factor)||1,0.2,1.5);
   const irr=(ch,dcm)=>{
     if(!f)return null;const tot=f(dcm)*k;
@@ -1125,19 +1218,27 @@ function render(){
     <div class="lab">${chart(m,dcm)}</div>
     <table class="lab" style="margin-top:8px"><thead><tr><th>Power</th><th>Time to dose</th><th>Dose after 10 min</th></tr></thead><tbody>${rows}</tbody></table>
     <ul class="warns">${warns.map(w=>`<li class="${/^(You have one measured|This distance is outside)/.test(w)?"lab":"keep"}">${w}</li>`).join("")}<li class="info lab">${info}</li>${m.T.caution?`<li class="keep">${m.T.caution}</li>`:""}</ul>
-    <div class="acts"><button class="btn" id="shareCard" type="button">Protocol card</button></div>`;
-  LAST={m:m,dcm:dcm,manual:manual};
-  $("#shareCard").onclick=openCard;
+    <div class="acts"><button class="btn" id="shareCard" type="button">Protocol card</button><button class="btn" id="addRoutine" type="button">Add to Routine</button></div>`;
+  LAST={m:m,dcm:dcm,manual:manual};sideUi();
+  $("#shareCard").onclick=openCard;$("#addRoutine").onclick=rtAddFromCalc;
   $("#timerSlot").appendChild(tmCard);tmCard.hidden=false;tmSync();
 }
 
 /* ---------- Profile editor (popup) ---------- */
 let draft=null,editingId=null,editingBuiltin=false,delArmed=false;
 function dlgUnits(){document.querySelectorAll("#editor [data-unit]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.unit===draft.unit))}
+function dlgReadUi(){
+  const ru=draft.ru||"mw";
+  $("#pru").value=ru;$("#thRead").textContent="Total "+ruLabel(ru);
+  $("#readHint").textContent=ru==="mw"
+    ?"Total irradiance in mW/cm\u00b2 with all wavelengths on at 100% power, centered on the panel. More distances means better numbers between them."
+    :"Enter each reading in "+ruLabel(ru)+" exactly as the meter shows it, with all wavelengths on at 100% power, centered on the panel. The app converts it to mW/cm\u00b2 automatically (1 "+ruLabel(ru)+" = "+fmt(ruF(ru),4)+" mW/cm\u00b2).";
+}
 function renderDraftRows(){
+  dlgReadUi();
   $("#rows").innerHTML=draft.rows.map((r,i)=>`<tr>
     <td><input type="number" inputmode="decimal" step="any" min="0" data-i="${i}" data-k="d" value="${r.d}" aria-label="Distance ${i+1} in ${draft.unit}" placeholder="${draft.unit}"></td>
-    <td><input type="number" inputmode="decimal" step="any" min="0" data-i="${i}" data-k="t" value="${r.t}" aria-label="Total irradiance reading ${i+1}"></td>
+    <td><input type="number" inputmode="decimal" step="any" min="0" data-i="${i}" data-k="t" value="${r.t}" aria-label="Total irradiance reading ${i+1} in ${ruLabel(draft.ru)}">${draft.ru&&draft.ru!=="mw"?`<span class="conv">= ${fmtConv(r.t,draft.ru)} mW/cm\u00b2</span>`:""}</td>
     <td><button class="rm" type="button" data-rm="${i}" aria-label="Remove row ${i+1}">&times;</button></td></tr>`).join("");
   $("#bands").innerHTML=draft.bands.map((r,i)=>`<tr>
     <td><input type="number" inputmode="decimal" step="any" min="0" data-i="${i}" data-k="nm" value="${r.nm}" aria-label="Wavelength ${i+1} in nanometers"></td>
@@ -1146,8 +1247,9 @@ function renderDraftRows(){
 }
 function showView(v){
   document.body.dataset.view=v;
-  const inCalc=v==="simple"||v==="lab",inLearn=v==="lib"||v==="learn",inSet=v==="set"||v==="log"||v==="how";
+  const inCalc=v==="simple"||v==="lab"||v==="routines",inLearn=v==="lib"||v==="learn",inSet=v==="set"||v==="log"||v==="how";
   document.querySelectorAll(".tabs button").forEach(b=>{const k=b.dataset.view;b.setAttribute("aria-pressed",String(k==="calc"?inCalc:(k==="settingshub"?inSet:(k==="learnhub"?inLearn:k===v))))});
+  if(typeof rtMini==="function")rtMini();
   const ht=$("#hubTitle");ht.textContent=inLearn?"Learning and Resources":(inSet?"Settings":"");ht.hidden=!(inLearn||inSet);
   document.querySelectorAll("#subTabs button,#subTabs2 button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.sub===v)));
   document.querySelectorAll("#subTabs3 button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.sub===v)));
@@ -1155,7 +1257,7 @@ function showView(v){
 function openDlg(id){
   const saved=id?S.profiles.find(p=>p.id===id):null,built=id&&!saved?BUILTIN.find(p=>p.id===id):null;
   const base=saved||built||{id:null,name:"",unit:"in",factor:0.5,mode:"switch",bands:[{nm:"660",share:"50"},{nm:"850",share:"50"}],rows:[{d:"",t:""}],kind:"user"};
-  draft=JSON.parse(JSON.stringify(base));editingId=id;editingBuiltin=!!built;delArmed=false;
+  draft=JSON.parse(JSON.stringify(base));draft.ru=draft.ru||"mw";editingId=id;editingBuiltin=!!built;delArmed=false;
   $("#dlgTitle").textContent=!id?"New panel profile":built?"Preset: "+base.name:"Edit panel profile";
   $("#pname").value=draft.name;$("#pfactor").value=draft.factor;$("#ptogether").checked=draft.mode==="fixed";
   $("#saveProfile").hidden=!saved;
@@ -1173,7 +1275,7 @@ function noKeyboard(){
   if(a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA")){a.blur();const t=$("#dlgTitle");if(t&&t.focus)t.focus()}
 }
 function openDlgWith(base){
-  draft=JSON.parse(JSON.stringify(base));editingId=null;editingBuiltin=false;delArmed=false;
+  draft=JSON.parse(JSON.stringify(base));draft.ru=draft.ru||"mw";editingId=null;editingBuiltin=false;delArmed=false;
   $("#dlgTitle").textContent="New panel profile from measurement";
   $("#pname").value=draft.name||"";$("#pfactor").value=draft.factor;$("#ptogether").checked=draft.mode==="fixed";
   $("#saveProfile").hidden=true;$("#savePreset").className="btn primary";$("#delProfile").hidden=true;
@@ -1208,7 +1310,14 @@ $("#addRow").addEventListener("click",()=>{draft.rows.push({d:"",t:""});renderDr
 $("#addBand").addEventListener("click",()=>{draft.bands.push({nm:"",share:""});renderDraftRows()});
 $("#bands").addEventListener("input",e=>{const t=e.target;if(t.dataset.i!=null)draft.bands[+t.dataset.i][t.dataset.k]=t.value});
 $("#bands").addEventListener("click",e=>{const b=e.target.closest("[data-rmb]");if(!b)return;draft.bands.splice(+b.dataset.rmb,1);if(!draft.bands.length)draft.bands.push({nm:"",share:""});renderDraftRows()});
-$("#rows").addEventListener("input",e=>{const t=e.target;if(t.dataset.i!=null)draft.rows[+t.dataset.i][t.dataset.k]=t.value});
+$("#rows").addEventListener("input",e=>{const t=e.target;if(t.dataset.i!=null){draft.rows[+t.dataset.i][t.dataset.k]=t.value;
+  if(t.dataset.k==="t"){const c=t.parentElement.querySelector(".conv");if(c)c.textContent="= "+fmtConv(t.value,draft.ru)+" mW/cm\u00b2"}}});
+$("#pru").addEventListener("change",()=>{
+  const nu=$("#pru").value,old=draft.ru||"mw";
+  if(nu===old)return;
+  draft.rows.forEach(r=>{const v=parseFloat(r.t);if(v>0)r.t=String(+(v*ruF(old)/ruF(nu)).toFixed(3))});   // same physical readings, shown in the new unit
+  draft.ru=nu;renderDraftRows();
+});
 $("#rows").addEventListener("click",e=>{const b=e.target.closest("[data-rm]");if(!b)return;draft.rows.splice(+b.dataset.rm,1);if(!draft.rows.length)draft.rows.push({d:"",t:""});renderDraftRows()});
 document.querySelectorAll("#editor [data-unit]").forEach(b=>b.addEventListener("click",()=>{
   const nu=b.dataset.unit;if(nu===draft.unit)return;
@@ -1255,7 +1364,7 @@ function setView(v){
   if(v==="set"||v==="log"||v==="how"){S.sview=v;save()}
   if(v==="simple"||v==="lab"){S.view=v;save()}
   showView(v);
-  if(v==="log")renderLog();else if(v==="lib")renderLib();else if(v==="learn")renderLearn();else if(v==="set")renderSet();else if(v==="panel")renderPanel();
+  if(v==="log")renderLog();else if(v==="lib")renderLib();else if(v==="learn")renderLearn();else if(v==="set")renderSet();else if(v==="panel")renderPanel();else if(v==="routines")renderRoutines();
   window.scrollTo(0,0);
 }
 document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
@@ -1502,6 +1611,11 @@ let memLog=null;
 function canStore(){try{localStorage.setItem("rdl.t","1");localStorage.removeItem("rdl.t");return true}catch(e){return false}}
 function getLog(){try{const v=JSON.parse(localStorage.getItem(LOGKEY));if(v)return v}catch(e){}return memLog||[]}
 function putLog(a){memLog=a;try{localStorage.setItem(LOGKEY,JSON.stringify(a))}catch(e){}}
+$("#logBody").addEventListener("click",function(e){
+  const b=e.target.closest("[data-area]"),sb=e.target.closest("[data-lside]");
+  if(b){S.logArea=b.dataset.area;S.logSide="all";save();renderLog()}
+  else if(sb){S.logSide=sb.dataset.lside;save();renderLog()}
+});
 function logWeeks(a){
   const now=Date.now(),W=7*864e5,out=[];
   for(let i=7;i>=0;i--){
@@ -1553,17 +1667,69 @@ document.addEventListener("change",function(e){
   if(t.classList&&t.classList.contains("lpSel")){S.logActive=t.value;save();fillLogProfiles();if(document.body.dataset.view==="log")renderLog()}
 });
 
+/* ---------- Left and right side (only for areas that come in pairs) ---------- */
+const SIDED=new Set(["shoulder","uparm","elbow","forearm","hand","hip","thigh","knee","calf","foot"]);
+const SIDE_NAMES={left:"Left",right:"Right",both:"Both"};
+const sideFor=function(areaId){return SIDED.has(areaId)?(S.side||"left"):""};
+function sideUi(){
+  const on=SIDED.has(S.area);
+  document.querySelectorAll(".siderow").forEach(function(r){r.hidden=!on});
+  document.querySelectorAll(".sideSeg button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.side===(S.side||"left")))});
+}
+document.addEventListener("click",function(e){
+  const b=e.target.closest(".sideSeg button");if(!b)return;
+  S.side=b.dataset.side;save();sideUi();
+});
+/* ---------- Log areas (categories made automatically from the treatment area of each session) ---------- */
+function areaKey(e){return e.ar||e.arn||"other"}
+function logAreas(){
+  const m=new Map();
+  logFor(S.logActive).forEach(function(e){const k=areaKey(e),o=m.get(k)||{id:k,name:e.arn||k,n:0};o.n++;m.set(k,o)});
+  return [...m.values()].sort(function(a,b){return a.name.localeCompare(b.name)});
+}
+function logView(){
+  const all=logFor(S.logActive);
+  if(!S.logArea||S.logArea==="all")return all;
+  return all.filter(function(e){return areaKey(e)===S.logArea&&(!S.logSide||S.logSide==="all"||(e.side||"")===S.logSide)});
+}
+function logAreaName(){const a=logAreas().find(function(x){return x.id===S.logArea});return a?a.name:""}
+function logScopeName(){return logAreaName()+(S.logSide&&S.logSide!=="all"?" ("+SIDE_NAMES[S.logSide]+")":"")}
+function logInScope(e){
+  if(lpOf(e)!==S.logActive)return false;
+  if(!S.logArea||S.logArea==="all")return true;
+  return areaKey(e)===S.logArea&&(!S.logSide||S.logSide==="all"||(e.side||"")===S.logSide);
+}
 function logCsv(){
-  const a=logFor(S.logActive).slice().sort(function(x,y){return x.ts-y.ts});
-  const head=["date_time","log_profile","treatment","area","panel","light","distance","unit","power_pct","minutes","dose_j_cm2","note"];
+  const a=logView().slice().sort(function(x,y){return x.ts-y.ts});
+  const head=["date_time","log_profile","treatment","area","side","panel","light","distance","unit","power_pct","minutes","dose_j_cm2","note"];
   const q=function(v){return '"'+String(v==null?"":v).replace(/"/g,'""')+'"'};
-  return [head.join(",")].concat(a.map(function(e){return [new Date(e.ts).toISOString(),lpName(S.logActive),e.trn,e.arn,e.panel,e.light,e.dist,e.unit,e.power,(e.sec/60).toFixed(1),e.dose,e.note].map(q).join(",")})).join("\n");
+  return [head.join(",")].concat(a.map(function(e){return [new Date(e.ts).toISOString(),lpName(S.logActive),e.trn,e.arn,(e.side||""),e.panel,e.light,e.dist,e.unit,e.power,(e.sec/60).toFixed(1),e.dose,e.note].map(q).join(",")})).join("\n");
 }
 function renderLog(){
   $("#logNotice").hidden=canStore();
   fillLogProfiles();
-  const a=logFor(S.logActive).slice().sort(function(x,y){return y.ts-x.ts}),wk=logWeeks(a),cur=wk[7];
-  let h='<div class="stats"><div><b>'+cur.n+'</b><span>sessions, last 7 days</span></div><div><b>'+fmt(cur.min,0)+'</b><span>minutes, last 7 days</span></div><div><b>'+fmt(cur.dose,0)+'</b><span>J/cm\u00b2 delivered</span></div></div>';
+  const areas=logAreas();
+  if(S.logArea&&S.logArea!=="all"&&!areas.some(function(x){return x.id===S.logArea})){S.logArea="all";save()}
+  const scoped=S.logArea&&S.logArea!=="all";
+  const inArea=scoped?logFor(S.logActive).filter(function(e){return areaKey(e)===S.logArea}):[];
+  const sideCount={left:0,right:0,both:0};inArea.forEach(function(e){if(sideCount[e.side]!=null)sideCount[e.side]++});
+  const sidesShown=scoped&&SIDED.has(S.logArea)&&(sideCount.left+sideCount.right+sideCount.both)>0;
+  if(S.logSide&&S.logSide!=="all"&&(!sidesShown||!sideCount[S.logSide])){S.logSide="all";save()}
+  const a=logView().slice().sort(function(x,y){return y.ts-x.ts}),wk=logWeeks(a),cur=wk[7];
+  let h='';
+  if(areas.length){
+    h+='<div class="areachips" role="group" aria-label="Treatment area">'
+      +'<button type="button" class="chip2" data-area="all" aria-pressed="'+(!scoped)+'">All Areas '+logFor(S.logActive).length+'</button>'
+      +areas.map(function(x){return '<button type="button" class="chip2" data-area="'+escH(x.id)+'" aria-pressed="'+(S.logArea===x.id)+'">'+escH(x.name)+' '+x.n+'</button>'}).join("")
+      +'</div>';
+    if(sidesShown){
+      h+='<div class="areachips" role="group" aria-label="Side">'
+        +'<button type="button" class="chip2" data-lside="all" aria-pressed="'+(!S.logSide||S.logSide==="all")+'">All Sides '+inArea.length+'</button>'
+        +["left","right","both"].filter(function(k){return sideCount[k]>0}).map(function(k){return '<button type="button" class="chip2" data-lside="'+k+'" aria-pressed="'+(S.logSide===k)+'">'+SIDE_NAMES[k]+' '+sideCount[k]+'</button>'}).join("")
+        +'</div>';
+    }
+  }
+  h+='<div class="stats"><div><b>'+cur.n+'</b><span>sessions, last 7 days</span></div><div><b>'+fmt(cur.min,0)+'</b><span>minutes, last 7 days</span></div><div><b>'+fmt(cur.dose,0)+'</b><span>J/cm\u00b2 delivered</span></div></div>';
   const mx=Math.max.apply(null,wk.map(function(w){return w.min}).concat([1]));
   let bars="";
   wk.forEach(function(w,i){
@@ -1572,14 +1738,14 @@ function renderLog(){
     if(w.min>0)bars+='<text x="'+(x+15)+'" y="'+(104-hh)+'" text-anchor="middle" style="fill:#f4ebe6">'+fmt(w.min,0)+'</text>';
   });
   h+='<h3 class="dlg-h">Minutes per week</h3><svg viewBox="0 0 360 134" role="img" aria-label="Minutes of light per week for the last eight weeks">'+bars+'</svg>';
-  h+='<div class="acts"><button class="btn" id="logDl" type="button">Download CSV</button><button class="btn" id="logCopy" type="button">Copy CSV</button><button class="btn danger" id="logClear" type="button">Clear this log</button></div>';
+  h+='<div class="acts"><button class="btn" id="logDl" type="button">Download CSV</button><button class="btn" id="logCopy" type="button">Copy CSV</button><button class="btn" id="logImp" type="button">Import</button><button class="btn danger" id="logClear" type="button">'+(scoped?"Clear "+escH(logScopeName())+" sessions":"Clear this log")+'</button></div>';
   h+='<p class="hint">Saved on this device only. Export now and then, because a phone can clear saved web app data.</p>';
   if(!a.length)h+='<p class="empty">No sessions in this log yet. Finish a session with the timer on the Calculator tab and it is logged here automatically.</p>';
   let lastDay="";
   a.forEach(function(e){
     const d=new Date(e.ts),day=d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
     if(day!==lastDay){h+='<h3 class="dlg-h">'+escH(day)+'</h3>';lastDay=day}
-    h+='<div class="entry"><div class="eh"><b>'+escH(e.trn)+', '+escH(e.arn)+'</b><button class="rm" type="button" data-del="'+escH(e.id)+'" aria-label="Delete this entry">&times;</button></div>'
+    h+='<div class="entry"><div class="eh"><b>'+escH(e.trn)+', '+escH(e.arn)+(e.side?' ('+SIDE_NAMES[e.side]+')':'')+'</b><button class="rm" type="button" data-del="'+escH(e.id)+'" aria-label="Delete this entry">&times;</button></div>'
       +'<p>'+escH(d.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"}))+', '+fmt(e.sec/60,1)+' min at '+e.power+'% power, '+(e.dose!=null&&e.dose!==""?fmt(e.dose,1)+' J/cm\u00b2':'dose not recorded')+'</p>'
       +'<p>'+escH(e.panel)+', '+escH(e.light)+(e.dist!==""&&e.dist!=null?', '+e.dist+' '+e.unit:', distance not recorded')+'</p>'
       +(e.note?'<p class="note">'+escH(e.note)+'</p>':'')+'</div>';
@@ -1589,15 +1755,17 @@ function renderLog(){
     const csv=logCsv();
     try{
       const url=URL.createObjectURL(new Blob([csv],{type:"text/csv"})),a2=document.createElement("a");
-      a2.href=url;a2.download="redox-session-log-"+lpName(S.logActive).toLowerCase().replace(/[^a-z0-9]+/g,"-")+".csv";document.body.appendChild(a2);a2.click();a2.remove();
+      a2.href=url;a2.download="redox-session-log-"+(lpName(S.logActive)+(scoped?" "+logScopeName():"")).toLowerCase().replace(/[^a-z0-9]+/g,"-")+".csv";document.body.appendChild(a2);a2.click();a2.remove();
       setTimeout(function(){URL.revokeObjectURL(url)},2000);
     }catch(err){copyText(csv,"Could not download, so the CSV was copied instead.")}
   };
   $("#logCopy").onclick=function(){copyText(logCsv(),"CSV copied")};
+  $("#logImp").onclick=function(){openImport()};
   let armed=false;
   $("#logClear").onclick=function(){
-    if(!armed){armed=true;$("#logClear").textContent="Tap again to clear this log";return}
-    putLog(getLog().filter(function(e){return lpOf(e)!==S.logActive}));renderLog();toast("This log cleared");
+    if(!armed){armed=true;$("#logClear").textContent="Tap again to confirm";return}
+    const nm=scoped?logScopeName():"";
+    putLog(getLog().filter(function(e){return !logInScope(e)}));renderLog();toast(scoped?nm+" sessions cleared":"This log cleared");
   };
 }
 function copyText(txt,msg){
@@ -1651,7 +1819,7 @@ function tmRender(){
 function logSession(sec){
   const c=tm.ctx;if(!c||!(sec>=1))return;
   const m=c.m,frac=tm.raw?sec/tm.raw:1;
-  const e={id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,panel:m.prof.name,
+  const e={id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:sideFor(m.A.id),panel:m.prof.name,
     light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(c.dcm,m.prof.unit),1),unit:m.prof.unit,power:tm.p,
     sec:Math.round(sec),dose:+fmt(m.dose*frac,1),note:"",lp:S.logActive};
   const a=getLog();a.push(e);putLog(a);
@@ -1665,6 +1833,7 @@ function tmTick(){
 }
 function tmToggle(){
   if(tm.running){tm.acc=elapsed();tm.running=false;clearInterval(tm.iv);wake(false);tmRender();return}
+  if(rt.phase!=="idle"&&rt.phase!=="done"){toast("A routine is running. Stop it first.");return}
   if(tm.done)tmBuild(tm.p);
   beep(1,.01);tm.t0=Date.now();tm.running=true;tm.iv=setInterval(tmTick,250);wake(true);tmRender();
 }
@@ -1853,9 +2022,9 @@ $("#safeChk").addEventListener("change",function(){$("#safeOk").disabled=!$("#sa
 
 /* ---------- Guided measurement wizard ---------- */
 const STDD={"in":[2,4,6,8,12,18,24],"cm":[5,10,15,20,30,45,60]},DEFD={"in":[4,6,8,12,18],"cm":[10,15,20,30,45]};
-const wz={step:0,meter:"solar",unit:"in",sel:{},vals:{},red:"",nir:"",canSwitch:true,grid:["","","","","","","","",""],gridD:null,name:""};
+const wz={step:0,meter:"solar",ru:"mw",unit:"in",sel:{},vals:{},red:"",nir:"",canSwitch:true,grid:["","","","","","","","",""],gridD:null,name:""};
 function wzInit(){
-  wz.step=0;wz.meter="solar";wz.unit="in";wz.sel={};DEFD["in"].forEach(function(d){wz.sel[d]=true});
+  wz.step=0;wz.meter="solar";wz.ru=P().ru||"mw";wz.unit="in";wz.sel={};DEFD["in"].forEach(function(d){wz.sel[d]=true});
   wz.vals={};wz.red="";wz.nir="";wz.canSwitch=true;wz.grid=["","","","","","","","",""];wz.gridD=null;wz.name="";
 }
 function wzDists(){return STDD[wz.unit].filter(function(d){return wz.sel[d]})}
@@ -1866,16 +2035,17 @@ function wzRender(){
   if(s==="intro"){
     h+='<h3 class="dlg-h">Set up</h3><p class="hint">Measure the panel with all wavelengths on at 100% power. Let it run a couple of minutes first, since output can shift as it warms. Work in a steady position and keep the sensor flat, facing the panel, centered on it.</p>';
     h+='<label><span class="l">What are you measuring with?</span><select id="wzMeter"><option value="solar">Solar power meter</option><option value="spec">Spectrometer or lab meter</option><option value="other">Something else</option></select></label>';
+    h+='<label><span class="l">Meter reading unit</span><select id="wzRu"><option value="mw">mW/cm\u00b2</option><option value="wm2">W/m\u00b2</option><option value="btu">Btu/(ft\u00b2\u00b7h)</option></select></label><p class="hint">Pick a unit your meter can show without over-range (OL). Readings are converted to mW/cm\u00b2 automatically.</p>';
     h+='<div class="row2" style="margin-bottom:12px"><span style="font-size:14px;color:var(--muted);align-self:center">Distance unit</span><div class="seg"><button type="button" data-wzu="in" aria-pressed="'+(wz.unit==="in")+'">inches</button><button type="button" data-wzu="cm" aria-pressed="'+(wz.unit==="cm")+'">cm</button></div></div>';
     h+='<p class="hint">Distances to measure (pick at least two):</p><div class="chips">'+STDD[wz.unit].map(function(d){return '<button type="button" class="chip2" data-wzd="'+d+'" aria-pressed="'+(!!wz.sel[d])+'">'+d+' '+wz.unit+'</button>'}).join("")+'</div>';
   }else if(s.indexOf("read:")===0){
     const d=+s.slice(5),k=ds.indexOf(d);
     h+='<h3 class="dlg-h">Reading '+(k+1)+' of '+ds.length+': '+d+' '+wz.unit+'</h3><p class="hint">Hold the sensor '+d+' '+wz.unit+' from the panel surface, facing it, centered. Wait a few seconds for the number to settle, then enter it.</p>';
-    h+='<label><span class="l">Total irradiance (mW/cm\u00b2)</span><input id="wzVal" type="number" inputmode="decimal" step="any" min="0" value="'+(wz.vals[d]||"")+'" data-d="'+d+'"></label>';
+    h+='<label><span class="l">Total irradiance ('+ruLabel(wz.ru)+')</span><input id="wzVal" type="number" inputmode="decimal" step="any" min="0" value="'+(wz.vals[d]||"")+'" data-d="'+d+'"></label>';
   }else if(s==="channels"){
     h+='<h3 class="dlg-h">Red and near-infrared (optional)</h3><label class="toggle"><input type="checkbox" id="wzSw" '+(wz.canSwitch?"checked":"")+'><span>This panel can switch red and near-infrared separately</span></label>';
     h+='<div id="wzChan" '+(wz.canSwitch?"":"hidden")+'><p class="hint">At '+(ds.indexOf(6)>=0&&wz.unit==="in"?6:ds[0])+' '+wz.unit+', measure with only red on, then with only near-infrared on. Skip this to keep the wavelength split of the profile you started from.</p>';
-    h+='<div class="row2"><label><span class="l">Red only (mW/cm\u00b2)</span><input id="wzRed" type="number" inputmode="decimal" step="any" min="0" value="'+wz.red+'"></label><label><span class="l">Near-infrared only (mW/cm\u00b2)</span><input id="wzNir" type="number" inputmode="decimal" step="any" min="0" value="'+wz.nir+'"></label></div></div>';
+    h+='<div class="row2"><label><span class="l">Red only ('+ruLabel(wz.ru)+')</span><input id="wzRed" type="number" inputmode="decimal" step="any" min="0" value="'+wz.red+'"></label><label><span class="l">Near-infrared only ('+ruLabel(wz.ru)+')</span><input id="wzNir" type="number" inputmode="decimal" step="any" min="0" value="'+wz.nir+'"></label></div></div>';
   }else if(s==="even"){
     if(wz.gridD==null)wz.gridD=ds.indexOf(6)>=0&&wz.unit==="in"?6:ds[0];
     h+='<h3 class="dlg-h">Evenness test (optional)</h3><p class="hint">Measure nine spots on a 3 by 3 grid across the panel face at one distance: corners, edge middles and the center. Enter them left to right, top to bottom.</p>';
@@ -1883,24 +2053,25 @@ function wzRender(){
     h+='<div class="heatin">'+wz.grid.map(function(v,i){return '<input type="number" inputmode="decimal" step="any" min="0" data-gi="'+i+'" value="'+v+'" aria-label="Grid spot '+(i+1)+'">'}).join("")+'</div><div id="wzMap"></div><p class="hint" id="wzStat"></p>';
   }else{
     const r=wzResult();nextLabel="Create profile";
-    h+='<h3 class="dlg-h">Review</h3><table><thead><tr><th>Distance</th><th>Total mW/cm\u00b2</th></tr></thead><tbody>'+r.rows.map(function(x){return '<tr><td>'+x.d+' '+wz.unit+'</td><td>'+x.t+'</td></tr>'}).join("")+'</tbody></table>';
+    const cv=wz.ru!=="mw";
+    h+='<h3 class="dlg-h">Review</h3><table><thead><tr><th>Distance</th><th>Total '+ruLabel(wz.ru)+'</th>'+(cv?'<th>mW/cm\u00b2</th>':'')+'</tr></thead><tbody>'+r.rows.map(function(x){return '<tr><td>'+x.d+' '+wz.unit+'</td><td>'+x.t+'</td>'+(cv?'<td>'+fmtConv(x.t,wz.ru)+'</td>':'')+'</tr>'}).join("")+'</tbody></table>';
     h+='<p class="hint">Solar meter correction: '+fmt(r.factor,2)+(wz.meter==="solar"?" (solar meters tend to read high on LEDs)":"")+'. Mode: '+(r.mode==="fixed"?"wavelengths fire together":"red and near-infrared switch separately")+'.'+(r.sr!=null?' Measured split: '+Math.round(r.sr*100)+'% red, '+Math.round((1-r.sr)*100)+'% near-infrared.':'')+'</p>';
     if(r.uniform)h+='<p class="hint">Evenness: lowest spot is '+Math.round(r.uniform.minRatio*100)+'% of the average.</p>'+heatHtml(r.uniform.grid);
     h+='<p class="hint" style="margin-top:12px">Next you name the profile and save it as a new preset.</p>';
   }
   $("#wzBody").innerHTML=prog+h;
   $("#wzBack").hidden=wz.step===0;$("#wzNext").textContent=nextLabel;$("#wzErr").textContent="";
-  if(s==="intro")$("#wzMeter").value=wz.meter;
+  if(s==="intro"){$("#wzMeter").value=wz.meter;$("#wzRu").value=wz.ru}
   if(s==="even")wzMap();
 }
 function wzMap(){
   const st=gridStats(wz.grid);
   $("#wzMap").innerHTML=st?heatHtml(st.grid):"";
-  $("#wzStat").textContent=st?"Lowest spot is "+Math.round(st.minRatio*100)+"% of the average. Readings range from "+fmt(st.min,0)+" to "+fmt(st.max,0)+" mW/cm\u00b2.":"Fill all nine spots to see the map, or skip this step.";
+  $("#wzStat").textContent=st?"Lowest spot is "+Math.round(st.minRatio*100)+"% of the average. Readings range from "+fmt(st.min,0)+" to "+fmt(st.max,0)+" "+ruLabel(wz.ru)+".":"Fill all nine spots to see the map, or skip this step.";
 }
 function wzResult(){
   const ds=wzDists(),rows=ds.filter(function(d){return parseFloat(wz.vals[d])>0}).map(function(d){return {d:String(d),t:String(wz.vals[d])}});
-  const base=P(),r={rows:rows,factor:wz.meter==="solar"?0.5:1,mode:wz.canSwitch?"switch":"fixed",sr:null,uniform:null};
+  const base=P(),r={rows:rows,ru:wz.ru,factor:wz.meter==="solar"?0.5:1,mode:wz.canSwitch?"switch":"fixed",sr:null,uniform:null};
   let bands=base.bands.map(function(b){return {nm:b.nm,share:b.share}});
   if(wz.canSwitch&&parseFloat(wz.red)>0&&parseFloat(wz.nir)>0){
     const sr=parseFloat(wz.red)/(parseFloat(wz.red)+parseFloat(wz.nir));r.sr=sr;
@@ -1911,7 +2082,7 @@ function wzResult(){
   }
   r.bands=bands;
   const st=gridStats(wz.grid);
-  if(st)r.uniform={d:wz.gridD,unit:wz.unit,grid:st.grid,avg:st.avg,min:st.min,max:st.max,minRatio:st.minRatio,cv:st.cv};
+  if(st){const fu=ruF(wz.ru);r.uniform={d:wz.gridD,unit:wz.unit,grid:st.grid,avg:st.avg*fu,min:st.min*fu,max:st.max*fu,minRatio:st.minRatio,cv:st.cv}}
   return r;
 }
 function wzNext(){
@@ -1927,7 +2098,7 @@ function wzFinish(){
   if(r.sr!=null)src+=" Wavelength split measured at "+Math.round(r.sr*100)+"% red.";
   if(r.uniform)src+=" Evenness: lowest spot is "+Math.round(r.uniform.minRatio*100)+"% of the average.";
   closeD("#wizDlg");
-  openDlgWith({id:null,name:"",unit:wz.unit,factor:r.factor,mode:r.mode,bands:r.bands,rows:r.rows,kind:"user",src:src,uniform:r.uniform||undefined});
+  openDlgWith({id:null,name:"",unit:wz.unit,ru:r.ru,factor:r.factor,mode:r.mode,bands:r.bands,rows:r.rows,kind:"user",src:src,uniform:r.uniform||undefined});
 }
 $("#wzBody").addEventListener("input",function(e){
   const t=e.target;
@@ -1939,6 +2110,7 @@ $("#wzBody").addEventListener("input",function(e){
 $("#wzBody").addEventListener("change",function(e){
   const t=e.target;
   if(t.id==="wzMeter")wz.meter=t.value;
+  else if(t.id==="wzRu")wz.ru=t.value;
   else if(t.id==="wzSw"){wz.canSwitch=t.checked;$("#wzChan").hidden=!t.checked}
   else if(t.id==="wzGd")wz.gridD=+t.value;
 });
@@ -1986,6 +2158,7 @@ let stArm={log:false,reset:false};
 function renderSet(){
   stArm.log=false;stArm.reset=false;
   $("#stClearLog").textContent="Clear all session logs";$("#stReset").textContent="Reset profiles and settings";
+  $("#stQs").checked=!qsOff();
 }
 $("#stSafety").addEventListener("click",function(){openD("#safeDlg")});
 $("#stClearLog").addEventListener("click",function(){
@@ -2079,6 +2252,7 @@ function pnPlan(){
   return {segs:segs,total:segs.reduce(function(a,s){return a+s.sec},0),raw:m.total(d,p,m.dose),m:m,dcm:d,p:p};
 }
 function renderPanel(){
+  sideUi();
   $("#pnAddr").value=pn.addr;$("#pnKey").value=pn.key;$("#pnSwap").checked=pn.swap;
   $("#pnAddrRow").hidden=SAMEORIGIN;
   $("#pnL1").textContent="Channel 1 ("+(pn.swap?"850":"660")+" nm)";$("#pnL2").textContent="Channel 2 ("+(pn.swap?"660":"850")+" nm)";
@@ -2089,13 +2263,14 @@ function renderPanel(){
   $("#pnStart").disabled=!pn.connected||!!(pn.st&&pn.st.session&&pn.st.session.active);
 }
 function pnStart(){
+  if(rt.phase!=="idle"&&rt.phase!=="done"){toast("A routine is running. Stop it first.");return}
   const pl=pnPlan();if(!pl){toast("Set up a protocol on the Calculator tab first");return}
   pn.ctx=pl;pn.logged=false;pn.wasActive=false;
   pnReq("/api/session",{segs:pl.segs.map(function(s){return s.c1+":"+s.c2+":"+s.sec}).join(";")}).then(function(st){pn.wasActive=true;pnRender(st);toast("Session started on the panel")}).catch(function(e){pnMsg(pnHelp(e),true)});
 }
 function logPanelSession(sec){
   const c=pn.ctx;if(!c)return;const m=c.m;
-  const e={id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,panel:m.prof.name,
+  const e={id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:sideFor(m.A.id),panel:m.prof.name,
     light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(c.dcm,m.prof.unit),1),unit:m.prof.unit,power:c.p,
     sec:Math.round(sec),dose:+fmt(m.dose*(c.raw?sec/c.raw:1),1),note:"Run by the panel",lp:S.logActive};
   const a=getLog();a.push(e);putLog(a);
@@ -2111,15 +2286,19 @@ $("#pnSwap").addEventListener("change",function(){pn.swap=$("#pnSwap").checked;p
 $("#pnOpts").addEventListener("click",function(e){const b=e.target.closest("button");if(b){pn.p=+b.dataset.p;renderPanel()}});
 
 /* ---------- Quick start ---------- */
-const QSKEY="rdl.qs.v1";
-function qsSeen(){try{return !!localStorage.getItem(QSKEY)}catch(e){return true}}
+// The Quick Start opens at every start until the person ticks "Don't show this at startup again" (or turns it off in Settings).
+const QSOFF="rdl.qsoff.v1";
+function qsOff(){try{return localStorage.getItem(QSOFF)==="1"}catch(e){return true}}   // no storage means no way to opt out, so do not nag
+function qsSetOff(on){try{if(on)localStorage.setItem(QSOFF,"1");else localStorage.removeItem(QSOFF)}catch(e){}}
 const QS=[
  {t:"Welcome",h:"<p>This app turns your panel's readings into a session plan: how far to hold the panel, which light to use and how long to run it.</p><p>This quick tour takes about a minute. Every number is an educational estimate, not medical advice.</p>"},
- {t:"1. Set Up Your Panel",h:"<p>On the <b>Calculator</b> tab, pick your panel under Panel Profile. Choose a built-in preset, or tap <b>Edit</b> to enter your own readings.</p><p>More readings at more distances means better numbers. The Measure My Panel guide in the Edit window walks you through it.</p>"},
+ {t:"1. Set Up Your Panel",h:"<p>On the <b>Calculator</b> tab, pick your panel under Panel Profile. Choose a built-in preset, or tap <b>Edit</b> to enter your own readings. Readings can be in mW/cm\u00b2, W/m\u00b2 or Btu/(ft\u00b2\u00b7h), and the app converts them.</p><p>More readings at more distances means better numbers. The Measure My Panel guide in the Edit window walks you through it.</p>"},
  {t:"2. Choose a Treatment",h:"<p>Pick what you are treating and the target area. The app chooses the wavelength and shows a published dose window.</p><p>The Evidence section below shows how strong the research is and links the sources.</p>"},
- {t:"3. Read the Recommendation",h:"<p>You get a distance and two options: <b>Fast</b> at full power and <b>Gentle</b> at half power. Both deliver the same dose.</p><p>Change the time goal or type a distance to adjust it. <b>Lab View (Advanced)</b> adds depth, a dose slider and charts.</p>"},
- {t:"4. Run a Session",h:"<p>Tap <b>Start</b> on the Session Timer. It beeps when a part ends and logs the session for you when it finishes.</p><p>Have an ESP32 panel? The <b>Control Panel</b> tab can connect to it and run the session for you.</p>"},
- {t:"5. Explore",h:"<p>The <b>book icon</b> opens Learning and Resources: short guides and a research library.</p><p>The <b>gear</b> opens Settings: Session Logs, the full How to Use guide, and the safety checklist. The switch at the very top turns on the Red Screen Filter for night use.</p>"}
+ {t:"3. Read the Recommendation",h:"<p>You get a distance and two options: <b>Fast</b> at full power and <b>Gentle</b> at half power. Both deliver the same dose, and times are rounded up to the next half minute.</p><p>Change the time goal or type a distance to adjust it. <b>Lab View (Advanced)</b> adds depth, a dose slider and charts.</p>"},
+ {t:"4. Run a Session",h:"<p>Tap <b>Start</b> on the Session Timer. It beeps when a part ends and logs the session for you when it finishes.</p><p>For paired areas like the knee or shoulder, pick <b>Left</b>, <b>Right</b> or <b>Both</b> next to Log to. Have an ESP32 panel? The <b>Control Panel</b> tab can run the session for you.</p>"},
+ {t:"5. Build a Routine",h:"<p>Chain up to 10 protocols like a playlist. Set up each protocol on the Calculator and tap <b>Add to Routine</b>, then open <b>Calculator, Routines</b> to name it, reorder it and tap <b>Start Routine</b>.</p><p>Each step tells you where to place the panel, with a pause between steps. With a panel connected, the routine runs the panel for you.</p>"},
+ {t:"6. Track Your Sessions",h:"<p>Every finished session is logged automatically, with its side and the routine it came from. Use <b>Log to</b> to keep separate logs, such as Panel and Mask.</p><p>Inside each log, sessions are sorted by treatment area, and paired areas split into Left and Right. Tap a chip to see just that area. Find it all under the gear, <b>Session Logs</b>.</p>"},
+ {t:"7. Explore",h:"<p>The <b>book icon</b> opens Learning and Resources: short guides and a research library.</p><p>The <b>gear</b> opens Settings: Session Logs, the full How to Use guide, and the safety checklist. The switch at the very top turns on the Red Screen Filter for night use.</p>"}
 ];
 let qsI=0;
 function qsRender(){
@@ -2128,16 +2307,484 @@ function qsRender(){
   $("#qsTitle").textContent=s.t;$("#qsBody").innerHTML=s.h;
   $("#qsDots").innerHTML=QS.map(function(x,i){return '<i class="'+(i===qsI?"on":"")+'"></i>'}).join("");
   $("#qsBack").hidden=qsI===0;$("#qsNext").textContent=last?"Get Started":"Next";$("#qsSkip").hidden=last;
-  $("#qsNote").textContent=last?"You can open this guide again any time in Settings, under How to Use.":"Skip anytime. You can find this guide again in Settings, under How to Use.";
+  $("#qsNote").textContent=last?"You can open this guide again any time in Settings, under How to Use.":"Skip anytime. It opens at each start until you tick the box below. Find it again in Settings, under How to Use.";
 }
-function openQs(){qsI=0;qsRender();openD("#qsDlg");const a=document.activeElement;if(a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA"))a.blur()}
-function qsMark(){try{localStorage.setItem(QSKEY,"1")}catch(e){}}
-function maybeQs(){if(!qsSeen())openQs()}
-$("#qsNext").addEventListener("click",function(){if(qsI>=QS.length-1){qsMark();closeD("#qsDlg");return}qsI++;qsRender();$("#qsTitle").focus()});
+function openQs(){qsI=0;qsRender();$("#qsNever").checked=qsOff();openD("#qsDlg");const a=document.activeElement;if(a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA"))a.blur()}
+function maybeQs(){if(!qsOff())openQs()}
+$("#qsNext").addEventListener("click",function(){if(qsI>=QS.length-1){closeD("#qsDlg");return}qsI++;qsRender();$("#qsTitle").focus()});
 $("#qsBack").addEventListener("click",function(){if(qsI>0){qsI--;qsRender()}});
-$("#qsSkip").addEventListener("click",function(){qsMark();closeD("#qsDlg");toast("Skipped. Find the guide in Settings, under How to Use.")});
-$("#qsDlg").addEventListener("close",qsMark);
+$("#qsSkip").addEventListener("click",function(){closeD("#qsDlg");toast($("#qsNever").checked?"Skipped. It will not open at startup. Find it in Settings, under How to Use.":"Skipped. It opens again next time. Tick Don't show this at startup again to stop that.")});
+$("#qsNever").addEventListener("change",function(){qsSetOff($("#qsNever").checked);$("#stQs").checked=!$("#qsNever").checked});
+$("#stQs").addEventListener("change",function(){qsSetOff(!$("#stQs").checked)});
 $("#howQs").addEventListener("click",openQs);
+
+/* ---------- Routines (up to 10 protocols run back to back, optionally driving the panel) ---------- */
+const RT_MAX=10;
+const rt={phase:"idle",i:0,steps:[],plans:[],titles:[],gap:20,acc:0,left:0,t0:0,running:false,iv:null,panel:false,panelOk:true,name:"",fired:0,lastBeep:-1};
+window.__rdlBusy=function(){return rt.phase!=="idle"&&rt.phase!=="done"||tm.running};
+function profById(id){return S.profiles.find(function(p){return p.id===id})||BUILTIN.find(function(p){return p.id===id})||null}
+function stepModel(st){
+  const prof=profById(st.pid)||P();
+  const m=model({prof:prof,treatment:st.tr,area:st.ar,dose:st.dose,depth:st.depth});
+  return {m:m,prof:prof,pl:m.plan(st.dcm,st.p,m.dose),raw:m.total(st.dcm,st.p,m.dose)};
+}
+function stepTitle(m,st){return m.T.name+", "+m.A.name+(st.side?" ("+SIDE_NAMES[st.side]+")":"")}
+function rtCur(){return S.routines.find(function(r){return r.id===S.routineActive})||null}
+function rtFromCalc(){
+  if(!LAST){toast("Set up a protocol on the Calculator tab first");return null}
+  return {tr:LAST.m.T.id,ar:LAST.m.A.id,side:sideFor(LAST.m.A.id),p:tm.p,dcm:LAST.dcm,pid:S.active,dose:S.dose,depth:S.depthManual};
+}
+function rtAddFromCalc(){
+  const n=rtFromCalc();if(!n)return;
+  let r=rtCur();
+  if(!r){r={id:"r"+Date.now(),name:"My Routine",gap:20,steps:[]};S.routines.push(r);S.routineActive=r.id}
+  if(r.steps.length>=RT_MAX){toast("A routine holds up to "+RT_MAX+" steps");return}
+  r.steps.push(n);save();
+  toast("Added to "+r.name+", step "+r.steps.length+" of "+RT_MAX+". Open Routines to run it.");
+  if(document.body.dataset.view==="routines")renderRoutines();
+}
+function rtFillSel(){
+  const s=$("#rtSelect"),idle=rt.phase==="idle";
+  s.innerHTML=S.routines.map(function(r){return '<option value="'+escH(r.id)+'">'+escH(r.name)+'</option>'}).join("");
+  if(rtCur())s.value=S.routineActive;
+  s.hidden=!S.routines.length;s.disabled=!idle;$("#rtNew").disabled=!idle;$("#rtEdit").disabled=!idle||!rtCur();
+}
+function renderRoutines(){
+  rtFillSel();
+  const r=rtCur(),b=$("#rtBody");
+  if(rt.phase!=="idle"){rtRender(true);return}
+  if(!r){b.innerHTML='<p class="empty">No routines yet. Tap New to name one, then use Add to Routine on the Calculator, or Add Current Protocol here.</p>';return}
+  let tot=0,html="";
+  r.steps.forEach(function(st,i){
+    const x=stepModel(st),m=x.m,pl=x.pl;
+    if(pl)tot+=pl.total;
+    html+='<div class="rstep"><b>'+(i+1)+'. '+escH(stepTitle(m,st))+'</b>'
+      +'<p class="hint">'+(pl?(st.p===100?"Fast":"Gentle")+", "+st.p+"% power, "+fmt(fromCm(st.dcm,x.prof.unit),1)+" "+x.prof.unit+", "+fmtMin(pl.total)+", "+escH(m.segs.map(function(s){return s.label}).join(" + ")):"Needs panel readings. Use Replace to update this step.")+(profById(st.pid)?"":" The saved panel profile is gone, so the active panel is used.")+'</p>'
+      +(SIDED.has(st.ar)?'<div class="seg" data-i="'+i+'" role="group" aria-label="Side">'+["left","right","both"].map(function(k){return '<button type="button" data-rside="'+k+'" aria-pressed="'+(st.side===k)+'">'+SIDE_NAMES[k]+'</button>'}).join("")+'</div>':'')
+      +'<div class="seg" data-i="'+i+'" role="group" aria-label="Power option"><button type="button" data-rp="100" aria-pressed="'+(st.p===100)+'">Fast, 100%</button><button type="button" data-rp="50" aria-pressed="'+(st.p===50)+'">Gentle, 50%</button></div>'
+      +'<div class="rbtns" data-i="'+i+'">'+(i>0?'<button class="btn" type="button" data-ract="up">Up</button>':'')+(i<r.steps.length-1?'<button class="btn" type="button" data-ract="down">Down</button>':'')+'<button class="btn" type="button" data-ract="copy"'+(r.steps.length>=RT_MAX?' disabled':'')+'>Copy</button><button class="btn" type="button" data-ract="replace">Replace</button><button class="btn danger" type="button" data-ract="remove">Remove</button></div></div>';
+  });
+  const gaps=r.gap>0?r.gap*Math.max(0,r.steps.length-1):0;
+  let head='<p class="hint"><b>'+r.steps.length+' of '+RT_MAX+' steps</b>';
+  if(r.steps.length)head+=", about "+fmtMin(halfUp(tot+gaps))+(r.gap>0?" with "+r.gap+" second pauses":(r.gap<0?", and you tap Next between steps":""));
+  head+=".</p>";
+  html+='<button class="btn" id="rtAdd" type="button"'+(r.steps.length>=RT_MAX?" disabled":"")+'>Add Current Protocol</button><p class="hint">Adds what is set up on the Calculator: treatment, area, distance, power option and side.</p>';
+  if(r.steps.length){
+    html+='<div class="rtbox"><h3 class="dlg-h" style="margin-top:0">Run this routine</h3>'
+      +(pn.connected?'<label class="toggle"><input type="checkbox" id="rtPanel" checked><span>Run the panel for each step</span></label>':'<p class="hint">Connect a panel on the Control Panel tab and it will run automatically for each step. Without one, the routine is a guided timer.</p>')
+      +'<label style="display:block;margin:6px 0 10px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>'
+      +'<button class="btn primary" id="rtStart" type="button">Start Routine</button></div>';
+  }
+  b.innerHTML=head+html;fillLogProfiles();
+}
+let rtEditId=null,rtArm=false;
+function openRt(id){
+  rtEditId=id;rtArm=false;
+  const r=id?S.routines.find(function(x){return x.id===id}):null;
+  $("#rtTitle").textContent=id?"Edit routine":"New routine";
+  $("#rtName").value=r?r.name:"";$("#rtGap").value=String(r?r.gap:20);
+  $("#rtDelete").hidden=!id;$("#rtDelete").textContent="Delete";
+  openD("#rtDlg");const a=document.activeElement;if(a&&a.tagName==="INPUT")a.blur();
+}
+$("#rtNew").addEventListener("click",function(){openRt(null)});
+$("#rtEdit").addEventListener("click",function(){if(rtCur())openRt(S.routineActive)});
+$("#rtCancel").addEventListener("click",function(){closeD("#rtDlg")});
+$("#rtSelect").addEventListener("change",function(){S.routineActive=$("#rtSelect").value;save();renderRoutines()});
+$("#rtSave").addEventListener("click",function(){
+  const name=titleCase($("#rtName").value.trim())||("Routine "+(S.routines.length+1));
+  if(S.routines.some(function(r){return r.name.toLowerCase()===name.toLowerCase()&&r.id!==rtEditId})){toast("That name is already used");return}
+  const gap=parseInt($("#rtGap").value,10);
+  if(rtEditId){const r=S.routines.find(function(x){return x.id===rtEditId});r.name=name;r.gap=gap}
+  else{const r={id:"r"+Date.now(),name:name,gap:gap,steps:[]};S.routines.push(r);S.routineActive=r.id}
+  save();closeD("#rtDlg");renderRoutines();
+});
+$("#rtDelete").addEventListener("click",function(){
+  if(!rtArm){rtArm=true;$("#rtDelete").textContent="Tap again to delete";return}
+  S.routines=S.routines.filter(function(r){return r.id!==rtEditId});
+  S.routineActive=S.routines.length?S.routines[0].id:null;
+  save();closeD("#rtDlg");renderRoutines();toast("Routine deleted");
+});
+$("#rtBody").addEventListener("click",function(e){
+  const t=e.target,r=rtCur();
+  const run=t.closest("[data-rtrun]");if(run){rtAction(run.dataset.rtrun);return}
+  if(t.id==="rtStart"){rtStart();return}
+  if(!r||rt.phase!=="idle")return;
+  if(t.id==="rtAdd"){rtAddFromCalc();return}
+  const rs=t.closest("[data-rside]"),rp=t.closest("[data-rp]"),ra=t.closest("[data-ract]");
+  if(rs){r.steps[+rs.parentElement.dataset.i].side=rs.dataset.rside;save();renderRoutines();return}
+  if(rp){r.steps[+rp.parentElement.dataset.i].p=+rp.dataset.rp;save();renderRoutines();return}
+  if(ra){
+    const i=+ra.parentElement.dataset.i,s=r.steps,a=ra.dataset.ract;
+    if(a==="up"&&i>0){const x=s[i];s[i]=s[i-1];s[i-1]=x}
+    else if(a==="down"&&i<s.length-1){const x=s[i];s[i]=s[i+1];s[i+1]=x}
+    else if(a==="copy"&&s.length<RT_MAX){s.splice(i+1,0,Object.assign({},s[i]))}
+    else if(a==="remove"){s.splice(i,1)}
+    else if(a==="replace"){const n=rtFromCalc();if(!n)return;s[i]=n}
+    save();renderRoutines();
+  }
+});
+/* running a routine */
+function rtElapsed(){return rt.acc+(rt.running?(Date.now()-rt.t0)/1000:0)}
+function rtSegAt(segs,el){let c=0;for(let i=0;i<segs.length;i++){c+=segs[i].sec;if(el<c)return i}return segs.length-1}
+function rtStart(){
+  const r=rtCur();
+  if(!r||!r.steps.length){toast("Add at least one protocol first");return}
+  if(tm.running||(tm.acc>0&&!tm.done)){toast("Finish or reset the session timer first");return}
+  const plans=r.steps.map(stepModel),bad=plans.findIndex(function(x){return !x.pl});
+  if(bad>=0){toast("Step "+(bad+1)+" needs panel readings. Replace it first.");return}
+  rt.steps=r.steps.map(function(s){return Object.assign({},s)});rt.plans=plans;rt.name=r.name;rt.gap=r.gap;
+  rt.titles=rt.steps.map(function(s,i){return stepTitle(plans[i].m,s)});
+  const cb=$("#rtPanel");rt.panel=!!(cb&&cb.checked)&&pn.connected;rt.panelOk=true;
+  beep(1,.01);wake(true);
+  rtBegin(0);
+}
+function rtWhere(i){
+  const st=rt.steps[i],x=rt.plans[i],m=x.m;
+  return "Place the panel "+fmt(fromCm(st.dcm,x.prof.unit),1)+(x.prof.unit==="in"?" inches":" cm")+" from your "+m.A.name.toLowerCase()+(st.side?" ("+SIDE_NAMES[st.side].toLowerCase()+")":"")+". "+(st.p===100?"Fast":"Gentle")+" at "+st.p+"% power. Light: "+m.segs.map(function(s){return s.label}).join(" + ")+".";
+}
+function rtBegin(i){
+  rt.i=i;rt.phase="run";rt.acc=0;rt.t0=Date.now();rt.running=true;rt.fired=0;
+  clearInterval(rt.iv);rt.iv=setInterval(rtTick,250);
+  beep(880,.25);buzz(150);
+  rtPanelStart(0);rtRender(true);
+}
+function rtPanelStart(el){
+  if(!rt.panel)return;
+  const st=rt.steps[rt.i],pl=rt.plans[rt.i].pl,rem=[];let t=0;
+  pl.segs.forEach(function(s){
+    const end=t+s.sec,left=end-Math.max(el,t);
+    if(left>0.5){
+      let a=(s.ch==="660"||s.ch==="both")?st.p:0,b=(s.ch==="850"||s.ch==="both")?st.p:0;
+      if(pn.swap){const x=a;a=b;b=x}
+      rem.push(a+":"+b+":"+Math.max(1,Math.round(left)));
+    }
+    t=end;
+  });
+  if(!rem.length)return;
+  pn.ctx=null;pn.logged=true;pn.wasActive=false;   // the routine logs its own steps, so the single-session logger must stay out of it
+  pnReq("/api/session",{segs:rem.join(";")}).then(pnRender).catch(function(){
+    if(rt.panelOk){rt.panelOk=false;toast("Panel not reachable. Continuing with the timer only.")}
+  });
+}
+function rtPanelStop(){if(rt.panel)pnReq("/api/stop").then(pnRender).catch(function(){})}
+function rtLog(sec,early){
+  if(!(sec>=5))return;
+  const st=rt.steps[rt.i],x=rt.plans[rt.i],m=x.m;
+  const e={id:"l"+Date.now()+"r"+rt.i,ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:st.side||"",panel:x.prof.name,
+    light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(st.dcm,x.prof.unit),1),unit:x.prof.unit,power:st.p,
+    sec:Math.round(sec),dose:+fmt(m.dose*sec/x.raw,1),note:"Routine: "+rt.name+", step "+(rt.i+1)+" of "+rt.steps.length+(early?" (ended early)":""),lp:S.logActive};
+  const a=getLog();a.push(e);putLog(a);
+}
+function rtTick(){
+  if(!rt.running)return;
+  if(rt.phase==="run"){
+    const el=rtElapsed(),pl=rt.plans[rt.i].pl,si=rtSegAt(pl.segs,el);
+    if(si>rt.fired){rt.fired=si;beep(660,.3);buzz(200)}
+    if(el>=pl.total){rtStepDone(pl.total,false);return}
+  }else if(rt.phase==="gap"){
+    const left=rt.left-(Date.now()-rt.t0)/1000;
+    if(left>0&&left<=3&&Math.ceil(left)!==rt.lastBeep){rt.lastBeep=Math.ceil(left);beep(520,.08)}
+    if(left<=0){rtBegin(rt.i+1);return}
+  }
+  rtRender(false);
+}
+function rtStepDone(sec,early){
+  clearInterval(rt.iv);rt.running=false;
+  rtLog(sec,early);
+  beep(880,.25);setTimeout(function(){beep(880,.25)},350);buzz([200,100,200]);
+  if(rt.i>=rt.steps.length-1){
+    rt.phase="done";wake(false);
+    setTimeout(function(){beep(1175,.4)},700);buzz([250,120,250,120,400]);
+    toast("Routine complete and logged");rtRender(true);return;
+  }
+  if(rt.gap<0){rt.phase="wait";rtRender(true);return}
+  rt.phase="gap";rt.left=rt.gap;rt.t0=Date.now();rt.running=true;rt.lastBeep=-1;
+  rt.iv=setInterval(rtTick,250);rtRender(true);
+}
+function rtAction(a){
+  if(a==="pause"){
+    if(rt.running){
+      if(rt.phase==="run")rt.acc+=(Date.now()-rt.t0)/1000;else rt.left-=(Date.now()-rt.t0)/1000;
+      rt.running=false;clearInterval(rt.iv);rtPanelStop();
+    }else{
+      rt.t0=Date.now();rt.running=true;rt.iv=setInterval(rtTick,250);
+      if(rt.phase==="run")rtPanelStart(rt.acc);
+    }
+    rtRender(true);
+  }else if(a==="skip"){
+    if(rt.phase==="run"){const el=rtElapsed();rtPanelStop();rtStepDone(Math.min(el,rt.plans[rt.i].pl.total),true)}
+  }else if(a==="next"||a==="now"){
+    clearInterval(rt.iv);rtBegin(rt.i+1);
+  }else if(a==="stop"){
+    if(rt.phase==="run"){rtLog(Math.min(rtElapsed(),rt.plans[rt.i].pl.total),true)}
+    rtPanelStop();clearInterval(rt.iv);rt.running=false;rt.phase="idle";wake(false);
+    toast("Routine stopped");renderRoutines();rtMini();
+  }else if(a==="close"){
+    rt.phase="idle";renderRoutines();rtMini();
+  }
+}
+function rtClockText(){
+  if(rt.phase==="run"){const pl=rt.plans[rt.i].pl;return fmtT(Math.ceil(Math.max(0,pl.total-rtElapsed())))}
+  if(rt.phase==="gap")return fmtT(Math.ceil(Math.max(0,rt.left-(rt.running?(Date.now()-rt.t0)/1000:0))));
+  return "";
+}
+function rtMini(){
+  const m=$("#rtMini"),show=rt.phase!=="idle"&&rt.phase!=="done"&&document.body.dataset.view!=="routines";
+  m.hidden=!show;if(!show)return;
+  const n=rt.steps.length,pre=rt.name+", step "+(rt.i+(rt.phase==="gap"||rt.phase==="wait"?2:1))+" of "+n;
+  $("#rtMiniTxt").textContent=rt.phase==="run"?pre+": "+rtClockText()+(rt.running?"":" (paused)"):pre+(rt.phase==="gap"?": get ready "+rtClockText():": waiting for you");
+}
+function rtRender(full){
+  rtMini();
+  if(rt.phase==="idle"||document.body.dataset.view!=="routines")return;
+  const b=$("#rtBody"),n=rt.steps.length;
+  if(full||!$("#rtClock")){
+    let h="";
+    if(rt.phase==="done"){
+      h='<div class="rtrun"><h3 class="rtt">Routine Complete</h3><p class="hint">'+escH(rt.name)+': '+n+' steps finished and logged.</p><div class="actions"><button class="btn primary" type="button" data-rtrun="close">Close</button></div></div>';
+    }else{
+      const nxt=rt.i+1<n?rt.titles[rt.i+1]:"";
+      const showI=(rt.phase==="gap"||rt.phase==="wait")?rt.i+1:rt.i;
+      const pauseBtn='<button class="btn'+(rt.phase==="run"||rt.phase==="gap"?'':'')+'" type="button" data-rtrun="pause">'+(rt.running?"Pause":"Resume")+'</button>';
+      h='<div class="rtrun"><p class="hint">'+(rt.phase==="gap"?"Get ready. ":(rt.phase==="wait"?"Ready when you are. ":""))+'Step '+(showI+1)+' of '+n+'</p>'
+        +'<h3 class="rtt">'+escH(rt.titles[showI])+'</h3><p class="hint">'+escH(rtWhere(showI))+'</p>'
+        +(rt.phase==="wait"?'<div class="clock">Ready</div>':'<div class="clock" id="rtClock">'+rtClockText()+'</div><div class="pbar"><b id="rtBar"></b></div>')
+        +(rt.phase==="run"&&nxt?'<p class="hint">Up next: '+escH(nxt)+'</p>':'')
+        +'<div class="actions">'
+        +(rt.phase==="wait"?'<button class="btn primary" type="button" data-rtrun="next">Start Next Step</button>':pauseBtn)
+        +(rt.phase==="run"?'<button class="btn" type="button" data-rtrun="skip">Skip Step</button>':'')
+        +(rt.phase==="gap"?'<button class="btn" type="button" data-rtrun="now">Start Now</button>':'')
+        +'<button class="btn danger" type="button" data-rtrun="stop">Stop Routine</button></div>'
+        +(rt.panel?'<p class="hint">The panel runs each step by itself and is off during pauses.</p>':'')+'</div>';
+    }
+    b.innerHTML=h;
+  }
+  const c=$("#rtClock");if(c)c.textContent=rtClockText();
+  const bar=$("#rtBar");
+  if(bar){
+    const tot=rt.phase==="run"?rt.plans[rt.i].pl.total:rt.gap;
+    const done=rt.phase==="run"?rtElapsed():(rt.gap-Math.max(0,rt.left-(rt.running?(Date.now()-rt.t0)/1000:0)));
+    bar.style.width=(tot>0?Math.min(100,Math.max(0,done/tot*100)):0)+"%";
+  }
+}
+$("#rtMiniBtn").addEventListener("click",function(){setView("routines")});
+
+/* ---------- Export and import (panel profiles and session logs) ---------- */
+const FILE_APP="redox-dosimetry-lab";
+const dayStamp=function(){return new Date().toISOString().slice(0,10)};
+const slugOf=function(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"other"};
+function canShareFiles(){try{return !!(navigator.share&&navigator.canShare&&navigator.canShare({files:[new File(["x"],"x.json",{type:"application/json"})]}))}catch(e){return false}}
+function downloadText(name,text,mime){
+  try{const url=URL.createObjectURL(new Blob([text],{type:mime})),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},2000);return true}catch(e){return false}
+}
+const ex={kind:""};
+function profilesFile(){
+  const ids=[...document.querySelectorAll("#expList [data-xp]")].filter(function(c){return c.checked}).map(function(c){return c.dataset.xp});
+  const list=S.profiles.filter(function(p){return ids.indexOf(p.id)>=0}).map(function(p){
+    const o={name:p.name,unit:p.unit,ru:p.ru||"mw",factor:p.factor,mode:p.mode,bands:p.bands.map(function(b){return {nm:b.nm,share:b.share}}),rows:p.rows.map(function(r){return {d:r.d,t:r.t}}),src:p.src||""};
+    if(p.uniform)o.uniform=p.uniform;
+    return o;
+  });
+  return {count:list.length,text:JSON.stringify({app:FILE_APP,type:"panel-profiles",version:1,exported:new Date().toISOString(),profiles:list},null,1)};
+}
+function logsFile(){
+  const all=getLog().map(function(e){return {ts:e.ts,tr:e.tr,trn:e.trn,ar:e.ar,arn:e.arn,side:e.side||"",panel:e.panel,light:e.light,dist:e.dist,unit:e.unit,power:e.power,sec:e.sec,dose:e.dose,note:e.note||"",logProfile:lpName(lpOf(e))}});
+  return {count:all.length,text:JSON.stringify({app:FILE_APP,type:"session-logs",version:1,exported:new Date().toISOString(),logProfiles:S.logProfiles.map(function(p){return p.name}),sessions:all},null,1)};
+}
+function expNow(){return ex.kind==="profiles"?profilesFile():logsFile()}
+function expName(){return ex.kind==="profiles"?"redox-panel-profiles-"+dayStamp()+".json":"redox-session-logs-"+dayStamp()+".json"}
+function openExport(kind){
+  ex.kind=kind;
+  if(kind==="profiles"){
+    $("#expTitle").textContent="Export Panel Profiles";
+    $("#expHint").textContent="Pick the profiles to put in the file. Built-in presets are already in every copy of the app.";
+    $("#expList").innerHTML=S.profiles.map(function(p){return '<label class="toggle"><input type="checkbox" data-xp="'+escH(p.id)+'" checked><span>'+escH(p.name)+'</span></label>'}).join("");
+  }else{
+    const n=getLog().length;
+    $("#expTitle").textContent="Export Session Logs";
+    $("#expHint").textContent=n?"A backup of all "+n+" sessions, with every log, area and side, that keeps exact times. For a spreadsheet, use Download CSV on the Session Logs page.":"There are no sessions to export yet.";
+    $("#expList").innerHTML="";
+  }
+  $("#expShare").hidden=!canShareFiles();
+  openD("#expDlg");
+}
+$("#stExpProf").addEventListener("click",function(){openExport("profiles")});
+$("#stExpLogs").addEventListener("click",function(){openExport("logs")});
+$("#expClose").addEventListener("click",function(){closeD("#expDlg")});
+$("#expDl").addEventListener("click",function(){
+  const f=expNow();if(!f.count){toast(ex.kind==="profiles"?"Select at least one profile":"Nothing to export");return}
+  if(downloadText(expName(),f.text,"application/json"))toast("Saved "+expName());
+  else copyText(f.text,"Could not download, so it was copied instead.");
+});
+$("#expShare").addEventListener("click",function(){
+  const f=expNow();if(!f.count){toast(ex.kind==="profiles"?"Select at least one profile":"Nothing to export");return}
+  try{navigator.share({files:[new File([f.text],expName(),{type:"application/json"})],title:"Redox Dosimetry Lab"}).catch(function(){})}catch(e){copyText(f.text,"Copied")}
+});
+$("#expCopy").addEventListener("click",function(){
+  const f=expNow();if(!f.count){toast(ex.kind==="profiles"?"Select at least one profile":"Nothing to export");return}
+  copyText(f.text,"Copied. Paste it into Import on the other phone.");
+});
+
+/* reading what was exported, with every field checked before it is used */
+function cleanProfile(o){
+  if(!o||typeof o!=="object")return null;
+  const name=String(o.name||"").trim().slice(0,40);if(!name)return null;
+  const bands=(Array.isArray(o.bands)?o.bands:[]).slice(0,12).map(function(b){return {nm:String(parseFloat(b&&b.nm)||""),share:String(parseFloat(b&&b.share)||"")}}).filter(function(b){return b.nm&&b.share});
+  const rows=(Array.isArray(o.rows)?o.rows:[]).slice(0,30).map(function(r){return {d:String(parseFloat(r&&r.d)||""),t:String(parseFloat(r&&r.t)||"")}}).filter(function(r){return parseFloat(r.d)>0&&parseFloat(r.t)>0});
+  if(!bands.length||!rows.length)return null;
+  const p={name:titleCase(name),unit:o.unit==="cm"?"cm":"in",ru:RUNITS[o.ru]?o.ru:"mw",factor:clamp(parseFloat(o.factor)||1,0.2,1.5),mode:o.mode==="fixed"?"fixed":"switch",bands:bands,rows:rows,kind:"user",
+    src:(typeof o.src==="string"&&o.src?o.src.slice(0,400)+" ":"")+"Imported on "+new Date().toLocaleDateString()+"."};
+  const u=o.uniform;
+  if(u&&Array.isArray(u.grid)&&u.grid.length===9&&u.grid.every(function(x){return typeof x==="number"&&isFinite(x)&&x>0})&&[u.avg,u.min,u.max,u.minRatio,u.cv,u.d].every(function(x){return typeof x==="number"&&isFinite(x)}))
+    p.uniform={d:u.d,unit:u.unit==="cm"?"cm":"in",grid:u.grid.slice(),avg:u.avg,min:u.min,max:u.max,minRatio:u.minRatio,cv:u.cv};
+  return p;
+}
+let impSeq=0;
+function cleanSession(o){
+  if(!o||typeof o!=="object")return null;
+  const ts=+o.ts,sec=Math.round(+o.sec);
+  if(!(ts>0&&ts<4102444800000)||!(sec>=1&&sec<=86400))return null;
+  const trn=String(o.trn||"").trim().slice(0,60),arn=String(o.arn||"").trim().slice(0,60);
+  const T=TREATMENTS.find(function(t){return t.id===o.tr})||TREATMENTS.find(function(t){return t.name.toLowerCase()===trn.toLowerCase()});
+  const A=AREAS.find(function(a){return a.id===o.ar})||AREAS.find(function(a){return a.name.toLowerCase()===arn.toLowerCase()});
+  const num=function(v){const x=parseFloat(v);return isFinite(x)?x:""};
+  return {id:"l"+ts+"i"+(impSeq++),ts:ts,tr:T?T.id:slugOf(trn),trn:T?T.name:(trn||"Imported"),ar:A?A.id:slugOf(arn),arn:A?A.name:(arn||"Other"),
+    side:(o.side==="left"||o.side==="right"||o.side==="both")?o.side:"",panel:String(o.panel||"").slice(0,60),light:String(o.light||"").slice(0,80),
+    dist:num(o.dist),unit:o.unit==="cm"?"cm":"in",power:num(o.power)===""?100:num(o.power),sec:sec,dose:num(o.dose),note:String(o.note||"").slice(0,200)};
+}
+function parseCsv(text){
+  const rows=[];let row=[],cur="",q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){if(c==='"'){if(text[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
+    else if(c==='"')q=true;
+    else if(c===","){row.push(cur);cur=""}
+    else if(c==="\n"||c==="\r"){if(c==="\r"&&text[i+1]==="\n")i++;row.push(cur);cur="";if(row.some(function(x){return x!==""}))rows.push(row);row=[]}
+    else cur+=c;
+  }
+  row.push(cur);if(row.some(function(x){return x!==""}))rows.push(row);
+  return rows;
+}
+function csvToSessions(text){
+  const rows=parseCsv(text.replace(/^\uFEFF/,""));
+  if(rows.length<2)return null;
+  const head=rows[0].map(function(x){return x.trim().toLowerCase()});
+  if(head.indexOf("date_time")<0||head.indexOf("treatment")<0||head.indexOf("minutes")<0)return null;
+  return rows.slice(1).map(function(r){
+    const g=function(n){const i=head.indexOf(n);return i>=0?String(r[i]==null?"":r[i]).trim():""};
+    return {ts:Date.parse(g("date_time")),trn:g("treatment"),arn:g("area"),side:g("side").toLowerCase(),panel:g("panel"),light:g("light"),dist:g("distance"),unit:g("unit"),power:g("power_pct"),sec:parseFloat(g("minutes"))*60,dose:g("dose_j_cm2"),note:g("note"),logProfile:g("log_profile")};
+  });
+}
+const keyFor=function(e,lpId){return [Math.round(e.ts/1000),e.sec,e.ar||e.arn,e.tr||e.trn,lpId].join("|")};
+/* Works out, for every row in the file, which log it belongs to and whether the same session is already stored there. */
+function planSessions(list){
+  const seen=new Map();
+  getLog().forEach(function(e){seen.set(keyFor(e,lpOf(e)),lpName(lpOf(e)))});
+  const out={items:[],bad:0};
+  list.forEach(function(o){
+    const e=cleanSession(o);if(!e){out.bad++;return}
+    const nm=titleCase(String(o.logProfile||"").trim().slice(0,30));
+    const lp=nm?S.logProfiles.find(function(x){return x.name.toLowerCase()===nm.toLowerCase()}):S.logProfiles.find(function(x){return x.id===S.logActive});
+    const k=keyFor(e,lp?lp.id:"new:"+nm.toLowerCase());
+    const dupIn=seen.get(k)||null;
+    if(!dupIn)seen.set(k,lp?lp.name:nm);
+    out.items.push({e:e,nm:nm,lp:lp||null,dupIn:dupIn});
+  });
+  return out;
+}
+function importSessions(list,skip){
+  const plan=planSessions(list),all=getLog();
+  let added=0,dup=0;const counts={},dupLogs={};
+  plan.items.forEach(function(it){
+    if(it.dupIn&&skip){dup++;dupLogs[it.dupIn]=(dupLogs[it.dupIn]||0)+1;return}
+    let lp=it.lp;
+    if(!lp){lp={id:"lp"+Date.now()+"n"+S.logProfiles.length,name:it.nm};S.logProfiles.push(lp)}
+    it.e.lp=lp.id;all.push(it.e);added++;counts[lp.name]=(counts[lp.name]||0)+1;
+  });
+  putLog(all);
+  const best=function(o){return Object.keys(o).sort(function(x,y){return o[y]-o[x]})[0]||null};
+  const show=best(counts)||best(dupLogs);
+  if(show){const lp=S.logProfiles.find(function(x){return x.name===show});if(lp){S.logActive=lp.id;S.logArea="all";S.logSide="all"}}
+  save();fillLogProfiles();
+  return {added:added,dup:dup,bad:plan.bad,logs:Object.keys(counts),show:show};
+}
+function importProfiles(list){
+  const taken=function(n){return S.profiles.some(function(p){return p.name.toLowerCase()===n.toLowerCase()})||BUILTIN.some(function(p){return p.name.toLowerCase()===n.toLowerCase()})};
+  let first=null;
+  list.forEach(function(p,i){
+    let name=p.name,k=1;
+    if(taken(name)){name=p.name+" (imported)";while(taken(name)){k++;name=p.name+" (imported "+k+")"}}
+    const np=Object.assign({},p,{id:"p"+Date.now()+"i"+i,name:name});
+    S.profiles.push(np);if(!first)first=np;
+  });
+  if(list.length===1&&first)S.active=first.id;
+  save();fillProfiles();render();
+  return list.length;
+}
+const imp={kind:"",data:null};
+function analyzeImport(){
+  const t=$("#impText").value.trim(),msg=$("#impMsg"),go=$("#impGo");
+  imp.kind="";imp.data=null;go.disabled=true;$("#impSkipRow").hidden=true;
+  if(!t){msg.textContent="";return}
+  if(t.length>3000000){msg.textContent="That file is too large.";return}
+  let j=null;try{j=JSON.parse(t)}catch(e){}
+  if(j&&typeof j==="object"&&j.type==="panel-profiles"&&Array.isArray(j.profiles)){
+    const ok=j.profiles.slice(0,50).map(cleanProfile).filter(Boolean),bad=Math.min(j.profiles.length,50)-ok.length;
+    if(!ok.length){msg.textContent="No usable panel profiles were found in this file.";return}
+    imp.kind="profiles";imp.data=ok;
+    msg.textContent=ok.length+" panel profile"+(ok.length>1?"s":"")+" ready to add: "+ok.map(function(p){return p.name}).join(", ")+"."+(bad?" "+bad+" could not be read.":"")+" They will appear under My Presets.";
+    go.disabled=false;return;
+  }
+  let sess=null,kindName="";
+  if(j&&typeof j==="object"&&j.type==="session-logs"&&Array.isArray(j.sessions)){sess=j.sessions.slice(0,20000);kindName="backup"}
+  else{const c=csvToSessions(t);if(c){sess=c.slice(0,20000);kindName="CSV"}}
+  if(sess){
+    const plan=planSessions(sess),good=plan.items.length,skip=$("#impSkip").checked;
+    if(!good){msg.textContent="No readable sessions were found in this "+kindName+".";return}
+    imp.kind="logs";imp.data=sess;$("#impSkipRow").hidden=false;
+    const dups=plan.items.filter(function(it){return it.dupIn}),where={};
+    dups.forEach(function(it){where[it.dupIn]=(where[it.dupIn]||0)+1});
+    const wtxt=Object.keys(where).map(function(n){return n+" "+where[n]}).join(", ");
+    msg.textContent=good+" session"+(good>1?"s":"")+" found in this "+kindName+(plan.bad?", and "+plan.bad+" row"+(plan.bad>1?"s":"")+" could not be read":"")+". "
+      +(dups.length?dups.length+" "+(dups.length>1?"are":"is")+" already in your logs ("+wtxt+") and "+(skip?"will be skipped.":"will be added again."):"None are in your logs yet.")
+      +" Each goes into the log named in the file, and a missing log is created.";
+    go.disabled=false;return;
+  }
+  msg.textContent="This does not look like an export from this app. Use a panel profiles file, a session log backup or a session log CSV.";
+}
+function openImport(){
+  imp.kind="";imp.data=null;
+  $("#impText").value="";$("#impMsg").textContent="";$("#impGo").disabled=true;$("#impFile").value="";$("#impSkip").checked=true;$("#impSkipRow").hidden=true;
+  openD("#impDlg");
+  const a=document.activeElement;if(a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA"))a.blur();
+}
+$("#stImport").addEventListener("click",openImport);
+$("#impCancel").addEventListener("click",function(){closeD("#impDlg")});
+$("#impPick").addEventListener("click",function(){$("#impFile").click()});
+$("#impFile").addEventListener("change",function(){
+  const f=this.files&&this.files[0];if(!f)return;
+  if(f.size>3000000){$("#impMsg").textContent="That file is too large.";return}
+  const r=new FileReader();
+  r.onload=function(){$("#impText").value=String(r.result||"");analyzeImport()};
+  r.onerror=function(){$("#impMsg").textContent="That file could not be read."};
+  r.readAsText(f);
+});
+$("#impText").addEventListener("input",analyzeImport);
+$("#impSkip").addEventListener("change",analyzeImport);
+$("#impGo").addEventListener("click",function(){
+  if(!imp.kind)return;
+  if(imp.kind==="profiles"){
+    const n=importProfiles(imp.data);closeD("#impDlg");
+    toast("Added "+n+" panel profile"+(n>1?"s":"")+" under My Presets.");
+  }else{
+    const r=importSessions(imp.data,$("#impSkip").checked);closeD("#impDlg");
+    if(document.body.dataset.view==="log")renderLog();
+    const inLog=document.body.dataset.view==="log";
+    toast(r.added
+      ?"Added "+r.added+" session"+(r.added>1?"s":"")+(r.logs.length?" to "+r.logs.join(" and "):"")+(r.dup?". "+r.dup+(r.dup>1?" were":" was")+" already there.":".")+(r.show?" Showing the "+r.show+" log"+(inLog?".":" under Settings, Session Logs."):"")
+      :(r.dup?"Nothing new. All "+r.dup+" session"+(r.dup>1?"s were":" was")+" already in the "+(r.show||"")+" log"+(inLog?", which is showing now.":". Open it under Settings, Session Logs."):"Nothing to import."));
+  }
+});
 
 function initFeatures(){
   fillLogProfiles();initLib();applyNight();
@@ -2149,8 +2796,25 @@ window.__rdlReady=true;
 })();
 </script>
 <script>
+/* Service worker with a visible "new version" prompt. A new build is fetched fresh (not from the browser cache)
+   and, once ready, a bar offers a reload. Installed phone apps are also re-checked each time they come to the front. */
 if("serviceWorker" in navigator && location.protocol.indexOf("http")===0){
-  window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
+  (function(){
+    var hadCtl=!!navigator.serviceWorker.controller,reg=null;
+    function bar(){
+      if(document.getElementById("updBar"))return;
+      var b=document.createElement("div");b.id="updBar";b.setAttribute("role","status");
+      b.style.cssText="position:fixed;left:12px;right:12px;bottom:12px;z-index:10000;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:14px;background:var(--raised);color:var(--ink);border:1px solid var(--line);box-shadow:0 6px 24px rgba(0,0,0,.5);font-size:14px";
+      b.innerHTML='<span>A new version is ready.</span><button type="button" style="min-height:40px;padding:0 16px;border:0;border-radius:10px;background:var(--ink);color:var(--ground);font:inherit;font-weight:600;cursor:pointer">Reload</button>';
+      b.querySelector("button").onclick=function(){if(window.__rdlBusy&&window.__rdlBusy()&&!confirm("A session or routine is running. Reload anyway?"))return;location.reload()};
+      document.body.appendChild(b);
+    }
+    navigator.serviceWorker.addEventListener("controllerchange",function(){if(hadCtl)bar()});
+    window.addEventListener("load",function(){
+      navigator.serviceWorker.register("sw.js").then(function(r){reg=r;try{r.update()}catch(e){}}).catch(function(){});
+    });
+    document.addEventListener("visibilitychange",function(){if(!document.hidden&&reg){try{reg.update()}catch(e){}}});
+  })();
 }
 </script>
 </body>
