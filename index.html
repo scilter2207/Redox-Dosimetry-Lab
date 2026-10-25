@@ -455,7 +455,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 
 <section id="pg-panel" class="pg" aria-labelledby="h-panelc">
   <h2 id="h-panelc">Control Panel</h2>
-  <p class="hint">Controls an ESP32 panel controller on your WiFi, the way the WLED app controls LED strips. The panel runs timed sessions by itself and turns off when they end.</p>
+  <p class="hint">Controls a compatible Redox panel over your WiFi. The panel runs timed sessions by itself and turns off when they end.</p>
   <div id="pnAddrRow"><label><span class="l">Panel address</span><input id="pnAddr" type="text" inputmode="url" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="panel.local"></label></div>
   <label><span class="l">Panel key</span><input id="pnKey" type="password" autocapitalize="none" autocorrect="off" placeholder="The key set in the panel firmware"></label>
   <label class="toggle"><input type="checkbox" id="pnSwap"><span>Channel 1 is near-infrared (swap the two channels)</span></label>
@@ -552,9 +552,9 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <li>Use <b>Log to</b> to choose which log the session goes in. For areas that come in pairs, such as the knee or shoulder, a <b>Side</b> choice (Left, Right or Both) appears next to it and is saved with the session.</li>
     </ul>
   </details>
-  <details><summary>Control Panel (ESP32 panel)</summary>
+  <details><summary>Control Panel (compatible Redox panel)</summary>
     <ul>
-      <li>For a panel with the ESP32 controller and firmware. Everything on the page stays greyed out until it connects.</li>
+      <li>For a compatible Redox panel with its controller. Everything on the page stays greyed out until it connects.</li>
       <li>Enter the panel address (usually panel.local) and the panel key you set in the firmware, then tap Connect.</li>
       <li><b>Android Chrome:</b> tap Allow when it asks to find devices on your local network. <b>iPhone:</b> the web version cannot reach the panel, so open the panel's own address, such as http://panel.local, in Safari.</li>
       <li><b>Manual control</b> has a slider for each wavelength and a Turn Panel Off button. If the app stops checking in, the panel turns itself off.</li>
@@ -634,11 +634,11 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <p class="hint">Profiles, settings and the session logs are saved on this device only.</p>
   <div class="acts"><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 72. Educational estimates, not medical advice.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 73. Educational estimates, not medical advice.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 72.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 73.</p>
 </main>
 
 <dialog id="editor" aria-labelledby="dlgTitle">
@@ -2308,7 +2308,7 @@ const QS=[
  {t:"1. Set Up Your Panel",h:"<p>On the <b>Calculator</b> tab, pick your panel under Panel Profile. Choose a built-in preset, or tap <b>Edit</b> to enter your own readings. Readings can be in mW/cm\u00b2, W/m\u00b2 or Btu/(ft\u00b2\u00b7h), and the app converts them.</p><p>More readings at more distances means better numbers. The Measure My Panel guide in the Edit window walks you through it.</p>"},
  {t:"2. Choose a Treatment",h:"<p>Pick what you are treating and the target area. The app chooses the wavelength and shows a published dose window.</p><p>The Evidence section below shows how strong the research is and links the sources.</p>"},
  {t:"3. Read the Recommendation",h:"<p>You get a distance and two options: <b>Fast</b> at full power and <b>Gentle</b> at half power. Both deliver the same dose, and times are rounded up to the next half minute.</p><p>Change the time goal or type a distance to adjust it. <b>Lab View (Advanced)</b> adds depth, a dose slider and charts.</p>"},
- {t:"4. Run a Session",h:"<p>Tap <b>Start</b> on the Session Timer. It beeps when a part ends and logs the session for you when it finishes.</p><p>For paired areas like the knee or shoulder, pick <b>Left</b>, <b>Right</b> or <b>Both</b> next to Log to. Have an ESP32 panel? The <b>Control Panel</b> tab can run the session for you.</p>"},
+ {t:"4. Run a Session",h:"<p>Tap <b>Start</b> on the Session Timer. It beeps when a part ends and logs the session for you when it finishes.</p><p>For paired areas like the knee or shoulder, pick <b>Left</b>, <b>Right</b> or <b>Both</b> next to Log to. Have a compatible Redox panel? The <b>Control Panel</b> tab can run the session for you.</p>"},
  {t:"5. Build a Routine",h:"<p>Chain up to 10 protocols like a playlist. Set up each protocol on the Calculator and tap <b>Add to Routine</b>, then open <b>Calculator, Routines</b> to name it, reorder it and tap <b>Start Routine</b>.</p><p>Each step tells you where to place the panel, with a pause between steps. With a panel connected, the routine runs the panel for you. Not sure where to start? Try a <b>Preset Routine</b>, such as Knee Care or Leg Recovery.</p>"},
  {t:"6. Track Your Sessions",h:"<p>Every finished session is logged automatically, with its side and the routine it came from. Use <b>Log to</b> to keep separate logs, such as Panel and Mask.</p><p>Inside each log, sessions are sorted by treatment area, and paired areas split into Left and Right. Tap a chip to see just that area. Find it all under the gear, <b>Session Logs</b>.</p>"},
  {t:"7. Explore",h:"<p>The <b>book icon</b> opens Learning and Resources: short guides and a research library.</p><p>The <b>gear</b> opens Settings: Session Logs, the full How to Use guide, and the safety checklist. The switch at the very top turns on the Red Screen Filter for night use.</p>"}
