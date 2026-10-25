@@ -27,7 +27,9 @@ body{margin:0;background:transparent;color:var(--ink);font:16px/1.45 var(--sans)
   padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
 main{max-width:560px;margin:0 auto;display:grid;gap:20px}
 header{padding:8px 2px 0}
-h1{font:600 30px/1.1 var(--serif);margin:0;letter-spacing:.2px}
+h1{font:400 22px/1.1 var(--serif);margin:0;letter-spacing:.4px;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 12px;color:var(--ink)}
+h1 span{font-weight:500;-webkit-text-stroke:.5px currentColor}   /* the stroke thickens the letters smoothly even on phones whose serif font has only regular and bold */
+.hlogo{height:40px;width:auto;display:block;position:relative;top:2px}   /* the logo has a little empty space under its letters; this moves the letters themselves onto the text baseline */
 .sub{margin:6px 0 0;color:var(--muted)}
 h2{font:600 19px/1.2 var(--serif);margin:0 0 14px}
 section{background:var(--glass);border:1px solid var(--glassline);border-radius:16px;padding:18px 16px;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
@@ -260,7 +262,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 <div id="loadfail" style="display:none;background:#352b2e;border-left:4px solid #ffc266;border-radius:10px;padding:12px 14px;font-size:14px">The calculator did not finish loading. If this was opened from a message, email or file preview, open the web link in Safari instead. Older iPhones need iOS 12 or newer, so a software update may also help.</div>
 <noscript><div style="background:#352b2e;border-left:4px solid #ffc266;border-radius:10px;padding:12px 14px;font-size:14px">This app needs JavaScript. Turn it on in Safari settings, or open the web link in Safari instead of a file preview.</div></noscript>
 <header>
-  <h1>Redox Dosimetry Lab</h1>
+  <h1 aria-label="Redox Dosimetry Lab"><img id="hdrLogo" class="hlogo" alt="Redox" width="141" height="40"><span>Dosimetry Lab</span></h1>
   <p class="sub">Red Light Therapy Protocol Calculator</p>
 </header>
 
@@ -490,7 +492,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <li><b>iPhone:</b> open the app's web link in Safari, tap Share, then Add to Home Screen, then Add.</li>
       <li><b>Android:</b> open the link in Chrome, tap the menu (three dots), then Install app.</li>
       <li>Open it once while online. After that it works without a connection.</li>
-      <li><b>Updates:</b> a new version loads the next time you open the app while online. It can take two opens to show. The version number, App build, is at the very bottom of the page.</li>
+      <li><b>Updates:</b> a new version loads the next time you open the app while online. It can take two opens to show. The build number and release date are at the very bottom of the page.</li>
       <li>A file opened from a message or a file preview will not work on a phone. Use the web link.</li>
     </ul>
   </details>
@@ -634,11 +636,11 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <p class="hint">Profiles, settings and the session logs are saved on this device only.</p>
   <div class="acts"><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 73. Educational estimates, not medical advice.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 78. Released October 25, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 73.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 78. Released October 25, 2026.<br>© 2026 Redox. All rights reserved.</p>
 </main>
 
 <dialog id="editor" aria-labelledby="dlgTitle">
@@ -3063,6 +3065,7 @@ $("#impGo").addEventListener("click",function(){
 });
 
 function initFeatures(){
+  $("#hdrLogo").src=LOGO_URL;   // the same Redox wordmark that is on the protocol cards
   fillLogProfiles();initLib();applyNight();
   if(!safeAck()){$("#safeOk").disabled=true;openD("#safeDlg")}else maybeQs();
   flushShare();
