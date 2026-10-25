@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050203">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Redox Lab">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Redox Dosimetry Lab</title>
 <style>
 :root{
@@ -583,12 +590,15 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   </details>
   <details><summary>Back up, share and import</summary>
     <ul>
-      <li>Open Settings, General, then Back Up and Share.</li>
-      <li><b>Export Panel Profiles</b> lets you tick the profiles to put in a file. Download it, Share it (where your phone offers that) or Copy it. Send the file to another phone, such as a family member's, to share a measured panel. Built-in presets are not needed in the file because every copy of the app has them.</li>
+      <li><b>Share:</b> panel profiles, routines and session logs can go straight to a text message, Messenger or any other app. Tap <b>Share This Routine</b> on the Routines page, <b>Share This Profile</b> in a saved profile's Edit window, or <b>Share</b> on the Session Logs page (it shares what you are viewing). Your phone's share sheet opens with a link. When the other person taps the link, the app opens with the Import window already filled in, and nothing is added until they tap Import.</li>
+      <li>The link carries the data inside it, after the # sign, so it is never sent to a server. A very long item, such as a large log, is too big for a message link, so the share sheet sends it as a file instead, or copies the text.</li>
+      <li>If you installed the app on your iPhone, links open in the browser, which keeps its own saved data. Copy the link from the message, open the installed app, tap Import and paste the link into the box. It reads the link for you.</li>
+      <li>Settings, General, Back Up and Share has the same Share button plus <b>Copy Link</b>, <b>Copy Text</b>, <b>Share File</b> (where your phone offers it) and <b>Download File</b>, with tick boxes to choose what goes in.</li>
+      <li><b>Export Panel Profiles</b> lets you tick the profiles to put in a file. Built-in presets are not needed because every copy of the app has them.</li>
       <li><b>Export Routines</b> lets you tick the routines to share. The panel profiles they use travel in the same file, so the times and distances work on the other phone, and a profile the other phone already has is reused. Preset routines are not needed in the file.</li>
       <li><b>Export Session Logs</b> makes a backup of every log, area and side that keeps exact times. For a spreadsheet, use Download CSV on the Session Logs page instead.</li>
       <li><b>Export Everything</b> makes one complete backup: all your panel profiles, routines and session logs. Import it on a new phone to restore all of it, or on the same phone to fix a mistake.</li>
-      <li><b>Import</b> (also a button on the Session Logs page) takes any of those files, or a session log CSV. Choose the file or paste its text, check the summary line, then tap Import.</li>
+      <li><b>Import</b> (also a button on the Session Logs page) takes a shared link, any of those files, or a session log CSV. Choose the file or paste its text or link, check the summary line, then tap Import.</li>
       <li>Imported panel profiles appear under My Presets, with the reading unit, correction and wavelengths intact. A name that is already taken gets (imported) added. Imported routines appear under My Routines the same way.</li>
       <li>Imported sessions go into the log profile named in the file, and a missing log profile is created. Before you import, the summary tells you how many sessions are already in your logs and which log holds them, and sessions that are already there are skipped so importing the same file twice does not double anything. Untick Skip Sessions That Are Already in My Logs to add them again anyway. When the import finishes, the app shows the log that received the sessions. A CSV from before log profiles existed goes into the log you are viewing.</li>
     </ul>
@@ -624,11 +634,11 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <p class="hint">Profiles, settings and the session logs are saved on this device only.</p>
   <div class="acts"><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 71. Educational estimates, not medical advice.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 72. Educational estimates, not medical advice.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 71.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 72.</p>
 </main>
 
 <dialog id="editor" aria-labelledby="dlgTitle">
@@ -659,6 +669,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <label class="toggle"><input type="checkbox" id="ptogether"><span>Wavelengths fire together. Red and near-infrared cannot be switched separately.</span></label>
   <p class="hint" id="dlgSrc"></p>
   <p class="err" id="dlgErr" role="alert"></p>
+  <button class="btn" id="shareProfile" type="button" hidden style="margin-bottom:12px">Share This Profile</button>
   <div class="actions">
     <button class="btn" id="cancelProfile" type="button">Cancel</button>
     <button class="btn danger" id="delProfile" type="button" hidden>Delete</button>
@@ -705,7 +716,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <h2 id="expTitle" tabindex="-1" autofocus>Export</h2>
   <p class="hint" id="expHint"></p>
   <div id="expList"></div>
-  <div class="actions"><button class="btn primary" id="expDl" type="button">Download File</button><button class="btn" id="expShare" type="button" hidden>Share</button><button class="btn" id="expCopy" type="button">Copy</button><button class="btn" id="expClose" type="button">Close</button></div>
+  <div class="actions"><button class="btn primary" id="expShare" type="button">Share</button><button class="btn" id="expCopyLink" type="button">Copy Link</button><button class="btn" id="expCopy" type="button">Copy Text</button><button class="btn" id="expShareFile" type="button" hidden>Share File</button><button class="btn" id="expDl" type="button">Download File</button><button class="btn" id="expClose" type="button">Close</button></div>
 </dialog>
 <dialog id="impDlg" aria-labelledby="impTitle">
   <h2 id="impTitle" tabindex="-1" autofocus>Import</h2>
@@ -1261,7 +1272,7 @@ function openDlg(id){
   draft=JSON.parse(JSON.stringify(base));draft.ru=draft.ru||"mw";editingId=id;editingBuiltin=!!built;delArmed=false;
   $("#dlgTitle").textContent=!id?"New panel profile":built?"Preset: "+base.name:"Edit panel profile";
   $("#pname").value=draft.name;$("#pfactor").value=draft.factor;$("#ptogether").checked=draft.mode==="fixed";
-  $("#saveProfile").hidden=!saved;
+  $("#saveProfile").hidden=!saved;$("#shareProfile").hidden=!saved;
   $("#savePreset").className=saved?"btn":"btn primary";
   $("#delProfile").hidden=!saved||S.profiles.length<2;$("#delProfile").textContent="Delete";
   $("#dlgErr").textContent="";
@@ -1279,7 +1290,7 @@ function openDlgWith(base){
   draft=JSON.parse(JSON.stringify(base));draft.ru=draft.ru||"mw";editingId=null;editingBuiltin=false;delArmed=false;
   $("#dlgTitle").textContent="New panel profile from measurement";
   $("#pname").value=draft.name||"";$("#pfactor").value=draft.factor;$("#ptogether").checked=draft.mode==="fixed";
-  $("#saveProfile").hidden=true;$("#savePreset").className="btn primary";$("#delProfile").hidden=true;
+  $("#saveProfile").hidden=true;$("#shareProfile").hidden=true;$("#savePreset").className="btn primary";$("#delProfile").hidden=true;
   $("#dlgErr").textContent="";$("#dlgSrc").textContent=draft.src||"";
   dlgUnits();renderDraftRows();
   const dg=$("#editor");if(dg.showModal){if(!dg.open)dg.showModal()}else{dg.className="fb";dg.setAttribute("open","")}
@@ -1739,7 +1750,7 @@ function renderLog(){
     if(w.min>0)bars+='<text x="'+(x+15)+'" y="'+(104-hh)+'" text-anchor="middle" style="fill:#f4ebe6">'+fmt(w.min,0)+'</text>';
   });
   h+='<h3 class="dlg-h">Minutes per week</h3><svg viewBox="0 0 360 134" role="img" aria-label="Minutes of light per week for the last eight weeks">'+bars+'</svg>';
-  h+='<div class="acts"><button class="btn" id="logDl" type="button">Download CSV</button><button class="btn" id="logCopy" type="button">Copy CSV</button><button class="btn" id="logImp" type="button">Import</button><button class="btn danger" id="logClear" type="button">'+(scoped?"Clear "+escH(logScopeName())+" sessions":"Clear this log")+'</button></div>';
+  h+='<div class="acts"><button class="btn" id="logDl" type="button">Download CSV</button><button class="btn" id="logCopy" type="button">Copy CSV</button><button class="btn" id="logShare" type="button">Share</button><button class="btn" id="logImp" type="button">Import</button><button class="btn danger" id="logClear" type="button">'+(scoped?"Clear "+escH(logScopeName())+" sessions":"Clear this log")+'</button></div>';
   h+='<p class="hint">Saved on this device only. Export now and then, because a phone can clear saved web app data.</p>';
   if(!a.length)h+='<p class="empty">No sessions in this log yet. Finish a session with the timer on the Calculator tab and it is logged here automatically.</p>';
   let lastDay="";
@@ -1762,6 +1773,7 @@ function renderLog(){
   };
   $("#logCopy").onclick=function(){copyText(logCsv(),"CSV copied")};
   $("#logImp").onclick=function(){openImport()};
+  $("#logShare").onclick=function(){shareLogsView()};
   let armed=false;
   $("#logClear").onclick=function(){
     if(!armed){armed=true;$("#logClear").textContent="Tap again to confirm";return}
@@ -2018,7 +2030,7 @@ document.addEventListener("click",function(e){
 /* ---------- Safety checklist ---------- */
 const SAFEKEY="rdl.safe.v1";
 function safeAck(){try{return !!localStorage.getItem(SAFEKEY)}catch(e){return true}}
-$("#safeOk").addEventListener("click",function(){try{localStorage.setItem(SAFEKEY,"1")}catch(e){}closeD("#safeDlg");maybeQs()});
+$("#safeOk").addEventListener("click",function(){try{localStorage.setItem(SAFEKEY,"1")}catch(e){}closeD("#safeDlg");maybeQs();flushShare()});
 $("#safeChk").addEventListener("change",function(){$("#safeOk").disabled=!$("#safeChk").checked});
 
 /* ---------- Guided measurement wizard ---------- */
@@ -2312,9 +2324,9 @@ function qsRender(){
 }
 function openQs(){qsI=0;qsRender();$("#qsNever").checked=qsOff();openD("#qsDlg");const a=document.activeElement;if(a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA"))a.blur()}
 function maybeQs(){if(!qsOff())openQs()}
-$("#qsNext").addEventListener("click",function(){if(qsI>=QS.length-1){closeD("#qsDlg");return}qsI++;qsRender();$("#qsTitle").focus()});
+$("#qsNext").addEventListener("click",function(){if(qsI>=QS.length-1){closeD("#qsDlg");flushShare();return}qsI++;qsRender();$("#qsTitle").focus()});
 $("#qsBack").addEventListener("click",function(){if(qsI>0){qsI--;qsRender()}});
-$("#qsSkip").addEventListener("click",function(){closeD("#qsDlg");toast($("#qsNever").checked?"Skipped. It will not open at startup. Find it in Settings, under How to Use.":"Skipped. It opens again next time. Tick Don't show this at startup again to stop that.")});
+$("#qsSkip").addEventListener("click",function(){closeD("#qsDlg");flushShare();toast($("#qsNever").checked?"Skipped. It will not open at startup. Find it in Settings, under How to Use.":"Skipped. It opens again next time. Tick Don't show this at startup again to stop that.")});
 $("#qsNever").addEventListener("change",function(){qsSetOff($("#qsNever").checked);$("#stQs").checked=!$("#qsNever").checked});
 $("#stQs").addEventListener("change",function(){qsSetOff(!$("#stQs").checked)});
 $("#howQs").addEventListener("click",openQs);
@@ -2421,7 +2433,7 @@ function renderRoutines(){
   if(preset){
     html+='<button class="btn" id="rtCopyPreset" type="button">Copy to My Routines</button><p class="hint">Presets cannot be changed. Copy one to My Routines to change its steps, sides, power or pauses.</p>';
   }else{
-    html+='<button class="btn" id="rtAdd" type="button"'+(steps.length>=RT_MAX?" disabled":"")+'>Add Current Protocol</button><p class="hint">Adds what is set up on the Calculator: treatment, area, distance, power option and side.</p>';
+    html+='<div class="acts"><button class="btn" id="rtShare" type="button">Share This Routine</button><button class="btn" id="rtAdd" type="button"'+(steps.length>=RT_MAX?" disabled":"")+'>Add Current Protocol</button></div><p class="hint">Adds what is set up on the Calculator: treatment, area, distance, power option and side.</p>';
   }
   if(steps.length){
     html+='<div class="rtbox"><h3 class="dlg-h" style="margin-top:0">Run this routine</h3>'
@@ -2464,6 +2476,7 @@ $("#rtBody").addEventListener("click",function(e){
   if(t.id==="rtStart"){rtStart();return}
   if(t.id==="rtCopyPreset"){rtCopyPreset();return}
   if(!r||rtIsPreset(r)||rt.phase!=="idle")return;
+  if(t.id==="rtShare"){shareRoutine(r);return}
   if(t.id==="rtAdd"){rtAddFromCalc();return}
   const rs=t.closest("[data-rside]"),rp=t.closest("[data-rp]"),ra=t.closest("[data-ract]");
   if(rs){r.steps[+rs.parentElement.dataset.i].side=rs.dataset.rside;save();renderRoutines();return}
@@ -2648,12 +2661,12 @@ function routineOut(r){
 function sessionOut(e){return {ts:e.ts,tr:e.tr,trn:e.trn,ar:e.ar,arn:e.arn,side:e.side||"",panel:e.panel,light:e.light,dist:e.dist,unit:e.unit,power:e.power,sec:e.sec,dose:e.dose,note:e.note||"",logProfile:lpName(lpOf(e))}}
 const ticked=function(sel){return [...document.querySelectorAll(sel)].filter(function(c){return c.checked}).map(function(c){return c.dataset.x})};
 const fileHead=function(type){return {app:FILE_APP,type:type,version:1,exported:new Date().toISOString()}};
-function profilesFile(){
-  const ids=ticked("#expList [data-x]"),list=S.profiles.filter(function(p){return ids.indexOf(p.id)>=0}).map(profileOut);
+function profilesFile(idsArg){
+  const ids=idsArg||ticked("#expList [data-x]"),list=S.profiles.filter(function(p){return ids.indexOf(p.id)>=0}).map(profileOut);
   return {count:list.length,text:JSON.stringify(Object.assign(fileHead("panel-profiles"),{profiles:list}),null,1)};
 }
-function routinesFile(){
-  const ids=ticked("#expList [data-x]"),rs=S.routines.filter(function(r){return ids.indexOf(r.id)>=0}),pids=[];
+function routinesFile(idsArg){
+  const ids=idsArg||ticked("#expList [data-x]"),rs=S.routines.filter(function(r){return ids.indexOf(r.id)>=0}),pids=[];
   rs.forEach(function(r){r.steps.forEach(function(s){const pf=profById(s.pid);if(pf&&S.profiles.some(function(x){return x.id===pf.id})&&pids.indexOf(pf.id)<0)pids.push(pf.id)})});
   return {count:rs.length,text:JSON.stringify(Object.assign(fileHead("routines"),{routines:rs.map(routineOut),profiles:S.profiles.filter(function(p){return pids.indexOf(p.id)>=0}).map(profileOut)}),null,1)};
 }
@@ -2689,7 +2702,7 @@ function openExport(kind){
     $("#expHint").textContent=n?"A backup of all "+n+" sessions, with every log, area and side, that keeps exact times. For a spreadsheet, use Download CSV on the Session Logs page.":"There are no sessions to export yet.";
     $("#expList").innerHTML="";
   }
-  $("#expShare").hidden=!canShareFiles();
+  $("#expShareFile").hidden=!canShareFiles();
   openD("#expDlg");
 }
 $("#stExpProf").addEventListener("click",function(){openExport("profiles")});
@@ -2705,7 +2718,17 @@ $("#expDl").addEventListener("click",function(){
 });
 $("#expShare").addEventListener("click",function(){
   const f=expNow();if(!f.count){toast(expEmpty());return}
+  shareOut(f.text,{profiles:"Panel profiles",routines:"Routines",logs:"Session logs",all:"A full backup"}[ex.kind],expName());
+});
+$("#expShareFile").addEventListener("click",function(){
+  const f=expNow();if(!f.count){toast(expEmpty());return}
   try{navigator.share({files:[new File([f.text],expName(),{type:"application/json"})],title:"Redox Dosimetry Lab"}).catch(function(){})}catch(e){copyText(f.text,"Copied")}
+});
+$("#expCopyLink").addEventListener("click",async function(){
+  const f=expNow();if(!f.count){toast(expEmpty());return}
+  const link=await shareLink(f.text);
+  if(link)copyText(link,"Link copied. Paste it into a message.");
+  else copyText(f.text,"A link is not available here or it would be too long, so the text was copied instead.");
 });
 $("#expCopy").addEventListener("click",function(){
   const f=expNow();if(!f.count){toast(expEmpty());return}
@@ -2835,7 +2858,7 @@ function cleanRoutine(o){
 }
 const routineSig=function(o){return JSON.stringify([o.gap,o.note||"",o.steps.map(function(s){return [s.tr,s.ar,s.side||"",s.p,s.dcm==null?null:s.dcm,s.dose==null?null:s.dose,s.depth==null?null:s.depth,s.panel||""]})])};
 function importRoutines(list,map){
-  const taken=function(n){return S.routines.some(function(r){return r.name.toLowerCase()===n.toLowerCase()})||PRESET_ROUTINES.some(function(r){return r.name.toLowerCase()===n.toLowerCase()})};
+  const taken=function(n){return S.routines.some(function(r){return r.name.toLowerCase()===n.toLowerCase()})};
   const pidFor=function(name){
     if(!name)return null;
     const fin=(map&&map[name])||name;
@@ -2868,6 +2891,12 @@ function analyzeImport(){
   imp.kind="";imp.data=null;go.disabled=true;$("#impSkipRow").hidden=true;
   if(!t){msg.textContent="";return}
   if(t.length>3000000){msg.textContent="That file is too large.";return}
+  const lm=/#share=([A-Za-z0-9_-]+)/.exec(t);
+  if(lm&&!/^[\[{]/.test(t)){
+    msg.textContent="Reading the link...";
+    unpackText(lm[1]).then(function(txt){$("#impText").value=txt;analyzeImport()}).catch(function(){msg.textContent="That link could not be read."});
+    return;
+  }
   let j=null;try{j=JSON.parse(t)}catch(e){}
   const isObj=j&&typeof j==="object";
   const profs=function(a){return (Array.isArray(a)?a:[]).slice(0,50).map(cleanProfile).filter(Boolean)};
@@ -2922,6 +2951,11 @@ function openImport(){
   const a=document.activeElement;if(a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA"))a.blur();
 }
 $("#stImport").addEventListener("click",openImport);
+$("#shareProfile").addEventListener("click",function(){
+  const p=S.profiles.find(function(x){return x.id===editingId});if(!p)return;
+  const f=profilesFile([p.id]);
+  shareOut(f.text,'The panel profile "'+p.name+'"',"redox-panel-"+slugOf(p.name)+".json");
+});
 $("#impCancel").addEventListener("click",function(){closeD("#impDlg")});
 $("#impPick").addEventListener("click",function(){$("#impFile").click()});
 $("#impFile").addEventListener("change",function(){
@@ -2934,6 +2968,73 @@ $("#impFile").addEventListener("change",function(){
 });
 $("#impText").addEventListener("input",analyzeImport);
 $("#impSkip").addEventListener("change",analyzeImport);
+/* Sharing: the data goes inside a link (after the # so no server ever sees it), through the phone's own share sheet to text, Messenger and so on. */
+const b64u=function(bytes){let s="";for(let i=0;i<bytes.length;i+=8192)s+=String.fromCharCode.apply(null,bytes.subarray(i,i+8192));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")};
+const unb64u=function(t){t=t.replace(/-/g,"+").replace(/_/g,"/");while(t.length%4)t+="=";const s=atob(t),a=new Uint8Array(s.length);for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return a};
+async function packText(text){
+  const bytes=new TextEncoder().encode(text);
+  try{
+    if(typeof CompressionStream!=="undefined"&&typeof Response!=="undefined"){
+      const cs=new CompressionStream("gzip"),wr=cs.writable.getWriter();wr.write(bytes);wr.close();
+      return "g"+b64u(new Uint8Array(await new Response(cs.readable).arrayBuffer()));
+    }
+  }catch(e){}
+  return "p"+b64u(bytes);
+}
+async function unpackText(s){
+  const kind=s.charAt(0),bytes=unb64u(s.slice(1));
+  if(kind==="p")return new TextDecoder().decode(bytes);
+  if(kind==="g"&&typeof DecompressionStream!=="undefined"){
+    const ds=new DecompressionStream("gzip"),wr=ds.writable.getWriter();wr.write(bytes);wr.close();
+    const rd=ds.readable.getReader(),parts=[];let n=0;
+    for(;;){const r=await rd.read();if(r.done)break;n+=r.value.length;if(n>3000000){rd.cancel();throw new Error("too large")}parts.push(r.value)}
+    const all=new Uint8Array(n);let o=0;parts.forEach(function(x){all.set(x,o);o+=x.length});
+    return new TextDecoder().decode(all);
+  }
+  throw new Error("unreadable");
+}
+function shareBase(){return location.protocol==="https:"?location.origin+location.pathname:""}
+async function shareLink(text){
+  const base=shareBase();if(!base)return "";
+  const url=base+"#share="+await packText(text);
+  return url.length<=7500?url:"";     // longer than this is awkward in a message, so a file is used instead
+}
+async function shareOut(text,label,filename){
+  const link=await shareLink(text);
+  try{
+    if(navigator.share){
+      if(link){await navigator.share({title:"Redox Dosimetry Lab",text:label+". Open the link to add it to Redox Dosimetry Lab.",url:link});return "link"}
+      if(canShareFiles()){await navigator.share({files:[new File([text],filename,{type:"application/json"})],title:"Redox Dosimetry Lab"});return "file"}
+      if(text.length<=30000){await navigator.share({title:"Redox Dosimetry Lab",text:text});return "text"}
+    }
+  }catch(e){if(e&&e.name==="AbortError")return "cancel"}
+  copyText(link||text,link?"Link copied. Paste it into a message.":"Copied. Paste it into a message.");
+  return "copied";
+}
+function shareRoutine(r){
+  if(!r||rtIsPreset(r))return;
+  const f=routinesFile([r.id]);
+  shareOut(f.text,'The routine "'+r.name+'"',"redox-routine-"+slugOf(r.name)+".json");
+}
+function shareLogsView(){
+  const list=logView().slice().sort(function(a,b){return a.ts-b.ts});
+  if(!list.length){toast("There are no sessions to share here");return}
+  const label=plural(list.length,"session")+" from the "+lpName(S.logActive)+" log"+(S.logArea&&S.logArea!=="all"?" ("+logScopeName()+")":"");
+  shareOut(JSON.stringify(Object.assign(fileHead("session-logs"),{logProfiles:[lpName(S.logActive)],sessions:list.map(sessionOut)}),null,1),label,"redox-session-logs-"+dayStamp()+".json");
+}
+/* opening a shared link: the Import dialog appears with the data filled in, and nothing is added until Import is tapped */
+let pendingShare=null;
+(function(){const m=/^#share=([A-Za-z0-9_-]+)$/.exec(location.hash);if(m){pendingShare=m[1];try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}}})();
+async function flushShare(){
+  if(!pendingShare)return;
+  if($("#safeDlg").hasAttribute("open")||$("#qsDlg").hasAttribute("open"))return;   // the checklist and the tour come first
+  const packed=pendingShare;pendingShare=null;
+  try{const text=await unpackText(packed);openImport();$("#impText").value=text;analyzeImport()}
+  catch(e){toast("That shared link could not be read.")}
+}
+$("#safeDlg").addEventListener("close",flushShare);
+$("#qsDlg").addEventListener("close",flushShare);
+
 const sessToast=function(r,inLog){
   return r.added
     ?"Added "+plural(r.added,"session")+(r.logs.length?" to "+r.logs.join(" and "):"")+(r.dup?". "+r.dup+(r.dup>1?" were":" was")+" already there.":".")+(r.show?" Showing the "+r.show+" log"+(inLog?".":" under Settings, Session Logs."):"")
@@ -2964,11 +3065,34 @@ $("#impGo").addEventListener("click",function(){
 function initFeatures(){
   fillLogProfiles();initLib();applyNight();
   if(!safeAck()){$("#safeOk").disabled=true;openD("#safeDlg")}else maybeQs();
+  flushShare();
 }
 
 fillSelects();fillProfiles();initFeatures();setView(S.view);render();
 window.__rdlReady=true;
 })();
+</script>
+<script>
+/* Service worker with a visible "new version" prompt. A new build is fetched fresh (not from the browser cache)
+   and, once ready, a bar offers a reload. Installed phone apps are also re-checked each time they come to the front. */
+if("serviceWorker" in navigator && location.protocol.indexOf("http")===0){
+  (function(){
+    var hadCtl=!!navigator.serviceWorker.controller,reg=null;
+    function bar(){
+      if(document.getElementById("updBar"))return;
+      var b=document.createElement("div");b.id="updBar";b.setAttribute("role","status");
+      b.style.cssText="position:fixed;left:12px;right:12px;bottom:12px;z-index:10000;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:14px;background:var(--raised);color:var(--ink);border:1px solid var(--line);box-shadow:0 6px 24px rgba(0,0,0,.5);font-size:14px";
+      b.innerHTML='<span>A new version is ready.</span><button type="button" style="min-height:40px;padding:0 16px;border:0;border-radius:10px;background:var(--ink);color:var(--ground);font:inherit;font-weight:600;cursor:pointer">Reload</button>';
+      b.querySelector("button").onclick=function(){if(window.__rdlBusy&&window.__rdlBusy()&&!confirm("A session or routine is running. Reload anyway?"))return;location.reload()};
+      document.body.appendChild(b);
+    }
+    navigator.serviceWorker.addEventListener("controllerchange",function(){if(hadCtl)bar()});
+    window.addEventListener("load",function(){
+      navigator.serviceWorker.register("sw.js").then(function(r){reg=r;try{r.update()}catch(e){}}).catch(function(){});
+    });
+    document.addEventListener("visibilitychange",function(){if(!document.hidden&&reg){try{reg.update()}catch(e){}}});
+  })();
+}
 </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const CACHE = "redox-lab-v71";
+const CACHE = "redox-lab-v72";
 const ASSETS = ["./", "./index.html", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png"];
 
