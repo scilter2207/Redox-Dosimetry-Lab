@@ -4,13 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050203">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Redox Lab">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Redox Dosimetry Lab</title>
 <style>
 :root{
@@ -234,7 +227,11 @@ details.sub .paper{background:var(--surface)}
 .rtt{font:600 21px var(--serif);margin:2px 0 6px}
 #rtMini{position:fixed;left:12px;right:12px;bottom:12px;z-index:9000;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px 10px 14px;border-radius:14px;background:var(--raised);color:var(--ink);border:1px solid var(--red);box-shadow:0 6px 24px rgba(0,0,0,.5);font-size:14px}
 #rtMini button{min-height:36px;padding:0 14px;border:0;border-radius:10px;background:var(--ink);color:var(--ground);font:inherit;font-weight:600;cursor:pointer}
-#impText{width:100%;min-height:96px;background:var(--raised);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:13px/1.35 ui-monospace,Menlo,Consolas,monospace;resize:vertical}
+#impText,#rtNote{width:100%;min-height:96px;background:var(--raised);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:13px/1.35 ui-monospace,Menlo,Consolas,monospace;resize:vertical}
+.presettag{display:inline-block;margin:0 0 8px;padding:2px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;color:var(--muted)}
+.rtnote{margin:6px 0 10px}
+.rtnote summary{cursor:pointer;color:var(--muted);font-size:14px}
+.rtnote p{margin:6px 0 0;font-size:14px;color:var(--muted)}
 .areachips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
 .conv{display:block;margin-top:3px;font-size:12px;color:var(--muted)}
 #rows td{vertical-align:top}
@@ -530,8 +527,9 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <details><summary>Routines (playlists of protocols)</summary>
     <ul>
       <li>Open them from the Calculator tab, then the Routines sub tab. A routine is a playlist of up to 10 protocols that run back to back, for example Face, then Neck, then Left Knee, then Right Knee.</li>
-      <li><b>Build one:</b> tap New, name it and pick the pause between steps. Then set up a protocol on the Calculator and tap Add to Routine (or Add Current Protocol on the Routines page). Each step keeps its treatment, area, distance, power option and side, and the times are worked out from your panel's readings.</li>
-      <li><b>Customize:</b> every step can be switched between Fast and Gentle and, for areas that come in pairs, between Left, Right and Both. Use Up and Down to reorder, Copy to repeat a step, Replace to swap it for what is set up now, and Remove to drop it. Edit renames the routine or changes the pause.</li>
+      <li><b>Preset routines:</b> the picker also lists ready-made routines: Leg Recovery, Back and Shoulder Recovery, Knee Care, Shoulder and Elbow Care, Face, Neck and Chest Skin Care, Scalp Hair Regrowth, and Acne: Face, Chest and Upper Back. Each is assembled from the app's own protocols, with Left and Right steps where an area comes in pairs. Open About This Routine to see each treatment's dose window, usual frequency and evidence rating from the Research tab. Distances and times are worked out from your active panel. Presets cannot be changed, so tap Copy to My Routines to make your own version.</li>
+      <li><b>Build one:</b> tap New, name it, add optional notes and pick the pause between steps. Then set up a protocol on the Calculator and tap Add to Routine (or Add Current Protocol on the Routines page). Each step keeps its treatment, area, distance, power option and side, and the times are worked out from your panel's readings.</li>
+      <li><b>Customize:</b> every step can be switched between Fast and Gentle and, for areas that come in pairs, between Left, Right and Both. Use Up and Down to reorder, Copy to repeat a step, Replace to swap it for what is set up now, Lock Distance to fix a step at the distance recommended today instead of letting it follow your panel, and Remove to drop it. Edit renames the routine or changes the pause.</li>
       <li><b>Run it:</b> tap Start Routine. Each step shows where to place the panel and counts down, with a beep when it ends. Between steps there is a pause so you can move, or you can choose to tap Next yourself. Pause, Skip Step and Stop Routine are always available.</li>
       <li><b>Panel control:</b> with a panel connected on the Control Panel tab, tick Run the Panel for Each Step. The app sends one step at a time, so the panel is off during pauses and stops if the app stops checking in. Pause turns the panel off and Resume continues with the time that is left.</li>
       <li>Every finished step is logged with its side and a note naming the routine and step. Pick the log with Log to before you start.</li>
@@ -587,9 +585,11 @@ svg text{fill:var(--muted);font:10px var(--sans)}
     <ul>
       <li>Open Settings, General, then Back Up and Share.</li>
       <li><b>Export Panel Profiles</b> lets you tick the profiles to put in a file. Download it, Share it (where your phone offers that) or Copy it. Send the file to another phone, such as a family member's, to share a measured panel. Built-in presets are not needed in the file because every copy of the app has them.</li>
+      <li><b>Export Routines</b> lets you tick the routines to share. The panel profiles they use travel in the same file, so the times and distances work on the other phone, and a profile the other phone already has is reused. Preset routines are not needed in the file.</li>
       <li><b>Export Session Logs</b> makes a backup of every log, area and side that keeps exact times. For a spreadsheet, use Download CSV on the Session Logs page instead.</li>
-      <li><b>Import</b> (also a button on the Session Logs page) takes a panel profiles file, a session log backup or a session log CSV. Choose the file or paste its text, check the summary line, then tap Import.</li>
-      <li>Imported panel profiles appear under My Presets, with the reading unit, correction and wavelengths intact. A name that is already taken gets (imported) added.</li>
+      <li><b>Export Everything</b> makes one complete backup: all your panel profiles, routines and session logs. Import it on a new phone to restore all of it, or on the same phone to fix a mistake.</li>
+      <li><b>Import</b> (also a button on the Session Logs page) takes any of those files, or a session log CSV. Choose the file or paste its text, check the summary line, then tap Import.</li>
+      <li>Imported panel profiles appear under My Presets, with the reading unit, correction and wavelengths intact. A name that is already taken gets (imported) added. Imported routines appear under My Routines the same way.</li>
       <li>Imported sessions go into the log profile named in the file, and a missing log profile is created. Before you import, the summary tells you how many sessions are already in your logs and which log holds them, and sessions that are already there are skipped so importing the same file twice does not double anything. Untick Skip Sessions That Are Already in My Logs to add them again anyway. When the import finishes, the app shows the log that received the sessions. A CSV from before log profiles existed goes into the log you are viewing.</li>
     </ul>
   </details>
@@ -618,17 +618,17 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <h3 class="dlg-h">Safety</h3>
   <button class="btn" id="stSafety" type="button">Open the safety checklist</button>
   <h3 class="dlg-h">Back Up and Share</h3>
-  <p class="hint">Move your panel profiles and session logs to another phone, share a panel profile, or restore a backup.</p>
-  <div class="acts"><button class="btn" id="stExpProf" type="button">Export Panel Profiles</button><button class="btn" id="stExpLogs" type="button">Export Session Logs</button><button class="btn" id="stImport" type="button">Import</button></div>
+  <p class="hint">Move your panel profiles, routines and session logs to another phone, share a panel profile or routine, or restore a backup.</p>
+  <div class="acts"><button class="btn" id="stExpProf" type="button">Export Panel Profiles</button><button class="btn" id="stExpRout" type="button">Export Routines</button><button class="btn" id="stExpLogs" type="button">Export Session Logs</button><button class="btn" id="stExpAll" type="button">Export Everything</button><button class="btn" id="stImport" type="button">Import</button></div>
   <h3 class="dlg-h">Saved data</h3>
   <p class="hint">Profiles, settings and the session logs are saved on this device only.</p>
   <div class="acts"><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 70. Educational estimates, not medical advice.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 71. Educational estimates, not medical advice.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 70.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 71.</p>
 </main>
 
 <dialog id="editor" aria-labelledby="dlgTitle">
@@ -693,6 +693,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 <dialog id="rtDlg" aria-labelledby="rtTitle">
   <h2 id="rtTitle" tabindex="-1" autofocus>New routine</h2>
   <label><span class="l">Name</span><input id="rtName" type="text" maxlength="40" placeholder="For example Morning Routine"></label>
+  <label><span class="l">Notes (optional)</span><textarea id="rtNote" rows="3" maxlength="1500" placeholder="For example: after workouts, 3 times a week"></textarea></label>
   <label><span class="l">Pause between steps</span><select id="rtGap"><option value="-1">Wait for me to tap Next</option><option value="10">10 seconds</option><option value="20">20 seconds</option><option value="30">30 seconds</option><option value="60">60 seconds</option></select></label>
   <p class="hint">The pause gives you time to move the panel and get into position. The panel is off during it.</p>
   <div class="actions"><button class="btn primary" id="rtSave" type="button">Save</button><button class="btn danger" id="rtDelete" type="button" hidden>Delete</button><button class="btn" id="rtCancel" type="button">Cancel</button></div>
@@ -2296,7 +2297,7 @@ const QS=[
  {t:"2. Choose a Treatment",h:"<p>Pick what you are treating and the target area. The app chooses the wavelength and shows a published dose window.</p><p>The Evidence section below shows how strong the research is and links the sources.</p>"},
  {t:"3. Read the Recommendation",h:"<p>You get a distance and two options: <b>Fast</b> at full power and <b>Gentle</b> at half power. Both deliver the same dose, and times are rounded up to the next half minute.</p><p>Change the time goal or type a distance to adjust it. <b>Lab View (Advanced)</b> adds depth, a dose slider and charts.</p>"},
  {t:"4. Run a Session",h:"<p>Tap <b>Start</b> on the Session Timer. It beeps when a part ends and logs the session for you when it finishes.</p><p>For paired areas like the knee or shoulder, pick <b>Left</b>, <b>Right</b> or <b>Both</b> next to Log to. Have an ESP32 panel? The <b>Control Panel</b> tab can run the session for you.</p>"},
- {t:"5. Build a Routine",h:"<p>Chain up to 10 protocols like a playlist. Set up each protocol on the Calculator and tap <b>Add to Routine</b>, then open <b>Calculator, Routines</b> to name it, reorder it and tap <b>Start Routine</b>.</p><p>Each step tells you where to place the panel, with a pause between steps. With a panel connected, the routine runs the panel for you.</p>"},
+ {t:"5. Build a Routine",h:"<p>Chain up to 10 protocols like a playlist. Set up each protocol on the Calculator and tap <b>Add to Routine</b>, then open <b>Calculator, Routines</b> to name it, reorder it and tap <b>Start Routine</b>.</p><p>Each step tells you where to place the panel, with a pause between steps. With a panel connected, the routine runs the panel for you. Not sure where to start? Try a <b>Preset Routine</b>, such as Knee Care or Leg Recovery.</p>"},
  {t:"6. Track Your Sessions",h:"<p>Every finished session is logged automatically, with its side and the routine it came from. Use <b>Log to</b> to keep separate logs, such as Panel and Mask.</p><p>Inside each log, sessions are sorted by treatment area, and paired areas split into Left and Right. Tap a chip to see just that area. Find it all under the gear, <b>Session Logs</b>.</p>"},
  {t:"7. Explore",h:"<p>The <b>book icon</b> opens Learning and Resources: short guides and a research library.</p><p>The <b>gear</b> opens Settings: Session Logs, the full How to Use guide, and the safety checklist. The switch at the very top turns on the Red Screen Filter for night use.</p>"}
 ];
@@ -2320,56 +2321,109 @@ $("#howQs").addEventListener("click",openQs);
 
 /* ---------- Routines (up to 10 protocols run back to back, optionally driving the panel) ---------- */
 const RT_MAX=10;
+const uid=function(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,7)};
 const rt={phase:"idle",i:0,steps:[],plans:[],titles:[],gap:20,acc:0,left:0,t0:0,running:false,iv:null,panel:false,panelOk:true,name:"",fired:0,lastBeep:-1};
 window.__rdlBusy=function(){return rt.phase!=="idle"&&rt.phase!=="done"||tm.running};
 function profById(id){return S.profiles.find(function(p){return p.id===id})||BUILTIN.find(function(p){return p.id===id})||null}
+/* Preset routines: assembled from the app's own protocols. The distance is picked for whatever panel is active. */
+const PRESET_ROUTINES=[
+ {id:"pr-legs",name:"Leg Recovery",gap:30,steps:[["muscle","thigh","left"],["muscle","thigh","right"],["muscle","calf","left"],["muscle","calf","right"]]},
+ {id:"pr-back",name:"Back and Shoulder Recovery",gap:30,steps:[["muscle","upback"],["muscle","lowback"],["muscle","shoulder","left"],["muscle","shoulder","right"]]},
+ {id:"pr-knees",name:"Knee Care",gap:30,steps:[["joint","knee","left"],["joint","knee","right"]]},
+ {id:"pr-joints",name:"Shoulder and Elbow Care",gap:30,steps:[["joint","shoulder","left"],["joint","shoulder","right"],["joint","elbow","left"],["joint","elbow","right"]]},
+ {id:"pr-skin",name:"Face, Neck and Chest Skin Care",gap:20,steps:[["skin","face"],["skin","neck"],["skin","chest"]]},
+ {id:"pr-hair",name:"Scalp Hair Regrowth",gap:20,steps:[["hair","scalp"]]},
+ {id:"pr-acne",name:"Acne: Face, Chest and Upper Back",gap:20,steps:[["acne","face"],["acne","chest"],["acne","upback"]]}
+];
+const rtIsPreset=function(r){return !!r&&String(r.id).indexOf("pr-")===0};
+function rtStepsOf(r){
+  if(!r)return [];
+  if(!rtIsPreset(r))return r.steps;
+  return r.steps.map(function(s){return {tr:s[0],ar:s[1],side:s[2]||"",p:100,dcm:null,pid:null,dose:null,depth:null}});
+}
+function presetNote(r){
+  const ids=[];r.steps.forEach(function(s){if(ids.indexOf(s[0])<0)ids.push(s[0])});
+  const parts=ids.map(function(id){
+    const T=TREATMENTS.find(function(t){return t.id===id}),st=STATUS[id];
+    return T.name+": dose window "+T.dose[0]+" to "+T.dose[1]+" J/cm\u00b2 (the app uses "+fmt(T.def!=null?T.def:(T.dose[0]+T.dose[1])/2)+"), usually "+T.freq.charAt(0).toLowerCase()+T.freq.slice(1)+". Evidence: "+BADGE[st[0]][1]+". "+st[1];
+  });
+  return "Built from the app's own protocols. "+parts.join(" ")+" Distances and times are worked out from your active panel. Most of the research used lasers rather than panels, so treat the doses as a starting point, and copy the routine to My Routines to change it.";
+}
+function rtNoteOf(r){return rtIsPreset(r)?presetNote(r):(r&&r.note)||""}
 function stepModel(st){
   const prof=profById(st.pid)||P();
   const m=model({prof:prof,treatment:st.tr,area:st.ar,dose:st.dose,depth:st.depth});
-  return {m:m,prof:prof,pl:m.plan(st.dcm,st.p,m.dose),raw:m.total(st.dcm,st.p,m.dose)};
+  let dcm=st.dcm;
+  if(dcm==null){const rec=recommend(m);dcm=rec?rec.d:null}   // no saved distance: use the one recommended for this panel
+  const pl=dcm!=null?m.plan(dcm,st.p,m.dose):null;
+  return {m:m,prof:prof,dcm:dcm,pl:pl,raw:dcm!=null?m.total(dcm,st.p,m.dose):null};
 }
 function stepTitle(m,st){return m.T.name+", "+m.A.name+(st.side?" ("+SIDE_NAMES[st.side]+")":"")}
-function rtCur(){return S.routines.find(function(r){return r.id===S.routineActive})||null}
+function rtCur(){return S.routines.find(function(r){return r.id===S.routineActive})||PRESET_ROUTINES.find(function(r){return r.id===S.routineActive})||null}
 function rtFromCalc(){
   if(!LAST){toast("Set up a protocol on the Calculator tab first");return null}
   return {tr:LAST.m.T.id,ar:LAST.m.A.id,side:sideFor(LAST.m.A.id),p:tm.p,dcm:LAST.dcm,pid:S.active,dose:S.dose,depth:S.depthManual};
 }
+function rtUserTarget(){
+  let r=S.routines.find(function(x){return x.id===S.routineActive})||S.routines[0]||null;
+  if(!r){r={id:uid("r"),name:"My Routine",gap:20,note:"",steps:[]};S.routines.push(r)}
+  S.routineActive=r.id;return r;
+}
 function rtAddFromCalc(){
   const n=rtFromCalc();if(!n)return;
-  let r=rtCur();
-  if(!r){r={id:"r"+Date.now(),name:"My Routine",gap:20,steps:[]};S.routines.push(r);S.routineActive=r.id}
+  const r=rtUserTarget();
   if(r.steps.length>=RT_MAX){toast("A routine holds up to "+RT_MAX+" steps");return}
   r.steps.push(n);save();
   toast("Added to "+r.name+", step "+r.steps.length+" of "+RT_MAX+". Open Routines to run it.");
   if(document.body.dataset.view==="routines")renderRoutines();
 }
+function rtCopyPreset(){
+  const src=rtCur();if(!rtIsPreset(src))return;
+  let name=src.name,k=1;
+  const taken=function(n){return S.routines.some(function(r){return r.name.toLowerCase()===n.toLowerCase()})};
+  if(taken(name)){name=src.name+" (copy)";while(taken(name)){k++;name=src.name+" (copy "+k+")"}}
+  const r={id:uid("r"),name:name,gap:src.gap,note:presetNote(src),steps:rtStepsOf(src).map(function(s){return Object.assign({},s)})};
+  S.routines.push(r);S.routineActive=r.id;save();renderRoutines();
+  toast("Copied to My Routines. You can change it now.");
+}
 function rtFillSel(){
   const s=$("#rtSelect"),idle=rt.phase==="idle";
-  s.innerHTML=S.routines.map(function(r){return '<option value="'+escH(r.id)+'">'+escH(r.name)+'</option>'}).join("");
-  if(rtCur())s.value=S.routineActive;
-  s.hidden=!S.routines.length;s.disabled=!idle;$("#rtNew").disabled=!idle;$("#rtEdit").disabled=!idle||!rtCur();
+  if(!rtCur()){S.routineActive=S.routines.length?S.routines[0].id:PRESET_ROUTINES[0].id;save()}
+  const opt=function(r){return '<option value="'+escH(r.id)+'">'+escH(r.name)+'</option>'};
+  s.innerHTML=(S.routines.length?'<optgroup label="My Routines">'+S.routines.map(opt).join("")+'</optgroup>':'')+'<optgroup label="Preset Routines">'+PRESET_ROUTINES.map(opt).join("")+'</optgroup>';
+  s.value=S.routineActive;s.disabled=!idle;
+  $("#rtNew").disabled=!idle;$("#rtEdit").disabled=!idle||rtIsPreset(rtCur());
 }
 function renderRoutines(){
   rtFillSel();
   const r=rtCur(),b=$("#rtBody");
   if(rt.phase!=="idle"){rtRender(true);return}
-  if(!r){b.innerHTML='<p class="empty">No routines yet. Tap New to name one, then use Add to Routine on the Calculator, or Add Current Protocol here.</p>';return}
+  const preset=rtIsPreset(r),steps=rtStepsOf(r),note=rtNoteOf(r);
   let tot=0,html="";
-  r.steps.forEach(function(st,i){
+  steps.forEach(function(st,i){
     const x=stepModel(st),m=x.m,pl=x.pl;
     if(pl)tot+=pl.total;
     html+='<div class="rstep"><b>'+(i+1)+'. '+escH(stepTitle(m,st))+'</b>'
-      +'<p class="hint">'+(pl?(st.p===100?"Fast":"Gentle")+", "+st.p+"% power, "+fmt(fromCm(st.dcm,x.prof.unit),1)+" "+x.prof.unit+", "+fmtMin(pl.total)+", "+escH(m.segs.map(function(s){return s.label}).join(" + ")):"Needs panel readings. Use Replace to update this step.")+(profById(st.pid)?"":" The saved panel profile is gone, so the active panel is used.")+'</p>'
-      +(SIDED.has(st.ar)?'<div class="seg" data-i="'+i+'" role="group" aria-label="Side">'+["left","right","both"].map(function(k){return '<button type="button" data-rside="'+k+'" aria-pressed="'+(st.side===k)+'">'+SIDE_NAMES[k]+'</button>'}).join("")+'</div>':'')
-      +'<div class="seg" data-i="'+i+'" role="group" aria-label="Power option"><button type="button" data-rp="100" aria-pressed="'+(st.p===100)+'">Fast, 100%</button><button type="button" data-rp="50" aria-pressed="'+(st.p===50)+'">Gentle, 50%</button></div>'
-      +'<div class="rbtns" data-i="'+i+'">'+(i>0?'<button class="btn" type="button" data-ract="up">Up</button>':'')+(i<r.steps.length-1?'<button class="btn" type="button" data-ract="down">Down</button>':'')+'<button class="btn" type="button" data-ract="copy"'+(r.steps.length>=RT_MAX?' disabled':'')+'>Copy</button><button class="btn" type="button" data-ract="replace">Replace</button><button class="btn danger" type="button" data-ract="remove">Remove</button></div></div>';
+      +'<p class="hint">'+(pl?(st.p===100?"Fast":"Gentle")+", "+st.p+"% power, "+fmt(fromCm(x.dcm,x.prof.unit),1)+" "+x.prof.unit+(st.dcm==null?" (recommended for your panel)":"")+", "+fmtMin(pl.total)+", "+escH(m.segs.map(function(s){return s.label}).join(" + ")):"Needs panel readings. "+(preset?"Add readings to your panel profile first.":"Use Replace to update this step."))+(st.pid&&!profById(st.pid)?" The saved panel profile is gone, so the active panel is used.":"")+'</p>';
+    if(!preset){
+      html+=(SIDED.has(st.ar)?'<div class="seg" data-i="'+i+'" role="group" aria-label="Side">'+["left","right","both"].map(function(k){return '<button type="button" data-rside="'+k+'" aria-pressed="'+(st.side===k)+'">'+SIDE_NAMES[k]+'</button>'}).join("")+'</div>':'')
+        +'<div class="seg" data-i="'+i+'" role="group" aria-label="Power option"><button type="button" data-rp="100" aria-pressed="'+(st.p===100)+'">Fast, 100%</button><button type="button" data-rp="50" aria-pressed="'+(st.p===50)+'">Gentle, 50%</button></div>'
+        +'<div class="rbtns" data-i="'+i+'">'+(i>0?'<button class="btn" type="button" data-ract="up">Up</button>':'')+(i<steps.length-1?'<button class="btn" type="button" data-ract="down">Down</button>':'')+'<button class="btn" type="button" data-ract="copy"'+(steps.length>=RT_MAX?' disabled':'')+'>Copy</button><button class="btn" type="button" data-ract="replace">Replace</button>'+(st.dcm==null&&pl?'<button class="btn" type="button" data-ract="lock">Lock Distance</button>':'')+'<button class="btn danger" type="button" data-ract="remove">Remove</button></div>';
+    }
+    html+='</div>';
   });
-  const gaps=r.gap>0?r.gap*Math.max(0,r.steps.length-1):0;
-  let head='<p class="hint"><b>'+r.steps.length+' of '+RT_MAX+' steps</b>';
-  if(r.steps.length)head+=", about "+fmtMin(halfUp(tot+gaps))+(r.gap>0?" with "+r.gap+" second pauses":(r.gap<0?", and you tap Next between steps":""));
+  const gaps=r.gap>0?r.gap*Math.max(0,steps.length-1):0;
+  let head='<p class="hint"><b>'+(preset?plural(steps.length,'step'):steps.length+' of '+RT_MAX+' steps')+'</b>';
+  if(steps.length)head+=", about "+fmtMin(halfUp(tot+gaps))+(r.gap>0?" with "+r.gap+" second pauses":(r.gap<0?", and you tap Next between steps":""));
   head+=".</p>";
-  html+='<button class="btn" id="rtAdd" type="button"'+(r.steps.length>=RT_MAX?" disabled":"")+'>Add Current Protocol</button><p class="hint">Adds what is set up on the Calculator: treatment, area, distance, power option and side.</p>';
-  if(r.steps.length){
+  if(preset)head+='<span class="presettag">Preset</span>';
+  if(note)head+='<details class="rtnote"><summary>About this routine</summary><p>'+escH(note)+'</p></details>';
+  if(preset){
+    html+='<button class="btn" id="rtCopyPreset" type="button">Copy to My Routines</button><p class="hint">Presets cannot be changed. Copy one to My Routines to change its steps, sides, power or pauses.</p>';
+  }else{
+    html+='<button class="btn" id="rtAdd" type="button"'+(steps.length>=RT_MAX?" disabled":"")+'>Add Current Protocol</button><p class="hint">Adds what is set up on the Calculator: treatment, area, distance, power option and side.</p>';
+  }
+  if(steps.length){
     html+='<div class="rtbox"><h3 class="dlg-h" style="margin-top:0">Run this routine</h3>'
       +(pn.connected?'<label class="toggle"><input type="checkbox" id="rtPanel" checked><span>Run the panel for each step</span></label>':'<p class="hint">Connect a panel on the Control Panel tab and it will run automatically for each step. Without one, the routine is a guided timer.</p>')
       +'<label style="display:block;margin:6px 0 10px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>'
@@ -2382,7 +2436,7 @@ function openRt(id){
   rtEditId=id;rtArm=false;
   const r=id?S.routines.find(function(x){return x.id===id}):null;
   $("#rtTitle").textContent=id?"Edit routine":"New routine";
-  $("#rtName").value=r?r.name:"";$("#rtGap").value=String(r?r.gap:20);
+  $("#rtName").value=r?r.name:"";$("#rtGap").value=String(r?r.gap:20);$("#rtNote").value=r?(r.note||""):"";
   $("#rtDelete").hidden=!id;$("#rtDelete").textContent="Delete";
   openD("#rtDlg");const a=document.activeElement;if(a&&a.tagName==="INPUT")a.blur();
 }
@@ -2393,22 +2447,23 @@ $("#rtSelect").addEventListener("change",function(){S.routineActive=$("#rtSelect
 $("#rtSave").addEventListener("click",function(){
   const name=titleCase($("#rtName").value.trim())||("Routine "+(S.routines.length+1));
   if(S.routines.some(function(r){return r.name.toLowerCase()===name.toLowerCase()&&r.id!==rtEditId})){toast("That name is already used");return}
-  const gap=parseInt($("#rtGap").value,10);
-  if(rtEditId){const r=S.routines.find(function(x){return x.id===rtEditId});r.name=name;r.gap=gap}
-  else{const r={id:"r"+Date.now(),name:name,gap:gap,steps:[]};S.routines.push(r);S.routineActive=r.id}
+  const gap=parseInt($("#rtGap").value,10),note=$("#rtNote").value.trim().slice(0,1500);
+  if(rtEditId){const r=S.routines.find(function(x){return x.id===rtEditId});r.name=name;r.gap=gap;r.note=note}
+  else{const r={id:uid("r"),name:name,gap:gap,note:note,steps:[]};S.routines.push(r);S.routineActive=r.id}
   save();closeD("#rtDlg");renderRoutines();
 });
 $("#rtDelete").addEventListener("click",function(){
   if(!rtArm){rtArm=true;$("#rtDelete").textContent="Tap again to delete";return}
   S.routines=S.routines.filter(function(r){return r.id!==rtEditId});
-  S.routineActive=S.routines.length?S.routines[0].id:null;
+  S.routineActive=S.routines.length?S.routines[0].id:PRESET_ROUTINES[0].id;
   save();closeD("#rtDlg");renderRoutines();toast("Routine deleted");
 });
 $("#rtBody").addEventListener("click",function(e){
   const t=e.target,r=rtCur();
   const run=t.closest("[data-rtrun]");if(run){rtAction(run.dataset.rtrun);return}
   if(t.id==="rtStart"){rtStart();return}
-  if(!r||rt.phase!=="idle")return;
+  if(t.id==="rtCopyPreset"){rtCopyPreset();return}
+  if(!r||rtIsPreset(r)||rt.phase!=="idle")return;
   if(t.id==="rtAdd"){rtAddFromCalc();return}
   const rs=t.closest("[data-rside]"),rp=t.closest("[data-rp]"),ra=t.closest("[data-ract]");
   if(rs){r.steps[+rs.parentElement.dataset.i].side=rs.dataset.rside;save();renderRoutines();return}
@@ -2420,6 +2475,7 @@ $("#rtBody").addEventListener("click",function(e){
     else if(a==="copy"&&s.length<RT_MAX){s.splice(i+1,0,Object.assign({},s[i]))}
     else if(a==="remove"){s.splice(i,1)}
     else if(a==="replace"){const n=rtFromCalc();if(!n)return;s[i]=n}
+    else if(a==="lock"){const x=stepModel(s[i]);if(x.dcm!=null){s[i].dcm=x.dcm;s[i].pid=S.active}}
     save();renderRoutines();
   }
 });
@@ -2427,12 +2483,12 @@ $("#rtBody").addEventListener("click",function(e){
 function rtElapsed(){return rt.acc+(rt.running?(Date.now()-rt.t0)/1000:0)}
 function rtSegAt(segs,el){let c=0;for(let i=0;i<segs.length;i++){c+=segs[i].sec;if(el<c)return i}return segs.length-1}
 function rtStart(){
-  const r=rtCur();
-  if(!r||!r.steps.length){toast("Add at least one protocol first");return}
+  const r=rtCur(),steps=rtStepsOf(r);
+  if(!r||!steps.length){toast("Add at least one protocol first");return}
   if(tm.running||(tm.acc>0&&!tm.done)){toast("Finish or reset the session timer first");return}
-  const plans=r.steps.map(stepModel),bad=plans.findIndex(function(x){return !x.pl});
+  const plans=steps.map(stepModel),bad=plans.findIndex(function(x){return !x.pl});
   if(bad>=0){toast("Step "+(bad+1)+" needs panel readings. Replace it first.");return}
-  rt.steps=r.steps.map(function(s){return Object.assign({},s)});rt.plans=plans;rt.name=r.name;rt.gap=r.gap;
+  rt.steps=steps.map(function(s){return Object.assign({},s)});rt.plans=plans;rt.name=r.name;rt.gap=r.gap;
   rt.titles=rt.steps.map(function(s,i){return stepTitle(plans[i].m,s)});
   const cb=$("#rtPanel");rt.panel=!!(cb&&cb.checked)&&pn.connected;rt.panelOk=true;
   beep(1,.01);wake(true);
@@ -2440,7 +2496,7 @@ function rtStart(){
 }
 function rtWhere(i){
   const st=rt.steps[i],x=rt.plans[i],m=x.m;
-  return "Place the panel "+fmt(fromCm(st.dcm,x.prof.unit),1)+(x.prof.unit==="in"?" inches":" cm")+" from your "+m.A.name.toLowerCase()+(st.side?" ("+SIDE_NAMES[st.side].toLowerCase()+")":"")+". "+(st.p===100?"Fast":"Gentle")+" at "+st.p+"% power. Light: "+m.segs.map(function(s){return s.label}).join(" + ")+".";
+  return "Place the panel "+fmt(fromCm(x.dcm,x.prof.unit),1)+(x.prof.unit==="in"?" inches":" cm")+" from your "+m.A.name.toLowerCase()+(st.side?" ("+SIDE_NAMES[st.side].toLowerCase()+")":"")+". "+(st.p===100?"Fast":"Gentle")+" at "+st.p+"% power. Light: "+m.segs.map(function(s){return s.label}).join(" + ")+".";
 }
 function rtBegin(i){
   rt.i=i;rt.phase="run";rt.acc=0;rt.t0=Date.now();rt.running=true;rt.fired=0;
@@ -2471,7 +2527,7 @@ function rtLog(sec,early){
   if(!(sec>=5))return;
   const st=rt.steps[rt.i],x=rt.plans[rt.i],m=x.m;
   const e={id:"l"+Date.now()+"r"+rt.i,ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:st.side||"",panel:x.prof.name,
-    light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(st.dcm,x.prof.unit),1),unit:x.prof.unit,power:st.p,
+    light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(x.dcm,x.prof.unit),1),unit:x.prof.unit,power:st.p,
     sec:Math.round(sec),dose:+fmt(m.dose*sec/x.raw,1),note:"Routine: "+rt.name+", step "+(rt.i+1)+" of "+rt.steps.length+(early?" (ended early)":""),lp:S.logActive};
   const a=getLog();a.push(e);putLog(a);
 }
@@ -2578,27 +2634,55 @@ function downloadText(name,text,mime){
   try{const url=URL.createObjectURL(new Blob([text],{type:mime})),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},2000);return true}catch(e){return false}
 }
 const ex={kind:""};
+function profileOut(p){
+  const o={name:p.name,unit:p.unit,ru:p.ru||"mw",factor:p.factor,mode:p.mode,bands:p.bands.map(function(b){return {nm:b.nm,share:b.share}}),rows:p.rows.map(function(r){return {d:r.d,t:r.t}}),src:p.src||""};
+  if(p.uniform)o.uniform=p.uniform;
+  return o;
+}
+function routineOut(r){
+  return {name:r.name,gap:r.gap,note:r.note||"",steps:r.steps.map(function(s){
+    const pf=profById(s.pid);
+    return {tr:s.tr,ar:s.ar,side:s.side||"",p:s.p,dcm:s.dcm==null?null:s.dcm,dose:s.dose==null?null:s.dose,depth:s.depth==null?null:s.depth,panel:pf?pf.name:""};
+  })};
+}
+function sessionOut(e){return {ts:e.ts,tr:e.tr,trn:e.trn,ar:e.ar,arn:e.arn,side:e.side||"",panel:e.panel,light:e.light,dist:e.dist,unit:e.unit,power:e.power,sec:e.sec,dose:e.dose,note:e.note||"",logProfile:lpName(lpOf(e))}}
+const ticked=function(sel){return [...document.querySelectorAll(sel)].filter(function(c){return c.checked}).map(function(c){return c.dataset.x})};
+const fileHead=function(type){return {app:FILE_APP,type:type,version:1,exported:new Date().toISOString()}};
 function profilesFile(){
-  const ids=[...document.querySelectorAll("#expList [data-xp]")].filter(function(c){return c.checked}).map(function(c){return c.dataset.xp});
-  const list=S.profiles.filter(function(p){return ids.indexOf(p.id)>=0}).map(function(p){
-    const o={name:p.name,unit:p.unit,ru:p.ru||"mw",factor:p.factor,mode:p.mode,bands:p.bands.map(function(b){return {nm:b.nm,share:b.share}}),rows:p.rows.map(function(r){return {d:r.d,t:r.t}}),src:p.src||""};
-    if(p.uniform)o.uniform=p.uniform;
-    return o;
-  });
-  return {count:list.length,text:JSON.stringify({app:FILE_APP,type:"panel-profiles",version:1,exported:new Date().toISOString(),profiles:list},null,1)};
+  const ids=ticked("#expList [data-x]"),list=S.profiles.filter(function(p){return ids.indexOf(p.id)>=0}).map(profileOut);
+  return {count:list.length,text:JSON.stringify(Object.assign(fileHead("panel-profiles"),{profiles:list}),null,1)};
+}
+function routinesFile(){
+  const ids=ticked("#expList [data-x]"),rs=S.routines.filter(function(r){return ids.indexOf(r.id)>=0}),pids=[];
+  rs.forEach(function(r){r.steps.forEach(function(s){const pf=profById(s.pid);if(pf&&S.profiles.some(function(x){return x.id===pf.id})&&pids.indexOf(pf.id)<0)pids.push(pf.id)})});
+  return {count:rs.length,text:JSON.stringify(Object.assign(fileHead("routines"),{routines:rs.map(routineOut),profiles:S.profiles.filter(function(p){return pids.indexOf(p.id)>=0}).map(profileOut)}),null,1)};
 }
 function logsFile(){
-  const all=getLog().map(function(e){return {ts:e.ts,tr:e.tr,trn:e.trn,ar:e.ar,arn:e.arn,side:e.side||"",panel:e.panel,light:e.light,dist:e.dist,unit:e.unit,power:e.power,sec:e.sec,dose:e.dose,note:e.note||"",logProfile:lpName(lpOf(e))}});
-  return {count:all.length,text:JSON.stringify({app:FILE_APP,type:"session-logs",version:1,exported:new Date().toISOString(),logProfiles:S.logProfiles.map(function(p){return p.name}),sessions:all},null,1)};
+  const all=getLog().map(sessionOut);
+  return {count:all.length,text:JSON.stringify(Object.assign(fileHead("session-logs"),{logProfiles:S.logProfiles.map(function(p){return p.name}),sessions:all}),null,1)};
 }
-function expNow(){return ex.kind==="profiles"?profilesFile():logsFile()}
-function expName(){return ex.kind==="profiles"?"redox-panel-profiles-"+dayStamp()+".json":"redox-session-logs-"+dayStamp()+".json"}
+function everythingFile(){
+  const ss=getLog().map(sessionOut);
+  return {count:S.profiles.length+S.routines.length+ss.length,text:JSON.stringify(Object.assign(fileHead("backup"),{profiles:S.profiles.map(profileOut),routines:S.routines.map(routineOut),logProfiles:S.logProfiles.map(function(p){return p.name}),sessions:ss}),null,1)};
+}
+function expNow(){return ex.kind==="profiles"?profilesFile():(ex.kind==="routines"?routinesFile():(ex.kind==="all"?everythingFile():logsFile()))}
+function expName(){return {profiles:"redox-panel-profiles-",routines:"redox-routines-",logs:"redox-session-logs-",all:"redox-backup-"}[ex.kind]+dayStamp()+".json"}
 function openExport(kind){
   ex.kind=kind;
+  const tick=function(list,label){return list.map(function(x){return '<label class="toggle"><input type="checkbox" data-x="'+escH(x.id)+'" checked><span>'+escH(x.name)+'</span></label>'}).join("")};
   if(kind==="profiles"){
     $("#expTitle").textContent="Export Panel Profiles";
     $("#expHint").textContent="Pick the profiles to put in the file. Built-in presets are already in every copy of the app.";
-    $("#expList").innerHTML=S.profiles.map(function(p){return '<label class="toggle"><input type="checkbox" data-xp="'+escH(p.id)+'" checked><span>'+escH(p.name)+'</span></label>'}).join("");
+    $("#expList").innerHTML=tick(S.profiles);
+  }else if(kind==="routines"){
+    $("#expTitle").textContent="Export Routines";
+    $("#expHint").textContent=S.routines.length?"Pick the routines to put in the file. The panel profiles they use come along, so the times work on the other phone. Preset routines are already in every copy of the app.":"You have no routines of your own yet. Preset routines are already in every copy of the app, and you can copy one to My Routines first.";
+    $("#expList").innerHTML=tick(S.routines);
+  }else if(kind==="all"){
+    const n=getLog().length;
+    $("#expTitle").textContent="Export Everything";
+    $("#expHint").textContent="A complete backup: "+S.profiles.length+" panel profile"+(S.profiles.length===1?"":"s")+", "+S.routines.length+" routine"+(S.routines.length===1?"":"s")+" and "+n+" session"+(n===1?"":"s")+" across "+S.logProfiles.length+" log"+(S.logProfiles.length===1?"":"s")+". Restore it with Import on this or another phone.";
+    $("#expList").innerHTML="";
   }else{
     const n=getLog().length;
     $("#expTitle").textContent="Export Session Logs";
@@ -2609,19 +2693,22 @@ function openExport(kind){
   openD("#expDlg");
 }
 $("#stExpProf").addEventListener("click",function(){openExport("profiles")});
+$("#stExpRout").addEventListener("click",function(){openExport("routines")});
 $("#stExpLogs").addEventListener("click",function(){openExport("logs")});
+$("#stExpAll").addEventListener("click",function(){openExport("all")});
 $("#expClose").addEventListener("click",function(){closeD("#expDlg")});
+const expEmpty=function(){return ex.kind==="profiles"?"Select at least one profile":(ex.kind==="routines"?"Select at least one routine":"Nothing to export")};
 $("#expDl").addEventListener("click",function(){
-  const f=expNow();if(!f.count){toast(ex.kind==="profiles"?"Select at least one profile":"Nothing to export");return}
+  const f=expNow();if(!f.count){toast(expEmpty());return}
   if(downloadText(expName(),f.text,"application/json"))toast("Saved "+expName());
   else copyText(f.text,"Could not download, so it was copied instead.");
 });
 $("#expShare").addEventListener("click",function(){
-  const f=expNow();if(!f.count){toast(ex.kind==="profiles"?"Select at least one profile":"Nothing to export");return}
+  const f=expNow();if(!f.count){toast(expEmpty());return}
   try{navigator.share({files:[new File([f.text],expName(),{type:"application/json"})],title:"Redox Dosimetry Lab"}).catch(function(){})}catch(e){copyText(f.text,"Copied")}
 });
 $("#expCopy").addEventListener("click",function(){
-  const f=expNow();if(!f.count){toast(ex.kind==="profiles"?"Select at least one profile":"Nothing to export");return}
+  const f=expNow();if(!f.count){toast(expEmpty());return}
   copyText(f.text,"Copied. Paste it into Import on the other phone.");
 });
 
@@ -2708,35 +2795,111 @@ function importSessions(list,skip){
   save();fillLogProfiles();
   return {added:added,dup:dup,bad:plan.bad,logs:Object.keys(counts),show:show};
 }
+function profileKey(p){return JSON.stringify([p.unit,p.ru||"mw",+p.factor,p.mode,p.bands.map(function(b){return b.nm+":"+b.share}),p.rows.map(function(r){return r.d+":"+r.t})])}
+function addProfile(p,i){
+  const taken=function(n){return S.profiles.some(function(x){return x.name.toLowerCase()===n.toLowerCase()})||BUILTIN.some(function(x){return x.name.toLowerCase()===n.toLowerCase()})};
+  let name=p.name,k=1;
+  if(taken(name)){name=p.name+" (imported)";while(taken(name)){k++;name=p.name+" (imported "+k+")"}}
+  const np=Object.assign({},p,{id:"p"+Date.now()+"i"+i+Math.random().toString(36).slice(2,5),name:name});
+  S.profiles.push(np);return np;
+}
 function importProfiles(list){
-  const taken=function(n){return S.profiles.some(function(p){return p.name.toLowerCase()===n.toLowerCase()})||BUILTIN.some(function(p){return p.name.toLowerCase()===n.toLowerCase()})};
   let first=null;
-  list.forEach(function(p,i){
-    let name=p.name,k=1;
-    if(taken(name)){name=p.name+" (imported)";while(taken(name)){k++;name=p.name+" (imported "+k+")"}}
-    const np=Object.assign({},p,{id:"p"+Date.now()+"i"+i,name:name});
-    S.profiles.push(np);if(!first)first=np;
-  });
+  list.forEach(function(p,i){const np=addProfile(p,i);if(!first)first=np});
   if(list.length===1&&first)S.active=first.id;
   save();fillProfiles();render();
   return list.length;
 }
+/* used by routines and backups: reuse a saved profile that is identical, otherwise add it; returns {name in the file: name now} */
+function mergeProfiles(list){
+  const map={};
+  (list||[]).forEach(function(p,i){
+    const same=S.profiles.find(function(x){return x.name.toLowerCase()===p.name.toLowerCase()&&profileKey(x)===profileKey(p)});
+    map[p.name]=same?same.name:addProfile(p,i).name;
+  });
+  save();fillProfiles();
+  return map;
+}
+function cleanRoutine(o){
+  if(!o||typeof o!=="object")return null;
+  const name=String(o.name||"").trim().slice(0,40);if(!name)return null;
+  const num=function(v){const x=parseFloat(v);return isFinite(x)&&x>0?x:null};
+  const steps=(Array.isArray(o.steps)?o.steps:[]).slice(0,RT_MAX).map(function(s){
+    if(!s||typeof s!=="object")return null;
+    if(!TREATMENTS.some(function(t){return t.id===s.tr})||!AREAS.some(function(a){return a.id===s.ar}))return null;
+    return {tr:s.tr,ar:s.ar,side:SIDED.has(s.ar)&&(s.side==="left"||s.side==="right"||s.side==="both")?s.side:"",p:s.p===50?50:100,dcm:num(s.dcm),dose:num(s.dose),depth:num(s.depth),panel:String(s.panel||"").slice(0,60)};
+  }).filter(Boolean);
+  if(!steps.length)return null;
+  const g=parseInt(o.gap,10);
+  return {name:titleCase(name),gap:[-1,10,20,30,60].indexOf(g)>=0?g:20,note:String(o.note||"").slice(0,1500),steps:steps};
+}
+const routineSig=function(o){return JSON.stringify([o.gap,o.note||"",o.steps.map(function(s){return [s.tr,s.ar,s.side||"",s.p,s.dcm==null?null:s.dcm,s.dose==null?null:s.dose,s.depth==null?null:s.depth,s.panel||""]})])};
+function importRoutines(list,map){
+  const taken=function(n){return S.routines.some(function(r){return r.name.toLowerCase()===n.toLowerCase()})||PRESET_ROUTINES.some(function(r){return r.name.toLowerCase()===n.toLowerCase()})};
+  const pidFor=function(name){
+    if(!name)return null;
+    const fin=(map&&map[name])||name;
+    const p=S.profiles.find(function(x){return x.name===fin})||BUILTIN.find(function(x){return x.name===fin});
+    return p?p.id:null;
+  };
+  const baseName=function(n){return String(n).replace(/ \(imported(?: \d+)?\)$/,"").toLowerCase()};   // an earlier import may have added "(imported)" to the name
+  const have=S.routines.map(function(r){return baseName(r.name)+"|"+routineSig(routineOut(r))});
+  let first=null,added=0,skipped=0;
+  list.forEach(function(r,i){
+    const mapped={name:r.name,gap:r.gap,note:r.note,steps:r.steps.map(function(s){return Object.assign({},s,{panel:s.panel?((map&&map[s.panel])||s.panel):""})})};
+    const sig=baseName(r.name)+"|"+routineSig(mapped);
+    if(have.indexOf(sig)>=0){skipped++;return}      // the same routine is already here
+    have.push(sig);
+    let name=r.name,k=1;
+    if(taken(name)){name=r.name+" (imported)";while(taken(name)){k++;name=r.name+" (imported "+k+")"}}
+    const nr={id:"r"+Date.now()+"i"+i+Math.random().toString(36).slice(2,5),name:name,gap:r.gap,note:r.note,steps:r.steps.map(function(s){
+      const pid=pidFor(s.panel);
+      return {tr:s.tr,ar:s.ar,side:s.side,p:s.p,dcm:pid?s.dcm:null,pid:pid,dose:s.dose,depth:s.depth};   // no matching panel here: use the distance recommended for the active panel
+    })};
+    S.routines.push(nr);added++;if(!first)first=nr;
+  });
+  if(first)S.routineActive=first.id;
+  save();return {added:added,skipped:skipped};
+}
 const imp={kind:"",data:null};
+const plural=function(n,w){return n+" "+w+(n===1?"":"s")};
 function analyzeImport(){
   const t=$("#impText").value.trim(),msg=$("#impMsg"),go=$("#impGo");
   imp.kind="";imp.data=null;go.disabled=true;$("#impSkipRow").hidden=true;
   if(!t){msg.textContent="";return}
   if(t.length>3000000){msg.textContent="That file is too large.";return}
   let j=null;try{j=JSON.parse(t)}catch(e){}
-  if(j&&typeof j==="object"&&j.type==="panel-profiles"&&Array.isArray(j.profiles)){
-    const ok=j.profiles.slice(0,50).map(cleanProfile).filter(Boolean),bad=Math.min(j.profiles.length,50)-ok.length;
+  const isObj=j&&typeof j==="object";
+  const profs=function(a){return (Array.isArray(a)?a:[]).slice(0,50).map(cleanProfile).filter(Boolean)};
+  const routs=function(a){return (Array.isArray(a)?a:[]).slice(0,50).map(cleanRoutine).filter(Boolean)};
+  if(isObj&&j.type==="panel-profiles"&&Array.isArray(j.profiles)){
+    const ok=profs(j.profiles),bad=Math.min(j.profiles.length,50)-ok.length;
     if(!ok.length){msg.textContent="No usable panel profiles were found in this file.";return}
     imp.kind="profiles";imp.data=ok;
-    msg.textContent=ok.length+" panel profile"+(ok.length>1?"s":"")+" ready to add: "+ok.map(function(p){return p.name}).join(", ")+"."+(bad?" "+bad+" could not be read.":"")+" They will appear under My Presets.";
+    msg.textContent=plural(ok.length,"panel profile")+" ready to add: "+ok.map(function(p){return p.name}).join(", ")+"."+(bad?" "+bad+" could not be read.":"")+" They will appear under My Presets.";
+    go.disabled=false;return;
+  }
+  if(isObj&&j.type==="routines"&&Array.isArray(j.routines)){
+    const rs=routs(j.routines),ps=profs(j.profiles),bad=Math.min(j.routines.length,50)-rs.length;
+    if(!rs.length){msg.textContent="No usable routines were found in this file.";return}
+    imp.kind="routines";imp.data={rs:rs,ps:ps};
+    msg.textContent=plural(rs.length,"routine")+" ready to add: "+rs.map(function(r){return r.name+" ("+plural(r.steps.length,"step")+")"}).join(", ")+"."+(bad?" "+bad+" could not be read.":"")+(ps.length?" It also carries "+plural(ps.length,"panel profile")+" the routines use. A profile you already have is reused.":"")+" They will appear under My Routines.";
+    go.disabled=false;return;
+  }
+  if(isObj&&j.type==="backup"){
+    const ps=profs(j.profiles),rs=routs(j.routines),sess=(Array.isArray(j.sessions)?j.sessions:[]).slice(0,20000);
+    const plan=planSessions(sess),good=plan.items.length;
+    if(!ps.length&&!rs.length&&!good){msg.textContent="Nothing usable was found in this backup.";return}
+    imp.kind="backup";imp.data={ps:ps,rs:rs,sess:sess};
+    const dups=plan.items.filter(function(it){return it.dupIn}).length,skip=$("#impSkip").checked;
+    if(good)$("#impSkipRow").hidden=false;
+    msg.textContent="Backup with "+plural(ps.length,"panel profile")+", "+plural(rs.length,"routine")+" and "+plural(good,"session")+"."
+      +(good?(dups?" "+dups+" of the sessions "+(dups>1?"are":"is")+" already in your logs and will be "+(skip?"skipped.":"added again."):" None of the sessions are in your logs yet."):"")
+      +" Profiles you already have are reused, and the rest are added.";
     go.disabled=false;return;
   }
   let sess=null,kindName="";
-  if(j&&typeof j==="object"&&j.type==="session-logs"&&Array.isArray(j.sessions)){sess=j.sessions.slice(0,20000);kindName="backup"}
+  if(isObj&&j.type==="session-logs"&&Array.isArray(j.sessions)){sess=j.sessions.slice(0,20000);kindName="backup"}
   else{const c=csvToSessions(t);if(c){sess=c.slice(0,20000);kindName="CSV"}}
   if(sess){
     const plan=planSessions(sess),good=plan.items.length,skip=$("#impSkip").checked;
@@ -2750,7 +2913,7 @@ function analyzeImport(){
       +" Each goes into the log named in the file, and a missing log is created.";
     go.disabled=false;return;
   }
-  msg.textContent="This does not look like an export from this app. Use a panel profiles file, a session log backup or a session log CSV.";
+  msg.textContent="This does not look like an export from this app. Use a file made by Export Panel Profiles, Export Routines, Export Session Logs or Export Everything, or a session log CSV.";
 }
 function openImport(){
   imp.kind="";imp.data=null;
@@ -2771,18 +2934,30 @@ $("#impFile").addEventListener("change",function(){
 });
 $("#impText").addEventListener("input",analyzeImport);
 $("#impSkip").addEventListener("change",analyzeImport);
+const sessToast=function(r,inLog){
+  return r.added
+    ?"Added "+plural(r.added,"session")+(r.logs.length?" to "+r.logs.join(" and "):"")+(r.dup?". "+r.dup+(r.dup>1?" were":" was")+" already there.":".")+(r.show?" Showing the "+r.show+" log"+(inLog?".":" under Settings, Session Logs."):"")
+    :(r.dup?"Nothing new. All "+r.dup+" session"+(r.dup>1?"s were":" was")+" already in the "+(r.show||"")+" log"+(inLog?", which is showing now.":". Open it under Settings, Session Logs."):"Nothing to import.");
+};
 $("#impGo").addEventListener("click",function(){
   if(!imp.kind)return;
+  const view=document.body.dataset.view,inLog=view==="log",skip=$("#impSkip").checked;
   if(imp.kind==="profiles"){
     const n=importProfiles(imp.data);closeD("#impDlg");
-    toast("Added "+n+" panel profile"+(n>1?"s":"")+" under My Presets.");
+    toast("Added "+plural(n,"panel profile")+" under My Presets.");
+  }else if(imp.kind==="routines"){
+    const map=mergeProfiles(imp.data.ps),rr=importRoutines(imp.data.rs,map);closeD("#impDlg");
+    if(view==="routines")renderRoutines();
+    toast(rr.added?"Added "+plural(rr.added,"routine")+" under My Routines in Calculator, Routines."+(rr.skipped?" "+rr.skipped+" already there.":""):"Nothing new. "+(rr.skipped>1?"These routines are":"This routine is")+" already in My Routines.");
+  }else if(imp.kind==="backup"){
+    const d=imp.data,np0=S.profiles.length,map=mergeProfiles(d.ps),rr=d.rs.length?importRoutines(d.rs,map):{added:0,skipped:0},sr=d.sess.length?importSessions(d.sess,skip):null;
+    closeD("#impDlg");render();
+    if(inLog)renderLog();if(view==="routines")renderRoutines();
+    toast("Restored "+plural(S.profiles.length-np0,"new panel profile")+", "+plural(rr.added,"routine")+(sr?" and "+plural(sr.added,"session"):"")+(rr.skipped||(sr&&sr.dup)?". Already there: "+((rr.skipped||0)+(sr?sr.dup:0))+".":"."));
   }else{
-    const r=importSessions(imp.data,$("#impSkip").checked);closeD("#impDlg");
-    if(document.body.dataset.view==="log")renderLog();
-    const inLog=document.body.dataset.view==="log";
-    toast(r.added
-      ?"Added "+r.added+" session"+(r.added>1?"s":"")+(r.logs.length?" to "+r.logs.join(" and "):"")+(r.dup?". "+r.dup+(r.dup>1?" were":" was")+" already there.":".")+(r.show?" Showing the "+r.show+" log"+(inLog?".":" under Settings, Session Logs."):"")
-      :(r.dup?"Nothing new. All "+r.dup+" session"+(r.dup>1?"s were":" was")+" already in the "+(r.show||"")+" log"+(inLog?", which is showing now.":". Open it under Settings, Session Logs."):"Nothing to import."));
+    const r=importSessions(imp.data,skip);closeD("#impDlg");
+    if(inLog)renderLog();
+    toast(sessToast(r,inLog));
   }
 });
 
@@ -2794,28 +2969,6 @@ function initFeatures(){
 fillSelects();fillProfiles();initFeatures();setView(S.view);render();
 window.__rdlReady=true;
 })();
-</script>
-<script>
-/* Service worker with a visible "new version" prompt. A new build is fetched fresh (not from the browser cache)
-   and, once ready, a bar offers a reload. Installed phone apps are also re-checked each time they come to the front. */
-if("serviceWorker" in navigator && location.protocol.indexOf("http")===0){
-  (function(){
-    var hadCtl=!!navigator.serviceWorker.controller,reg=null;
-    function bar(){
-      if(document.getElementById("updBar"))return;
-      var b=document.createElement("div");b.id="updBar";b.setAttribute("role","status");
-      b.style.cssText="position:fixed;left:12px;right:12px;bottom:12px;z-index:10000;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:14px;background:var(--raised);color:var(--ink);border:1px solid var(--line);box-shadow:0 6px 24px rgba(0,0,0,.5);font-size:14px";
-      b.innerHTML='<span>A new version is ready.</span><button type="button" style="min-height:40px;padding:0 16px;border:0;border-radius:10px;background:var(--ink);color:var(--ground);font:inherit;font-weight:600;cursor:pointer">Reload</button>';
-      b.querySelector("button").onclick=function(){if(window.__rdlBusy&&window.__rdlBusy()&&!confirm("A session or routine is running. Reload anyway?"))return;location.reload()};
-      document.body.appendChild(b);
-    }
-    navigator.serviceWorker.addEventListener("controllerchange",function(){if(hadCtl)bar()});
-    window.addEventListener("load",function(){
-      navigator.serviceWorker.register("sw.js").then(function(r){reg=r;try{r.update()}catch(e){}}).catch(function(){});
-    });
-    document.addEventListener("visibilitychange",function(){if(!document.hidden&&reg){try{reg.update()}catch(e){}}});
-  })();
-}
 </script>
 </body>
 </html>
