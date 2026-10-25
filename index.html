@@ -106,22 +106,27 @@ details[open] summary{margin-bottom:14px}
 .refs{margin:8px 0 0;padding-left:18px;font-size:13px}
 .refs li{margin:4px 0}
 .refs a{color:var(--ink);overflow-wrap:anywhere}
-.tabs{display:flex;gap:4px;background:var(--surface);border-radius:12px;padding:5px;overflow-x:auto;scrollbar-width:none}
+.tabs{display:flex;gap:3px;background:var(--surface);border-radius:12px;padding:5px;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.subtabs{display:none;gap:6px;background:var(--surface);border-radius:12px;padding:4px;margin-top:-8px}
-body[data-view="simple"] #subTabs,body[data-view="lab"] #subTabs,body[data-view="lib"] #subTabs2,body[data-view="learn"] #subTabs2{display:flex}
-.subtabs button{flex:1;min-height:40px;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.tabs button.ico{flex:0 0 56px;padding:0;display:flex;align-items:center;justify-content:center}
+.ico svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.subtabs{display:none;gap:4px;background:var(--surface);border-radius:10px;padding:3px;margin-top:-10px}
+body[data-view="simple"] #subTabs,body[data-view="lab"] #subTabs,body[data-view="lib"] #subTabs2,body[data-view="learn"] #subTabs2,body[data-view="set"] #subTabs3,body[data-view="log"] #subTabs3,body[data-view="how"] #subTabs3{display:flex}
+.subtabs button{flex:1;min-height:32px;padding:0 6px;border:0;border-radius:7px;background:transparent;color:var(--muted);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
 .subtabs button[aria-pressed=true]{background:var(--raised);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
-.tabs button{flex:1 1 auto;min-height:44px;padding:0 8px;white-space:nowrap;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-weight:600;cursor:pointer}
+.tabs button{flex:1 1 auto;min-height:54px;padding:0 12px;font-size:16px;white-space:normal;line-height:1.15;text-align:center;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-weight:600;cursor:pointer}
 .tabs button[aria-pressed=true]{background:var(--ink);color:var(--ground)}
 body[data-view="simple"] .lab{display:none!important}
 body[data-view="lab"] .simple-only{display:none!important}
+#pg-panel input[type=text],#pg-panel input[type=password]{width:100%}
+#pnCtl.locked{opacity:.45}
+#pnCtl.locked *{cursor:not-allowed}
 .dlg-h{font:600 15px var(--serif);margin:16px 0 8px}
 .actions{flex-wrap:wrap}
 
 .pg{display:none}
-body[data-view="log"] #pg-log,body[data-view="lib"] #pg-lib,body[data-view="learn"] #pg-learn,body[data-view="set"] #pg-set{display:block}
-body[data-view="log"] .calc,body[data-view="lib"] .calc,body[data-view="learn"] .calc,body[data-view="set"] .calc{display:none!important}
+body[data-view="log"] #pg-log,body[data-view="lib"] #pg-lib,body[data-view="learn"] #pg-learn,body[data-view="set"] #pg-set,body[data-view="how"] #pg-how,body[data-view="panel"] #pg-panel{display:block}
+body[data-view="log"] .calc,body[data-view="lib"] .calc,body[data-view="learn"] .calc,body[data-view="set"] .calc,body[data-view="how"] .calc,body[data-view="panel"] .calc{display:none!important}
 .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .acts .btn{flex:1;min-width:110px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
@@ -204,6 +209,22 @@ details.sub[open]>summary{color:var(--ink)}
 details.sub .paper{background:var(--surface)}
 .b-mfr{border-style:dashed;border-color:var(--warn)}
 .b-ind{border-color:var(--nir)}
+/* tab bars: three clear levels. Main = filled pills, section = underline tabs, page = small chips */
+.tabs{border-radius:18px;padding:5px;gap:4px}
+.tabs button,.tabs button.gear{border-radius:13px}   /* 18px bar minus 5px padding, so each highlight is concentric with its bar */
+.subtabs{background:transparent;border-radius:0;padding:0;gap:0;border-bottom:1px solid var(--line);margin-top:-8px}
+.subtabs button{min-height:40px;padding:0 8px;border:0;border-bottom:3px solid transparent;border-radius:0;margin-bottom:-1px;background:transparent;box-shadow:none;color:var(--muted);font-size:13.5px;white-space:nowrap}
+.subtabs button[aria-pressed=true]{background:transparent;box-shadow:none;color:var(--ink);border-bottom-color:var(--red)}
+.hubtitle{font:600 26px var(--serif);margin:4px 2px -2px}
+.qsdots{display:flex;gap:7px;justify-content:center;margin:14px 0 8px}
+.qsdots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.qsdots i.on{background:var(--ink)}
+#qsBody p{margin:8px 0}
+.card .big{white-space:nowrap}
+.card .big small{font-size:.42em;font-weight:600;margin-left:5px;color:var(--muted);letter-spacing:.02em}
+.lprow{display:flex;gap:8px;margin-bottom:12px}
+.lprow select{flex:1;min-width:0}
+.lprow .btn{flex:none}
 svg{width:100%;height:auto;display:block}
 svg text{fill:var(--muted);font:10px var(--sans)}
 .foot{font-size:12.5px;color:var(--muted);padding:0 4px}
@@ -213,25 +234,31 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 <div id="redveil" aria-hidden="true"></div>
 <main>
 <div class="topbar">
-  <label class="sw"><input type="checkbox" id="nightOn" role="switch" aria-label="Red screen"><span>Red screen</span></label>
+  <label class="sw"><input type="checkbox" id="nightOn" role="switch" aria-label="Red Screen Filter"><span>Red Screen Filter</span></label>
   <input type="range" id="nightLevel" min="10" max="100" step="1" aria-label="Red filter strength">
 </div>
 <div id="loadfail" style="display:none;background:#352b2e;border-left:4px solid #ffc266;border-radius:10px;padding:12px 14px;font-size:14px">The calculator did not finish loading. If this was opened from a message, email or file preview, open the web link in Safari instead. Older iPhones need iOS 12 or newer, so a software update may also help.</div>
 <noscript><div style="background:#352b2e;border-left:4px solid #ffc266;border-radius:10px;padding:12px 14px;font-size:14px">This app needs JavaScript. Turn it on in Safari settings, or open the web link in Safari instead of a file preview.</div></noscript>
 <header>
   <h1>Redox Dosimetry Lab</h1>
-  <p class="sub">Red light therapy protocol calculator</p>
+  <p class="sub">Red Light Therapy Protocol Calculator</p>
 </header>
 
 <div class="tabs" role="group" aria-label="View">
   <button type="button" data-view="calc" aria-pressed="true">Calculator</button>
-  <button type="button" data-view="log" aria-pressed="false">Log</button>
-  <button type="button" data-view="learnhub" aria-pressed="false">Learn</button>
-  <button type="button" data-view="set" aria-pressed="false">Settings</button>
+  <button type="button" data-view="panel" aria-pressed="false">Control Panel</button>
+  <button type="button" class="ico" data-view="learnhub" aria-label="Learning and Resources" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7.2C10.2 5.7 7.4 5.1 3.5 5.4V18.4C7.4 18.1 10.2 18.7 12 20.2"/><path d="M12 7.2C13.8 5.7 16.6 5.1 20.5 5.4V18.4C16.6 18.1 13.8 18.7 12 20.2"/><path d="M12 7.2V20.2"/><path d="M6 9.3h4M6 12.1h4M6 14.9h4M14 9.3h4M14 12.1h4M14 14.9h4" stroke-width="1.2"/></svg></button>
+  <button type="button" class="ico" data-view="settingshub" aria-label="Settings" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.20 4.51 L10.71 1.78 L13.29 1.78 L13.80 4.51 A7.7 7.7 0 0 1 16.02 5.43 L18.31 3.86 L20.14 5.69 L18.57 7.98 A7.7 7.7 0 0 1 19.49 10.20 L22.22 10.71 L22.22 13.29 L19.49 13.80 A7.7 7.7 0 0 1 18.57 16.02 L20.14 18.31 L18.31 20.14 L16.02 18.57 A7.7 7.7 0 0 1 13.80 19.49 L13.29 22.22 L10.71 22.22 L10.20 19.49 A7.7 7.7 0 0 1 7.98 18.57 L5.69 20.14 L3.86 18.31 L5.43 16.02 A7.7 7.7 0 0 1 4.51 13.80 L1.78 13.29 L1.78 10.71 L4.51 10.20 A7.7 7.7 0 0 1 5.43 7.98 L3.86 5.69 L5.69 3.86 L7.98 5.43 A7.7 7.7 0 0 1 10.20 4.51 Z"/><path d="M12.00 8.10 L15.38 10.05 L15.38 13.95 L12.00 15.90 L8.62 13.95 L8.62 10.05 Z"/></svg></button>
 </div>
+<h2 class="hubtitle" id="hubTitle" hidden></h2>
 <div class="subtabs" id="subTabs" role="group" aria-label="Calculator view">
   <button type="button" data-sub="simple" aria-pressed="true">Simple View</button>
   <button type="button" data-sub="lab" aria-pressed="false">Lab View (Advanced)</button>
+</div>
+<div class="subtabs" id="subTabs3" role="group" aria-label="Settings section">
+  <button type="button" data-sub="set" aria-pressed="true">General</button>
+  <button type="button" data-sub="log" aria-pressed="false">Session Logs</button>
+  <button type="button" data-sub="how" aria-pressed="false">How to Use</button>
 </div>
 <div class="subtabs" id="subTabs2" role="group" aria-label="Learn section">
   <button type="button" data-sub="learn" aria-pressed="true">Guides</button>
@@ -282,6 +309,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <div class="clock" id="tmClock">0:00</div>
       <div class="pbar"><b id="tmBar"></b></div>
       <p class="hint" id="tmSeg"></p>
+      <label style="display:block;margin:6px 0 10px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>
       <div class="actions"><button class="btn primary" id="tmStart" type="button">Start</button><button class="btn" id="tmStopLog" type="button" hidden>Stop and log</button><button class="btn" id="tmReset" type="button">Reset</button></div>
       <p class="hint">Finishing the timer logs the session automatically. Keep the screen on while it runs.</p>
     </div>
@@ -296,7 +324,8 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 </section>
 
 <section id="pg-log" class="pg" aria-labelledby="h-log">
-  <h2 id="h-log">Session log</h2>
+  <h2 id="h-log">Session Logs</h2>
+     <div class="lprow"><select id="lpSelect" class="lpSel" aria-label="Log profile"></select><button class="btn" id="lpNew" type="button">New</button><button class="btn" id="lpEdit" type="button">Edit</button></div>
   <p class="flag" id="logNotice" hidden style="border-left:4px solid var(--warn);padding:10px 12px;background:var(--raised);border-radius:10px;font-size:13.5px">This browser is not saving data for this page, so the log (and your profiles) last only until you close it. Open the hosted link or the home-screen app to keep them.</p>
   <div id="logBody"></div>
 </section>
@@ -393,25 +422,160 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 </section>
 
 
+
+<section id="pg-panel" class="pg" aria-labelledby="h-panelc">
+  <h2 id="h-panelc">Control Panel</h2>
+  <p class="hint">Controls an ESP32 panel controller on your WiFi, the way the WLED app controls LED strips. The panel runs timed sessions by itself and turns off when they end.</p>
+  <div id="pnAddrRow"><label><span class="l">Panel address</span><input id="pnAddr" type="text" inputmode="url" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="panel.local"></label></div>
+  <label><span class="l">Panel key</span><input id="pnKey" type="password" autocapitalize="none" autocorrect="off" placeholder="The key set in the panel firmware"></label>
+  <label class="toggle"><input type="checkbox" id="pnSwap"><span>Channel 1 is near-infrared (swap the two channels)</span></label>
+  <div class="acts"><button class="btn primary" id="pnConnect" type="button">Connect</button></div>
+  <p class="hint" id="pnStatus">Not connected.</p>
+  <div id="pnCtl" class="locked">
+    <p class="hint" id="pnLockNote">Connect to a panel to unlock these controls.</p>
+    <h3 class="dlg-h">Manual control</h3>
+    <label><span class="l"><span id="pnL1">Channel 1 (660 nm)</span> <b id="pnC1v">0%</b></span><input id="pnC1" type="range" min="0" max="100" step="5" value="0"></label>
+    <label><span class="l"><span id="pnL2">Channel 2 (850 nm)</span> <b id="pnC2v">0%</b></span><input id="pnC2" type="range" min="0" max="100" step="5" value="0"></label>
+    <div class="acts"><button class="btn danger" id="pnOff" type="button">Turn panel off</button></div>
+    <h3 class="dlg-h">Run the calculator's protocol</h3>
+    <p class="hint" id="pnPlan"></p>
+    <div class="seg" id="pnOpts" role="group" aria-label="Power option"><button type="button" data-p="100" aria-pressed="true">Fast, 100%</button><button type="button" data-p="50" aria-pressed="false">Gentle, 50%</button></div>
+    <label style="display:block;margin-top:12px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>
+    <div class="pbar" style="margin-top:12px"><b id="pnBar"></b></div>
+    <div class="acts"><button class="btn primary" id="pnStart" type="button">Start on the panel</button><button class="btn danger" id="pnStop" type="button" hidden>Stop and turn off</button></div>
+    <p class="hint">Safety: the panel enforces its own limits and turns itself off when a session ends, when manual control is left unattended, or if it overheats. Protect your eyes before turning it on, and stay within reach of the power switch.</p>
+  </div>
+</section>
+
+
+<section id="pg-how" class="pg learn" aria-labelledby="h-how">
+  <h2 id="h-how">How to Use</h2>
+  <details open><summary>Quick start</summary>
+    <p>A one-minute tour of the app. It also opens by itself the first time you launch.</p>
+    <button class="btn" id="howQs" type="button">Replay the Quick Start</button>
+  </details>
+  <details><summary>Install it on your phone</summary>
+    <ul>
+      <li><b>iPhone:</b> open the app's web link in Safari, tap Share, then Add to Home Screen, then Add.</li>
+      <li><b>Android:</b> open the link in Chrome, tap the menu (three dots), then Install app.</li>
+      <li>Open it once while online. After that it works without a connection.</li>
+      <li><b>Updates:</b> a new version loads the next time you open the app while online. It can take two opens to show. The version number, App build, is at the very bottom of the page.</li>
+      <li>A file opened from a message or a file preview will not work on a phone. Use the web link.</li>
+    </ul>
+  </details>
+  <details><summary>Set up your panel</summary>
+    <ul>
+      <li><b>Panel Profile</b> (top of the Calculator tab) is the panel every number is based on. <b>Presets</b> are built-in popular panels. <b>My Presets</b> are your own.</li>
+      <li>The line under the picker shows the panel's irradiance at 6 inches after the solar meter correction. The word estimated means 6 inches is outside your readings.</li>
+      <li><b>Edit</b> opens the profile window. Add each wavelength in nm with the share of the panel's output it makes, then total irradiance readings (mW/cm²) at different distances with every wavelength on at 100% power. Tick Wavelengths fire together if red and near-infrared cannot be switched separately.</li>
+      <li><b>Solar meter correction:</b> solar meters read high on LEDs. Use 0.5 for solar meter readings and 1.0 for spectrometer or lab numbers.</li>
+      <li><b>Measure My Panel (guided)</b> is a button in the Edit window. It walks you through the readings, an optional red-only and near-infrared-only pair to find the wavelength split, and an optional 3 by 3 evenness test.</li>
+      <li>Built-in presets cannot be changed. Save as New Preset makes an editable copy.</li>
+      <li>More readings at more distances means better numbers. One reading means every other distance is a guess.</li>
+    </ul>
+  </details>
+  <details><summary>Choose a treatment and area</summary>
+    <ul>
+      <li>Pick the treatment first. The Target Area list then shows only the areas that make sense for it.</li>
+      <li>The app picks the wavelength from how deep the target is: red for shallow targets, both for in between, near-infrared for deep ones.</li>
+      <li>Each treatment has a published dose window in J/cm². The Evidence section lower on the page shows the status of the research, the sources, and any caution.</li>
+    </ul>
+  </details>
+  <details><summary>Read the recommendation</summary>
+    <ul>
+      <li><b>Recommended distance</b> is how far to hold the panel from the skin.</li>
+      <li><b>Time goal and Distance:</b> pick a time and the app finds the distance, or type a distance and the times update. Deep targets need a minimum irradiance at the surface, so the app can recommend a session shorter than your goal and says so.</li>
+      <li><b>Fast</b> runs at 100% power and <b>Gentle</b> at 50%. Both deliver the same dose, so pick whichever fits your time.</li>
+      <li><b>Rounding:</b> every session time is rounded up to the next half minute, so 2:47 becomes 3 min. The Session Timer, the Control Panel and the Protocol Card use exactly the same time as the cards.</li>
+      <li><b>Likely</b> under each time is the range it could fall in. The range widens when the panel numbers are a manufacturer claim, when a solar meter correction is applied, and when the distance is outside your readings.</li>
+      <li>Warnings appear under the options. Read them, especially cautions for brain and core treatments.</li>
+      <li><b>Protocol Card</b> makes a shareable image of the protocol.</li>
+    </ul>
+  </details>
+  <details><summary>Simple View and Lab View</summary>
+    <ul>
+      <li><b>Simple View</b> shows the panel, treatment, distance, time, the recommendation and the timer.</li>
+      <li><b>Lab View (Advanced)</b> adds the dose slider, a depth override, the share of light reaching the target, the irradiance at the surface, a chart and table of power against time, and your panel's evenness map.</li>
+      <li>Both views use the same settings, so changes carry over.</li>
+    </ul>
+  </details>
+  <details><summary>Run a session</summary>
+    <ul>
+      <li>The <b>Session Timer</b> sits under the recommendation. Choose Fast or Gentle, then tap Start.</li>
+      <li>It beeps and vibrates when a part ends or the session finishes. Turn the volume up and the silent switch off. Keep the screen on, because phones can pause timers when the screen locks.</li>
+      <li>Two-wavelength sessions run each wavelength in turn.</li>
+      <li><b>Stop and log</b> saves the time you actually ran. Finishing the timer saves the whole session automatically.</li>
+      <li>Use <b>Log to</b> to choose which log the session goes in.</li>
+    </ul>
+  </details>
+  <details><summary>Control Panel (ESP32 panel)</summary>
+    <ul>
+      <li>For a panel with the ESP32 controller and firmware. Everything on the page stays greyed out until it connects.</li>
+      <li>Enter the panel address (usually panel.local) and the panel key you set in the firmware, then tap Connect.</li>
+      <li><b>Android Chrome:</b> tap Allow when it asks to find devices on your local network. <b>iPhone:</b> the web version cannot reach the panel, so open the panel's own address, such as http://panel.local, in Safari.</li>
+      <li><b>Manual control</b> has a slider for each wavelength and a Turn Panel Off button. If the app stops checking in, the panel turns itself off.</li>
+      <li><b>Start on the Panel</b> sends the Calculator's protocol. The panel runs it by itself and turns off when it ends, even if the phone disconnects. The app logs it when it finishes.</li>
+      <li>Never leave the panel running unattended, and protect your eyes.</li>
+    </ul>
+  </details>
+  <details><summary>Session Logs</summary>
+    <ul>
+      <li>Open them from the gear, then Session Logs. Each session is saved with treatment, area, panel, light, distance, power, minutes and dose.</li>
+      <li><b>Log profiles</b> keep separate logs, for example Panel and Mask. Use the picker with New and Edit. The timer and Control Panel each have a Log to picker.</li>
+      <li>The page shows the last seven days, a minutes-per-week chart and the list of sessions.</li>
+      <li><b>Download CSV</b> and <b>Copy CSV</b> export the log you are viewing. <b>Clear this log</b> clears only that log. Settings, then General, has Clear all session logs.</li>
+      <li>Logs live on this phone only. Export them now and then, because a phone can clear saved web app data.</li>
+    </ul>
+  </details>
+  <details><summary>Learning and Resources</summary>
+    <ul>
+      <li>The book icon opens it. <b>Guides</b> are short lessons with small calculators, a safety section, myths and a glossary. <b>Research</b> is a library sorted by condition.</li>
+      <li>Open a category, then a sub-list such as Reviews, Human trials or Manufacturer research. Each entry shows its study type, who published it, and a one-line takeaway. A dagger (†) means the title is a short description, not the exact title.</li>
+      <li>Manufacturer research is labeled separately from independent testing, so you can weigh it. Some entries have a Use This Protocol button that loads the study's dose into the calculator.</li>
+      <li>Methylene blue has its own group. It is a drug, not a light, so it opens with the label warnings.</li>
+    </ul>
+  </details>
+  <details><summary>Red Screen Filter</summary>
+    <ul>
+      <li>The switch at the very top turns the filter on. It removes green and blue so the screen is easier on your eyes in the dark.</li>
+      <li>The slider sets the strength. All the way up removes all green and blue. Lower shows more of the normal colors.</li>
+      <li>It only affects this app, not the rest of your phone.</li>
+    </ul>
+  </details>
+  <details><summary>Your data</summary>
+    <ul>
+      <li>Profiles, settings and logs are saved on your device. Nothing is uploaded, and the panel key stays on your device.</li>
+      <li>Settings, then General, has Reset Profiles and Settings and Clear All Session Logs. Both ask for a second tap.</li>
+    </ul>
+  </details>
+  <details><summary>Safety and limits</summary>
+    <ul>
+      <li>Every number is an educational estimate, not medical advice. Real output differs between panels, and tissue differs between people.</li>
+      <li>Protect your eyes. 850 nm is invisible. Ask a clinician first if you are pregnant, have active cancer or a suspicious lesion in the area, take photosensitizing medicines, or have another condition listed in the safety checklist.</li>
+      <li>Open the checklist any time from Settings, then General.</li>
+    </ul>
+  </details>
+</section>
+
 <section id="pg-set" class="pg" aria-labelledby="h-set">
-  <h2 id="h-set">Settings</h2>
-  <h3 class="dlg-h">Red screen</h3>
+  <h2 id="h-set">General</h2>
+  <h3 class="dlg-h">Red Screen Filter</h3>
   <p class="hint">Turns every color on this page into shades of red with no green or blue, for use in the dark. The switch turns it on and off. The slider sets the strength: all the way up removes all green and blue, and lower shows more of the normal colors. It only affects this app, not the rest of your phone.</p>
   <h3 class="dlg-h">Safety</h3>
   <button class="btn" id="stSafety" type="button">Open the safety checklist</button>
   <h3 class="dlg-h">Saved data</h3>
-  <p class="hint">Profiles, settings and the session log are saved on this device only.</p>
-  <div class="acts"><button class="btn danger" id="stClearLog" type="button">Clear session log</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
+  <p class="hint">Profiles, settings and the session logs are saved on this device only.</p>
+  <div class="acts"><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 43. Educational estimates, not medical advice.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 62. Educational estimates, not medical advice.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 43.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>App build 62.</p>
 </main>
 
 <dialog id="editor" aria-labelledby="dlgTitle">
-  <h2 id="dlgTitle"></h2>
+  <h2 id="dlgTitle" tabindex="-1" autofocus></h2>
   <label><span class="l">Profile name</span><input id="pname" type="text" maxlength="40" placeholder="Panel name"></label>
   <div style="display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px">
     <span style="font-size:14px;color:var(--muted)">Measuring distance in</span>
@@ -448,6 +612,24 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 
 
 
+
+<dialog id="lpDlg" aria-labelledby="lpTitle">
+  <h2 id="lpTitle" tabindex="-1" autofocus>New log profile</h2>
+  <label><span class="l">Name</span><input id="lpName" type="text" maxlength="30" placeholder="For example Mask"></label>
+  <p class="hint" id="lpHint"></p>
+  <div class="actions"><button class="btn primary" id="lpSave" type="button">Save</button><button class="btn danger" id="lpDelete" type="button" hidden>Delete</button><button class="btn" id="lpCancel" type="button">Cancel</button></div>
+</dialog>
+
+
+<dialog id="qsDlg" aria-labelledby="qsTitle">
+  <p class="hint" id="qsStep" style="margin:0 0 6px">Step 1 of 6</p>
+  <h2 id="qsTitle" tabindex="-1" autofocus>Welcome</h2>
+  <div id="qsBody"></div>
+  <div class="qsdots" id="qsDots" aria-hidden="true"></div>
+  <p class="hint" id="qsNote">Skip anytime. You can find this guide again in Settings, under How to Use.</p>
+  <div class="actions"><button class="btn" id="qsBack" type="button">Back</button><button class="btn primary" id="qsNext" type="button">Next</button><button class="btn" id="qsSkip" type="button">Skip</button></div>
+</dialog>
+
 <div id="toast" role="status" aria-live="polite"></div>
 
 <dialog id="safeDlg" aria-labelledby="sfTitle">
@@ -458,7 +640,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
     <li><b>Skin:</b> stop if you feel burning or irritation, and start near the low end of a dose.</li>
     <li><b>This app gives educational estimates.</b> It is not medical advice and does not replace care, especially for memory problems, wounds or pain that does not settle.</li>
   </ul>
-  <p class="hint">Sources: a photobiomodulation trial protocol listing relative contraindications, a consumer safety guide, and systematic reviews on oncologic safety. See Learn, then Research, under Safety and research quality.</p>
+  <p class="hint">Sources: a photobiomodulation trial protocol listing relative contraindications, a consumer safety guide, and systematic reviews on oncologic safety. Open Learning and Resources (the book icon), then Research, under Safety and research quality.</p>
   <label class="toggle"><input type="checkbox" id="safeChk"><span>I have read this.</span></label>
   <div class="actions"><button class="btn primary" id="safeOk" type="button">Continue</button></div>
 </dialog>
@@ -593,10 +775,12 @@ const PRESETS=[
 
 PRESETS.forEach(p=>{p.name=titleCase(p.name)});
 const BUILTIN=PRESETS.map(presetToProfile);
-const DEFAULT={night:{on:false,level:100},view:"simple",profiles:[DEFAULT_PROFILE],active:"default",goal:10,treatment:"skin",area:"face",depthManual:null,distManualCm:null,dose:null};
+const DEFAULT={logProfiles:[{id:"panel",name:"Panel"}],logActive:"panel",night:{on:false,level:100},view:"simple",profiles:[DEFAULT_PROFILE],active:"default",goal:10,treatment:"skin",area:"face",depthManual:null,distManualCm:null,dose:null};
 let S=Object.assign({},DEFAULT,store.get()||{});
 if(!Array.isArray(S.profiles)||!S.profiles.length)S.profiles=[JSON.parse(JSON.stringify(DEFAULT_PROFILE))];
 S.night=Object.assign({on:false,level:100},S.night||{});
+if(!Array.isArray(S.logProfiles)||!S.logProfiles.length)S.logProfiles=[{id:"panel",name:"Panel"}];
+if(!S.logProfiles.some(p=>p.id===S.logActive))S.logActive=S.logProfiles[0].id;
 S.profiles=S.profiles.map(migrate);
 S.profiles.forEach(p=>{p.name=titleCase(p.name)});
 if(!S.profiles.some(p=>p.id===S.active)&&!PRESETS.some(p=>p.id===S.active))S.active=S.profiles[0].id;
@@ -638,6 +822,10 @@ function points(prof){
 }
 const fmtT=s=>{if(!isFinite(s))return"-";s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
 const fmt=(x,n=1)=>(+x).toFixed(n).replace(/\.0+$/,"");
+const halfUp=s=>isFinite(s)?Math.max(30,Math.ceil((s-1e-6)/30)*30):s;     // protocol times round up to the next half minute
+const halfNear=s=>isFinite(s)?Math.max(30,Math.round(s/30)*30):s;         // used for the "likely" range ends
+const fmtMn=s=>{if(!isFinite(s))return "-";const m=s/60;return Number.isInteger(m)?String(m):m.toFixed(1)};
+const fmtMin=s=>fmtMn(s)+" min";
 
 /* ---------- Model ---------- */
 function groupsOf(prof){
@@ -682,6 +870,8 @@ function model(){
   else segs=[{ch:"660",share:s660,label:redL,cls:"r"},{ch:"850",share:1-s660,label:nirL,cls:"n"}];
   const secs=(seg,dcm,p,D)=>{const I=irr(seg.ch,dcm);return I?D*seg.share*1000/(I*p/100):null};
   const total=(dcm,p,D)=>{let t=0;for(const s of segs){const x=secs(s,dcm,p,D);if(x==null)return null;t+=x}return t};
+  const plan=(dcm,p,D)=>{const out=[];for(const s of segs){const x=secs(s,dcm,p,D);if(x==null)return null;out.push({label:s.label,ch:s.ch,sec:halfUp(x)})}return {segs:out,total:out.reduce((a,s)=>a+s.sec,0)}};
+  const rtotal=(dcm,p,D)=>{const q=plan(dcm,p,D);return q?q.total:null};
   const allPts=points(prof);
   const missing=!f||G.bs.length===0;
   // light reaching the target: skull transmission comes from cadaver measurements, other tissue from an exponential model weighted by each wavelength
@@ -691,7 +881,7 @@ function model(){
     return ch==="660"?tg(G.red,660):ch==="850"?tg(G.nir,850):tg(G.bs,750);
   };
   const irrSel=d=>Math.min(...segs.map(s=>irr(s.ch,d)));
-  return {prof,G,T,A,auto,depth,wave,subst,s660,lo,hi,dose,irr,segs,secs,total,allPts,missing,k,trans,irrSel};
+  return {prof,G,T,A,auto,depth,wave,subst,s660,lo,hi,dose,irr,segs,secs,total,plan,rtotal,allPts,missing,k,trans,irrSel};
 }
 
 function recommend(m){
@@ -867,7 +1057,7 @@ function chart(m,dcm){
     labels+=`<text x="${clamp(X(e[0])+3,L,W-R+3)}" y="${clamp(Y(e[1])+(e[1]>=ymax-1e-6?8:0),Tp+8,H-B-2)}" style="fill:${col};opacity:${Math.max(op,.6)}">${p}%</text>`;
     if(p===100||p===50){const tt=m.total(dcm,p,m.dose);dots+=`<circle cx="${X(tt)}" cy="${Y(m.dose)}" r="4.5" fill="${col}" stroke="#2a2224" stroke-width="1.5"/>`}
   });
-  const desc=`Dose over time. At 100% power the target of ${fmt(m.dose)} joules per square centimeter is reached in ${fmtT(t100)}, at 50% in ${fmtT(t50)}.`;
+  const desc=`Dose over time. At 100% power the target of ${fmt(m.dose)} joules per square centimeter is reached in ${fmtMin(m.rtotal(dcm,100,m.dose))}, at 50% in ${fmtMin(m.rtotal(dcm,50,m.dose))}.`;
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${desc}"><defs><clipPath id="cp"><rect x="${L}" y="${Tp}" width="${pw}" height="${ph}"/></clipPath></defs>${g}<g clip-path="url(#cp)">${lines}</g>${labels}${dots}</svg>`;
 }
 
@@ -899,24 +1089,24 @@ function render(){
   if(document.activeElement!==$("#dist"))$("#dist").value=fmt(fromCm(dcm),1);
   $("#auto").hidden=!manual;
   const opt=(p,name)=>{
-    const t=m.total(dcm,p,m.dose),uu=unc(m,dcm),lo=t/(1+uu),hi=t/(1-uu);
+    const P=m.plan(dcm,p,m.dose),t=m.total(dcm,p,m.dose),uu=unc(m,dcm),lo=halfNear(t/(1+uu)),hi=halfNear(t/(1-uu));
     const cls=m.segs.length===1?m.segs[0].cls:"x";
-    const detail=m.segs.length>1?m.segs.map(s=>`${s.label} ${fmtT(m.secs(s,dcm,p,m.dose))}`).join(", then "):"";
+    const detail=m.segs.length>1?P.segs.map(s=>`${s.label} ${fmtMin(s.sec)}`).join(", then "):"";
     const I=m.segs.length===1?m.irr(m.segs[0].ch,dcm)*p/100:null;
-    return `<div class="card ${cls}"><h3>${name}</h3><div class="big">${fmtT(t)}</div><div class="pw">${p}% power</div>
-      <p>${fmt(m.dose)} J/cm\u00b2${I?` at ${fmt(I)} mW/cm\u00b2`:""}${detail?`<br>${detail}`:""}<br>Likely ${fmtT(lo)} to ${fmtT(hi)}</p></div>`;
+    return `<div class="card ${cls}"><h3>${name}</h3><div class="big">${fmtMn(P.total)}<small>min</small></div><div class="pw">${p}% power</div>
+      <p>${fmt(m.dose)} J/cm\u00b2${I?` at ${fmt(I)} mW/cm\u00b2`:""}${detail?`<br>${detail}`:""}<br>Likely ${fmtMn(lo)} to ${fmtMin(hi)}</p></div>`;
   };
   const warns=[];
   const ds2=m.allPts.map(p=>p.d),dmin=Math.min(...ds2),dmax=Math.max(...ds2);
   if(dcm<dmin-1e-6||dcm>dmax+1e-6)warns.push(ds2.length<2
     ?"You have one measured distance, so the output here is estimated. Measure at this distance and add it under Edit to confirm."
     :"This distance is outside your measured range, so the output is extrapolated. Measure there and add it under Edit to confirm.");
-  const t100=m.total(dcm,100,m.dose),t50=m.total(dcm,50,m.dose);
+  const t100=m.rtotal(dcm,100,m.dose),t50=m.rtotal(dcm,50,m.dose);
   if(m.T.irrMin&&m.irrSel(dcm)<m.T.irrMin)warns.push(`This treatment works best with at least ${m.T.irrMin} mW/cm\u00b2 at the surface, and your panel gives about ${fmt(m.irrSel(dcm))} here. Move closer than your measured range or use a stronger panel.`);
   const goalSec=(parseFloat(S.goal)||10)*60;
   if(!manual&&Math.abs(t100-goalSec)/goalSec>0.15)warns.push(m.T.irrMin&&m.irrSel(dcm)>=m.T.irrMin
-    ?`Full power takes ${fmtT(t100)} at the farthest distance that still keeps at least ${m.T.irrMin} mW/cm\u00b2 at the surface, so the session is shorter than your ${S.goal} minute goal. Backing the panel off would stretch the time but drop the irradiance below what this treatment needs.`
-    :`The closest reachable time to your ${S.goal} minute goal is ${fmtT(t100)} at full power. The search only extends so far past your measured distances. Add readings at other distances under Edit to extend that.`);
+    ?`Full power takes ${fmtMin(t100)} at the farthest distance that still keeps at least ${m.T.irrMin} mW/cm\u00b2 at the surface, so the session is shorter than your ${S.goal} minute goal. Backing the panel off would stretch the time but drop the irradiance below what this treatment needs.`
+    :`The closest reachable time to your ${S.goal} minute goal is ${fmtMin(t100)} at full power. The search only extends so far past your measured distances. Add readings at other distances under Edit to extend that.`);
   if(t50>30*60)warns.push("Half power takes over 30 minutes at this distance. Move the panel closer or use full power.");
   if(t100<45)warns.push("Full power finishes in under a minute. Increase the distance for more even coverage and easier dose control.");
   if(m.subst)warns.push(m.subst);
@@ -925,7 +1115,7 @@ function render(){
   const tr=m.trans(prof.mode==="fixed"?"both":(m.wave==="blend"?"850":m.wave));
   const trLo=m.T.layer==="brain"?0.005:tr/2,trHi=m.T.layer==="brain"?0.05:Math.min(1,tr*2);
   const info=`About ${fmt(m.dose*tr,2)} J/cm\u00b2 (roughly ${fmt(m.dose*trLo,2)} to ${fmt(m.dose*trHi,2)}) and ${fmt(m.irrSel(dcm)*tr,2)} mW/cm\u00b2 reach ${m.T.layer==="brain"?"the cortex":fmt(m.depth,1)+" mm"} by this rough model. Frequency: ${m.T.freq}.`;
-  const rows=[100,75,50,25].map(p=>`<tr><td>${p}%</td><td>${fmtT(m.total(dcm,p,m.dose))}</td><td>${fmt(m.dose*Math.min(1,600/m.total(dcm,p,m.dose)),1)} J/cm\u00b2</td></tr>`).join("");
+  const rows=[100,75,50,25].map(p=>`<tr><td>${p}%</td><td>${fmtMin(m.rtotal(dcm,p,m.dose))}</td><td>${fmt(m.dose*Math.min(1,600/m.total(dcm,p,m.dose)),1)} J/cm\u00b2</td></tr>`).join("");
   box.innerHTML=`
     <div class="hero"><div class="k">${manual?"Distance you picked":"Recommended distance"}</div><div class="v">${fmt(fromCm(dcm),1)} ${prof.unit}</div><div class="k lab" style="margin-top:2px">${m.segs.map(s=>`${fmt(m.irr(s.ch,dcm))} mW/cm\u00b2 ${s.label}`).join(", ")} at the surface, full power</div><div class="k simple-only" style="margin-top:2px">Light: ${m.segs.map(s=>s.label).join(" and ")}${prof.mode==="fixed"?" (together)":""}</div></div>
     <div class="cards">${opt(100,"Fast")}${opt(50,"Gentle")}</div>
@@ -956,10 +1146,11 @@ function renderDraftRows(){
 }
 function showView(v){
   document.body.dataset.view=v;
-  const inCalc=v==="simple"||v==="lab";
-  const inLearn=v==="lib"||v==="learn";
-  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.view==="calc"?inCalc:(b.dataset.view==="learnhub"?inLearn:b.dataset.view===v))));
-  document.querySelectorAll(".subtabs button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.sub===v)));
+  const inCalc=v==="simple"||v==="lab",inLearn=v==="lib"||v==="learn",inSet=v==="set"||v==="log"||v==="how";
+  document.querySelectorAll(".tabs button").forEach(b=>{const k=b.dataset.view;b.setAttribute("aria-pressed",String(k==="calc"?inCalc:(k==="settingshub"?inSet:(k==="learnhub"?inLearn:k===v))))});
+  const ht=$("#hubTitle");ht.textContent=inLearn?"Learning and Resources":(inSet?"Settings":"");ht.hidden=!(inLearn||inSet);
+  document.querySelectorAll("#subTabs button,#subTabs2 button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.sub===v)));
+  document.querySelectorAll("#subTabs3 button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.sub===v)));
 }
 function openDlg(id){
   const saved=id?S.profiles.find(p=>p.id===id):null,built=id&&!saved?BUILTIN.find(p=>p.id===id):null;
@@ -974,6 +1165,12 @@ function openDlg(id){
   $("#dlgSrc").textContent=(built?"Built-in preset. It cannot be overwritten, but an edited copy can be saved as a new preset. ":"")+(draft.src||"");
   dlgUnits();renderDraftRows();
   const dg=$("#editor");if(dg.showModal)dg.showModal();else{dg.className="fb";dg.setAttribute("open","")}
+  noKeyboard();
+}
+// the first field must not grab focus on open, because that pops up the phone keyboard
+function noKeyboard(){
+  const a=document.activeElement;
+  if(a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA")){a.blur();const t=$("#dlgTitle");if(t&&t.focus)t.focus()}
 }
 function openDlgWith(base){
   draft=JSON.parse(JSON.stringify(base));editingId=null;editingBuiltin=false;delArmed=false;
@@ -983,6 +1180,7 @@ function openDlgWith(base){
   $("#dlgErr").textContent="";$("#dlgSrc").textContent=draft.src||"";
   dlgUnits();renderDraftRows();
   const dg=$("#editor");if(dg.showModal){if(!dg.open)dg.showModal()}else{dg.className="fb";dg.setAttribute("open","")}
+  noKeyboard();
 }
 function closeDlg(){const dg=$("#editor");if(dg.close)dg.close();else dg.removeAttribute("open")}
 function collect(){
@@ -1051,11 +1249,13 @@ $("#auto").addEventListener("click",()=>{S.distManualCm=null;$("#dist").blur();s
 
 function setView(v){
   if(v==="calc")v=S.view==="lab"?"lab":"simple";
+  if(v==="settingshub")v=S.sview==="log"?"log":(S.sview==="how"?"how":"set");
   if(v==="learnhub")v=S.lview==="lib"?"lib":"learn";
   if(v==="lib"||v==="learn"){S.lview=v;save()}
+  if(v==="set"||v==="log"||v==="how"){S.sview=v;save()}
   if(v==="simple"||v==="lab"){S.view=v;save()}
   showView(v);
-  if(v==="log")renderLog();else if(v==="lib")renderLib();else if(v==="learn")renderLearn();else if(v==="set")renderSet();
+  if(v==="log")renderLog();else if(v==="lib")renderLib();else if(v==="learn")renderLearn();else if(v==="set")renderSet();else if(v==="panel")renderPanel();
   window.scrollTo(0,0);
 }
 document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
@@ -1310,15 +1510,59 @@ function logWeeks(a){
   }
   return out;
 }
+/* ---------- Log profiles (separate logs, for example Panel and Mask) ---------- */
+function lpName(id){const p=S.logProfiles.find(function(x){return x.id===id});return p?p.name:S.logProfiles[0].name}
+function lpOf(e){return e.lp&&S.logProfiles.some(function(p){return p.id===e.lp})?e.lp:S.logProfiles[0].id}
+function logFor(id){return getLog().filter(function(e){return lpOf(e)===id})}
+function fillLogProfiles(){
+  const opts=S.logProfiles.map(function(p){return '<option value="'+escH(p.id)+'">'+escH(p.name)+'</option>'}).join("");
+  document.querySelectorAll(".lpSel").forEach(function(s){s.innerHTML=opts;s.value=S.logActive});
+}
+let lpEditId=null,lpArm=false;
+function openLp(id){
+  lpEditId=id;lpArm=false;
+  const p=id?S.logProfiles.find(function(x){return x.id===id}):null;
+  $("#lpTitle").textContent=id?"Edit log profile":"New log profile";
+  $("#lpName").value=p?p.name:"";
+  $("#lpDelete").hidden=!id||S.logProfiles.length<2;$("#lpDelete").textContent="Delete";
+  $("#lpHint").textContent=id?"Deleting a log profile also deletes its sessions.":"Use log profiles to keep separate logs, for example Panel and Mask.";
+  openD("#lpDlg");
+  const a=document.activeElement;if(a&&a.tagName==="INPUT")a.blur();
+}
+$("#lpNew").addEventListener("click",function(){openLp(null)});
+$("#lpEdit").addEventListener("click",function(){openLp(S.logActive)});
+$("#lpCancel").addEventListener("click",function(){closeD("#lpDlg")});
+$("#lpSave").addEventListener("click",function(){
+  const name=titleCase($("#lpName").value.trim());
+  if(!name){toast("Enter a name first");return}
+  if(S.logProfiles.some(function(p){return p.name.toLowerCase()===name.toLowerCase()&&p.id!==lpEditId})){toast("That name is already used");return}
+  if(lpEditId){S.logProfiles.find(function(p){return p.id===lpEditId}).name=name}
+  else{const id="lp"+Date.now();S.logProfiles.push({id:id,name:name});S.logActive=id}
+  save();closeD("#lpDlg");fillLogProfiles();renderLog();
+});
+$("#lpDelete").addEventListener("click",function(){
+  if(!lpArm){lpArm=true;$("#lpDelete").textContent="Tap again to delete";return}
+  const id=lpEditId;
+  putLog(getLog().filter(function(e){return lpOf(e)!==id}));
+  S.logProfiles=S.logProfiles.filter(function(p){return p.id!==id});
+  S.logActive=S.logProfiles[0].id;
+  save();closeD("#lpDlg");fillLogProfiles();renderLog();toast("Log profile deleted");
+});
+document.addEventListener("change",function(e){
+  const t=e.target;
+  if(t.classList&&t.classList.contains("lpSel")){S.logActive=t.value;save();fillLogProfiles();if(document.body.dataset.view==="log")renderLog()}
+});
+
 function logCsv(){
-  const a=getLog().slice().sort(function(x,y){return x.ts-y.ts});
-  const head=["date_time","treatment","area","panel","light","distance","unit","power_pct","minutes","dose_j_cm2","note"];
+  const a=logFor(S.logActive).slice().sort(function(x,y){return x.ts-y.ts});
+  const head=["date_time","log_profile","treatment","area","panel","light","distance","unit","power_pct","minutes","dose_j_cm2","note"];
   const q=function(v){return '"'+String(v==null?"":v).replace(/"/g,'""')+'"'};
-  return [head.join(",")].concat(a.map(function(e){return [new Date(e.ts).toISOString(),e.trn,e.arn,e.panel,e.light,e.dist,e.unit,e.power,(e.sec/60).toFixed(1),e.dose,e.note].map(q).join(",")})).join("\n");
+  return [head.join(",")].concat(a.map(function(e){return [new Date(e.ts).toISOString(),lpName(S.logActive),e.trn,e.arn,e.panel,e.light,e.dist,e.unit,e.power,(e.sec/60).toFixed(1),e.dose,e.note].map(q).join(",")})).join("\n");
 }
 function renderLog(){
   $("#logNotice").hidden=canStore();
-  const a=getLog().slice().sort(function(x,y){return y.ts-x.ts}),wk=logWeeks(a),cur=wk[7];
+  fillLogProfiles();
+  const a=logFor(S.logActive).slice().sort(function(x,y){return y.ts-x.ts}),wk=logWeeks(a),cur=wk[7];
   let h='<div class="stats"><div><b>'+cur.n+'</b><span>sessions, last 7 days</span></div><div><b>'+fmt(cur.min,0)+'</b><span>minutes, last 7 days</span></div><div><b>'+fmt(cur.dose,0)+'</b><span>J/cm\u00b2 delivered</span></div></div>';
   const mx=Math.max.apply(null,wk.map(function(w){return w.min}).concat([1]));
   let bars="";
@@ -1328,9 +1572,9 @@ function renderLog(){
     if(w.min>0)bars+='<text x="'+(x+15)+'" y="'+(104-hh)+'" text-anchor="middle" style="fill:#f4ebe6">'+fmt(w.min,0)+'</text>';
   });
   h+='<h3 class="dlg-h">Minutes per week</h3><svg viewBox="0 0 360 134" role="img" aria-label="Minutes of light per week for the last eight weeks">'+bars+'</svg>';
-  h+='<div class="acts"><button class="btn" id="logDl" type="button">Download CSV</button><button class="btn" id="logCopy" type="button">Copy CSV</button><button class="btn danger" id="logClear" type="button">Clear all</button></div>';
+  h+='<div class="acts"><button class="btn" id="logDl" type="button">Download CSV</button><button class="btn" id="logCopy" type="button">Copy CSV</button><button class="btn danger" id="logClear" type="button">Clear this log</button></div>';
   h+='<p class="hint">Saved on this device only. Export now and then, because a phone can clear saved web app data.</p>';
-  if(!a.length)h+='<p class="empty">No sessions yet. Finish a session with the timer on the Simple or Lab tab and it is logged here automatically.</p>';
+  if(!a.length)h+='<p class="empty">No sessions in this log yet. Finish a session with the timer on the Calculator tab and it is logged here automatically.</p>';
   let lastDay="";
   a.forEach(function(e){
     const d=new Date(e.ts),day=d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
@@ -1345,15 +1589,15 @@ function renderLog(){
     const csv=logCsv();
     try{
       const url=URL.createObjectURL(new Blob([csv],{type:"text/csv"})),a2=document.createElement("a");
-      a2.href=url;a2.download="redox-session-log.csv";document.body.appendChild(a2);a2.click();a2.remove();
+      a2.href=url;a2.download="redox-session-log-"+lpName(S.logActive).toLowerCase().replace(/[^a-z0-9]+/g,"-")+".csv";document.body.appendChild(a2);a2.click();a2.remove();
       setTimeout(function(){URL.revokeObjectURL(url)},2000);
     }catch(err){copyText(csv,"Could not download, so the CSV was copied instead.")}
   };
   $("#logCopy").onclick=function(){copyText(logCsv(),"CSV copied")};
   let armed=false;
   $("#logClear").onclick=function(){
-    if(!armed){armed=true;$("#logClear").textContent="Tap again to clear all";return}
-    putLog([]);renderLog();toast("Log cleared");
+    if(!armed){armed=true;$("#logClear").textContent="Tap again to clear this log";return}
+    putLog(getLog().filter(function(e){return lpOf(e)!==S.logActive}));renderLog();toast("This log cleared");
   };
 }
 function copyText(txt,msg){
@@ -1368,7 +1612,7 @@ $("#logBody").addEventListener("click",function(e){
 /* ---------- Session timer (inline in the calculator) ---------- */
 const tmCard=$("#timerCard");
 const tm={p:100,segs:[],total:0,running:false,t0:0,acc:0,fired:0,iv:null,lock:null,ac:null,ctx:null,done:false};
-function planSegs(p,ctx){return ctx.m.segs.map(function(s){return {label:s.label,sec:ctx.m.secs(s,ctx.dcm,p,ctx.m.dose)}})}
+function planSegs(p,ctx){return ctx.m.plan(ctx.dcm,p,ctx.m.dose).segs.map(function(s){return {label:s.label,sec:s.sec}})}
 function elapsed(){return tm.acc+(tm.running?(Date.now()-tm.t0)/1000:0)}
 function segAt(e){let c=0;for(let i=0;i<tm.segs.length;i++){c+=tm.segs[i].sec;if(e<c)return {i:i,left:c-e}}return {i:tm.segs.length-1,left:0}}
 function beep(f,d){
@@ -1390,6 +1634,7 @@ function tmBuild(p){
   clearInterval(tm.iv);wake(false);
   tm.ctx={m:LAST.m,dcm:LAST.dcm};tm.p=p;tm.segs=planSegs(p,tm.ctx);
   tm.total=tm.segs.reduce(function(a,s){return a+s.sec},0);
+  tm.raw=tm.ctx.m.total(tm.ctx.dcm,tm.p,tm.ctx.m.dose);
   tm.running=false;tm.acc=0;tm.fired=0;tm.done=false;tmRender();
 }
 function tmSync(){if(LAST&&!tm.running&&(tm.acc===0||tm.done))tmBuild(tm.p)}
@@ -1405,10 +1650,10 @@ function tmRender(){
 }
 function logSession(sec){
   const c=tm.ctx;if(!c||!(sec>=1))return;
-  const m=c.m,frac=tm.total?Math.min(1,sec/tm.total):1;
+  const m=c.m,frac=tm.raw?sec/tm.raw:1;
   const e={id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,panel:m.prof.name,
     light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(c.dcm,m.prof.unit),1),unit:m.prof.unit,power:tm.p,
-    sec:Math.round(sec),dose:+fmt(m.dose*frac,1),note:""};
+    sec:Math.round(sec),dose:+fmt(m.dose*frac,1),note:"",lp:S.logActive};
   const a=getLog();a.push(e);putLog(a);
 }
 function tmTick(){
@@ -1451,10 +1696,10 @@ function wrapText(ctx,text,x,y,maxW,lh){
   if(line){ctx.fillText(line,x,y);y+=lh}return y;
 }
 function cardText(){
-  const m=LAST.m,d=LAST.dcm,u=unc(m,d),t1=m.total(d,100,m.dose),t2=m.total(d,50,m.dose);
+  const m=LAST.m,d=LAST.dcm,u=unc(m,d),t1=m.rtotal(d,100,m.dose),t2=m.rtotal(d,50,m.dose),r1=m.total(d,100,m.dose),r2=m.total(d,50,m.dose);
   return {title:m.T.name+", "+m.A.name,
     rows:[["Panel",m.prof.name],["Light",m.segs.map(function(s){return s.label}).join(" and ")],["Distance",fmt(fromCm(d),1)+" "+m.prof.unit+" from the surface"],["Dose",fmt(m.dose,1)+" J/cm\u00b2 per session"],
-      ["Full power",fmtT(t1)+" (likely "+fmtT(t1/(1+u))+" to "+fmtT(t1/(1-u))+")"],["Half power",fmtT(t2)+" (likely "+fmtT(t2/(1+u))+" to "+fmtT(t2/(1-u))+")"],["How often",m.T.freq]],
+      ["Full power",fmtMin(t1)+" (likely "+fmtMn(halfNear(r1/(1+u)))+" to "+fmtMin(halfNear(r1/(1-u)))+")"],["Half power",fmtMin(t2)+" (likely "+fmtMn(halfNear(r2/(1+u)))+" to "+fmtMin(halfNear(r2/(1-u)))+")"],["How often",m.T.freq]],
     status:STATUS[m.T.id]?STATUS[m.T.id][1]:"",caution:m.T.caution||""};
 }
 function drawCard(cb){
@@ -1603,7 +1848,7 @@ document.addEventListener("click",function(e){
 /* ---------- Safety checklist ---------- */
 const SAFEKEY="rdl.safe.v1";
 function safeAck(){try{return !!localStorage.getItem(SAFEKEY)}catch(e){return true}}
-$("#safeOk").addEventListener("click",function(){try{localStorage.setItem(SAFEKEY,"1")}catch(e){}closeD("#safeDlg")});
+$("#safeOk").addEventListener("click",function(){try{localStorage.setItem(SAFEKEY,"1")}catch(e){}closeD("#safeDlg");maybeQs()});
 $("#safeChk").addEventListener("change",function(){$("#safeOk").disabled=!$("#safeChk").checked});
 
 /* ---------- Guided measurement wizard ---------- */
@@ -1740,21 +1985,163 @@ $("#nightLevel").addEventListener("input",function(e){S.night.level=+e.target.va
 let stArm={log:false,reset:false};
 function renderSet(){
   stArm.log=false;stArm.reset=false;
-  $("#stClearLog").textContent="Clear session log";$("#stReset").textContent="Reset profiles and settings";
+  $("#stClearLog").textContent="Clear all session logs";$("#stReset").textContent="Reset profiles and settings";
 }
 $("#stSafety").addEventListener("click",function(){openD("#safeDlg")});
 $("#stClearLog").addEventListener("click",function(){
-  if(!stArm.log){stArm.log=true;$("#stClearLog").textContent="Tap again to clear the log";return}
-  stArm.log=false;putLog([]);$("#stClearLog").textContent="Clear session log";toast("Session log cleared");
+  if(!stArm.log){stArm.log=true;$("#stClearLog").textContent="Tap again to clear all logs";return}
+  stArm.log=false;putLog([]);$("#stClearLog").textContent="Clear all session logs";toast("All session logs cleared");
 });
 $("#stReset").addEventListener("click",function(){
   if(!stArm.reset){stArm.reset=true;$("#stReset").textContent="Tap again to reset everything";return}
   try{localStorage.removeItem("rdl.v2")}catch(e){}
   location.reload();
 });
+/* ---------- Panel control (ESP32 over WiFi) ---------- */
+const PNKEY="rdl.panel.v1";
+const SAMEORIGIN=location.protocol==="http:";   // opened from the panel itself (or a local test server)
+const pn={addr:"panel.local",key:"",swap:false,connected:false,iv:null,st:null,ctx:null,p:100,wasActive:false,logged:false};
+(function(){try{const v=JSON.parse(localStorage.getItem(PNKEY))||{};if(v.addr)pn.addr=v.addr;pn.key=v.key||"";pn.swap=!!v.swap}catch(e){}})();
+function pnSave(){try{localStorage.setItem(PNKEY,JSON.stringify({addr:pn.addr,key:pn.key,swap:pn.swap}))}catch(e){}}
+function pnBase(){return SAMEORIGIN?"":"http://"+pn.addr.replace(/^https?:\/\//,"").replace(/\/+$/,"")}
+function pnReq(path,params){
+  const body=new URLSearchParams(Object.assign({key:pn.key},params||{})).toString();
+  const ctl=typeof AbortController!=="undefined"?new AbortController():null;
+  const to=setTimeout(function(){if(ctl)ctl.abort()},4500);
+  const opt={method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:body};
+  if(ctl)opt.signal=ctl.signal;
+  if(!SAMEORIGIN)opt.targetAddressSpace="local";
+  return fetch(pnBase()+path,opt).then(function(r){clearTimeout(to);if(r.status===401)throw new Error("key");if(!r.ok)throw new Error("HTTP "+r.status);return r.json()},function(e){clearTimeout(to);throw e});
+}
+function pnMsg(t,bad){const e=$("#pnStatus");e.textContent=t;e.style.color=bad?"var(--warn)":"var(--muted)"}
+function pnHelp(err){
+  if(err&&err.message==="key")return "The panel rejected the key. Check the panel key in the box above.";
+  let t="Could not reach the panel at "+(SAMEORIGIN?"this address":pn.addr)+". Check that it is powered and on the same WiFi.";
+  if(!SAMEORIGIN&&location.protocol==="https:")t+=" On Android Chrome, tap Allow when it asks to find devices on your local network. On iPhone, this page cannot reach the panel: open the panel's own address in Safari instead, for example http://"+pn.addr+".";
+  return t;
+}
+function pnFmt(s){return fmtT(Math.max(0,Math.round(s)))}
+function pnLock(){
+  const on=pn.connected,c=$("#pnCtl");
+  c.classList.toggle("locked",!on);
+  c.querySelectorAll("input,button").forEach(function(e){e.disabled=!on});
+  $("#pnLockNote").hidden=on;
+}
+function pnRender(st){
+  pn.st=st;
+  pnLock();
+  if(!st)return;
+  $("#pnC1v").textContent=st.c1+"%";$("#pnC2v").textContent=st.c2+"%";
+  if(document.activeElement!==$("#pnC1"))$("#pnC1").value=st.c1;
+  if(document.activeElement!==$("#pnC2"))$("#pnC2").value=st.c2;
+  const s=st.session||{};
+  let line="Connected. Firmware "+st.fw+". ";
+  if(s.active)line+="Session running: "+pnFmt(s.elapsed)+" of "+pnFmt(s.total)+", part "+(s.seg+1)+" of "+s.segs+".";
+  else if(st.on)line+="Manual mode, panel on. It turns off by itself if this app stops checking in for "+st.limits.hb+" seconds, or after "+Math.round(st.limits.maxManual/60)+" minutes.";
+  else line+="Panel is off."+(st.fault?" Last stop: "+st.fault+".":"");
+  pnMsg(line,false);
+  $("#pnBar").style.width=(s.active&&s.total?Math.min(100,s.elapsed/s.total*100):0)+"%";
+  $("#pnStop").hidden=!(s.active||st.on);
+  $("#pnStart").disabled=!!s.active;
+  if(s.active){pn.wasActive=true}
+  else if(pn.wasActive){
+    pn.wasActive=false;
+    if(s.done&&pn.ctx&&!pn.logged){pn.logged=true;logPanelSession(Math.min(s.elapsed||pn.ctx.total,pn.ctx.total));toast("Session finished and logged")}
+  }
+}
+function pnPoll(){
+  pnReq("/api/state").then(function(st){pn.connected=true;pnRender(st)}).catch(function(e){
+    if(pn.connected){pn.connected=false;pnRender(null);clearInterval(pn.iv);pn.iv=null}
+    pnMsg(pnHelp(e),true);
+  });
+}
+function pnConnect(){
+  pn.addr=($("#pnAddr").value||"panel.local").trim();pn.key=$("#pnKey").value.trim();pnSave();
+  pnMsg("Connecting...",false);
+  pnReq("/api/state").then(function(st){
+    pn.connected=true;pnRender(st);clearInterval(pn.iv);pn.iv=setInterval(pnPoll,2000);
+    $("#pnConnect").textContent="Reconnect";
+  }).catch(function(e){pn.connected=false;pnRender(null);pnMsg(pnHelp(e),true)});
+}
+function pnSet(){
+  const a=+$("#pnC1").value,b=+$("#pnC2").value;
+  pnReq("/api/set",{c1:a,c2:b}).then(pnRender).catch(function(e){pnMsg(pnHelp(e),true)});
+}
+function pnAllOff(){pnReq("/api/stop").then(pnRender).catch(function(e){pnMsg(pnHelp(e),true)})}
+function pnPlan(){
+  if(!LAST)return null;
+  const m=LAST.m,d=LAST.dcm,p=pn.p;
+  const segs=m.plan(d,p,m.dose).segs.map(function(s){
+    let a=(s.ch==="660"||s.ch==="both")?p:0,b=(s.ch==="850"||s.ch==="both")?p:0;
+    if(pn.swap){const t=a;a=b;b=t}
+    return {c1:a,c2:b,sec:s.sec,label:s.label};
+  });
+  return {segs:segs,total:segs.reduce(function(a,s){return a+s.sec},0),raw:m.total(d,p,m.dose),m:m,dcm:d,p:p};
+}
+function renderPanel(){
+  $("#pnAddr").value=pn.addr;$("#pnKey").value=pn.key;$("#pnSwap").checked=pn.swap;
+  $("#pnAddrRow").hidden=SAMEORIGIN;
+  $("#pnL1").textContent="Channel 1 ("+(pn.swap?"850":"660")+" nm)";$("#pnL2").textContent="Channel 2 ("+(pn.swap?"660":"850")+" nm)";
+  const pl=pnPlan(),el=$("#pnPlan");
+  document.querySelectorAll("#pnOpts button").forEach(function(b){b.setAttribute("aria-pressed",String(+b.dataset.p===pn.p))});
+  if(!pl){el.textContent="Set up a protocol on the Calculator tab first. The panel then runs it for you.";$("#pnStart").disabled=true;return}
+  el.textContent=pl.m.T.name+", "+pl.m.A.name+": "+pl.segs.map(function(s){return s.label+" for "+fmtMin(s.sec)}).join(", then ")+" at "+pl.p+"% power. Total "+fmtMin(pl.total)+".";
+  $("#pnStart").disabled=!pn.connected||!!(pn.st&&pn.st.session&&pn.st.session.active);
+}
+function pnStart(){
+  const pl=pnPlan();if(!pl){toast("Set up a protocol on the Calculator tab first");return}
+  pn.ctx=pl;pn.logged=false;pn.wasActive=false;
+  pnReq("/api/session",{segs:pl.segs.map(function(s){return s.c1+":"+s.c2+":"+s.sec}).join(";")}).then(function(st){pn.wasActive=true;pnRender(st);toast("Session started on the panel")}).catch(function(e){pnMsg(pnHelp(e),true)});
+}
+function logPanelSession(sec){
+  const c=pn.ctx;if(!c)return;const m=c.m;
+  const e={id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,panel:m.prof.name,
+    light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(c.dcm,m.prof.unit),1),unit:m.prof.unit,power:c.p,
+    sec:Math.round(sec),dose:+fmt(m.dose*(c.raw?sec/c.raw:1),1),note:"Run by the panel",lp:S.logActive};
+  const a=getLog();a.push(e);putLog(a);
+}
+pnLock();
+$("#pnConnect").addEventListener("click",pnConnect);
+$("#pnC1").addEventListener("input",function(){$("#pnC1v").textContent=$("#pnC1").value+"%"});
+$("#pnC2").addEventListener("input",function(){$("#pnC2v").textContent=$("#pnC2").value+"%"});
+$("#pnC1").addEventListener("change",pnSet);$("#pnC2").addEventListener("change",pnSet);
+$("#pnOff").addEventListener("click",pnAllOff);$("#pnStop").addEventListener("click",pnAllOff);
+$("#pnStart").addEventListener("click",pnStart);
+$("#pnSwap").addEventListener("change",function(){pn.swap=$("#pnSwap").checked;pnSave();renderPanel()});
+$("#pnOpts").addEventListener("click",function(e){const b=e.target.closest("button");if(b){pn.p=+b.dataset.p;renderPanel()}});
+
+/* ---------- Quick start ---------- */
+const QSKEY="rdl.qs.v1";
+function qsSeen(){try{return !!localStorage.getItem(QSKEY)}catch(e){return true}}
+const QS=[
+ {t:"Welcome",h:"<p>This app turns your panel's readings into a session plan: how far to hold the panel, which light to use and how long to run it.</p><p>This quick tour takes about a minute. Every number is an educational estimate, not medical advice.</p>"},
+ {t:"1. Set Up Your Panel",h:"<p>On the <b>Calculator</b> tab, pick your panel under Panel Profile. Choose a built-in preset, or tap <b>Edit</b> to enter your own readings.</p><p>More readings at more distances means better numbers. The Measure My Panel guide in the Edit window walks you through it.</p>"},
+ {t:"2. Choose a Treatment",h:"<p>Pick what you are treating and the target area. The app chooses the wavelength and shows a published dose window.</p><p>The Evidence section below shows how strong the research is and links the sources.</p>"},
+ {t:"3. Read the Recommendation",h:"<p>You get a distance and two options: <b>Fast</b> at full power and <b>Gentle</b> at half power. Both deliver the same dose.</p><p>Change the time goal or type a distance to adjust it. <b>Lab View (Advanced)</b> adds depth, a dose slider and charts.</p>"},
+ {t:"4. Run a Session",h:"<p>Tap <b>Start</b> on the Session Timer. It beeps when a part ends and logs the session for you when it finishes.</p><p>Have an ESP32 panel? The <b>Control Panel</b> tab can connect to it and run the session for you.</p>"},
+ {t:"5. Explore",h:"<p>The <b>book icon</b> opens Learning and Resources: short guides and a research library.</p><p>The <b>gear</b> opens Settings: Session Logs, the full How to Use guide, and the safety checklist. The switch at the very top turns on the Red Screen Filter for night use.</p>"}
+];
+let qsI=0;
+function qsRender(){
+  const s=QS[qsI],last=qsI===QS.length-1;
+  $("#qsStep").textContent="Step "+(qsI+1)+" of "+QS.length;
+  $("#qsTitle").textContent=s.t;$("#qsBody").innerHTML=s.h;
+  $("#qsDots").innerHTML=QS.map(function(x,i){return '<i class="'+(i===qsI?"on":"")+'"></i>'}).join("");
+  $("#qsBack").hidden=qsI===0;$("#qsNext").textContent=last?"Get Started":"Next";$("#qsSkip").hidden=last;
+  $("#qsNote").textContent=last?"You can open this guide again any time in Settings, under How to Use.":"Skip anytime. You can find this guide again in Settings, under How to Use.";
+}
+function openQs(){qsI=0;qsRender();openD("#qsDlg");const a=document.activeElement;if(a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA"))a.blur()}
+function qsMark(){try{localStorage.setItem(QSKEY,"1")}catch(e){}}
+function maybeQs(){if(!qsSeen())openQs()}
+$("#qsNext").addEventListener("click",function(){if(qsI>=QS.length-1){qsMark();closeD("#qsDlg");return}qsI++;qsRender();$("#qsTitle").focus()});
+$("#qsBack").addEventListener("click",function(){if(qsI>0){qsI--;qsRender()}});
+$("#qsSkip").addEventListener("click",function(){qsMark();closeD("#qsDlg");toast("Skipped. Find the guide in Settings, under How to Use.")});
+$("#qsDlg").addEventListener("close",qsMark);
+$("#howQs").addEventListener("click",openQs);
+
 function initFeatures(){
-  initLib();applyNight();
-  if(!safeAck()){$("#safeOk").disabled=true;openD("#safeDlg")}
+  fillLogProfiles();initLib();applyNight();
+  if(!safeAck()){$("#safeOk").disabled=true;openD("#safeDlg")}else maybeQs();
 }
 
 fillSelects();fillProfiles();initFeatures();setView(S.view);render();
