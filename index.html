@@ -16,14 +16,44 @@
 <style>
 :root{
   --ground:#1d1819; --glass:rgba(32,22,24,.78); --glassline:rgba(255,50,40,.14); --surface:#2a2224; --raised:#352b2e; --line:#47393c;
-  --ink:#f4ebe6; --muted:#b3a39b; --red:#ff5242; --nir:#a58bff; --ok:#8fd19e; --warn:#ffc266;
+  --ink:#f4ebe6; --muted:#b3a39b; --red:#ff5242; --hexglow:rgba(255,82,66,.6); --nir:#a58bff; --ok:#8fd19e; --warn:#ffc266;
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   color-scheme:dark;
 }
+/* ---------- Profile screen: hexagon tiles ---------- */
+body.who-open main>:not(.topbar):not(header):not(#whoScr){display:none!important}
+#whoScr{text-align:center;padding:6px 0 30px;background:none;border:0;border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+#whoScr h2{font-family:var(--serif);font-size:24px;margin:14px 0 4px}
+#whoScr .hint{margin:0 auto;max-width:300px}
+.whogrid{display:flex;flex-wrap:wrap;justify-content:center;gap:18px 10px;margin:20px auto 10px;max-width:100%}
+.hexb{appearance:none;-webkit-appearance:none;border:0;background:none;color:var(--ink);font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;width:80px;padding:0;position:relative;-webkit-tap-highlight-color:transparent}
+.hexw{display:block;transition:transform .12s;filter:drop-shadow(0 0 4px var(--hexglow))}
+.hexb:active .hexw{transform:scale(.95)}
+.hexb:focus-visible .hexw{filter:drop-shadow(0 0 9px var(--hexglow))}
+.hexb.cur .hexw{filter:drop-shadow(0 0 9px var(--hexglow))}
+.ring{display:block;--hw:80px;width:var(--hw);height:calc(var(--hw)*1.1547);padding:calc(var(--hw)*.045);background:var(--red);-webkit-clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.hex{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:var(--raised) center/cover no-repeat;color:var(--ink);-webkit-clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.hex b{font:600 calc(var(--hw)*.42) var(--serif)}
+.hexname{font:600 13px var(--sans);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hexb.add .hexname{color:var(--muted)}
+.pen{position:absolute;top:0;right:0;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--ground);display:none;align-items:center;justify-content:center;font-style:normal;font-size:12px}
+#whoScr.manage .pen{display:flex}
+#whoScr.manage .hexb.add{opacity:.45}
+.whoacts{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+#personRow{padding:10px 14px}
+#personChip{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;color:var(--ink);font:inherit;text-align:left;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
+#personChip .ring{--hw:40px}
+#personChip .pcname{flex:1;display:flex;flex-direction:column;min-width:0}
+#personChip small{color:var(--muted);font-size:12.5px}
+#personChip b{font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#personChip .pcsw{border:1px solid var(--line);border-radius:10px;padding:7px 12px;background:var(--raised);font-weight:600;font-size:14px}
+.profpic{display:flex;justify-content:center;margin:6px 0 12px}
+.profpic .ring{--hw:112px}
+
 html[data-theme="light"]:not(.red){
   --ground:#f6dfda; --glass:rgba(253,240,237,.86); --glassline:rgba(190,40,30,.28); --surface:#fdefec; --raised:#f2d6d0; --line:#dcb0a8;
-  --ink:#2a1210; --muted:#744540; --red:#bf2619; --nir:#6a44cc; --ok:#1f7236; --warn:#8f5000;
+  --ink:#2a1210; --muted:#744540; --red:#bf2619; --hexglow:rgba(198,40,28,.5); --nir:#6a44cc; --ok:#1f7236; --warn:#8f5000;
   color-scheme:light;
 }
 html[data-theme="light"]:not(.red){background:#f6dfda}
@@ -316,6 +346,12 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <p class="sub">Red Light Therapy Protocol Calculator</p>
 </header>
 
+<section id="whoScr" hidden aria-labelledby="h-who">
+  <h2 id="h-who">Select or create a profile</h2>
+  <div class="whogrid" id="whoGrid"></div>
+  <div class="whoacts"><button class="btn" id="whoManage" type="button">Manage profiles</button><button class="btn" id="whoBack" type="button" hidden>Back to the app</button></div>
+</section>
+
 <div class="tabs" role="group" aria-label="View">
   <button type="button" data-view="calc" aria-pressed="true">Calculator</button>
   <button type="button" data-view="panel" aria-pressed="false">Control Panel</button>
@@ -339,8 +375,8 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <button type="button" data-sub="lib" aria-pressed="false">Research</button>
 </div>
 
-<section class="calc" id="personRow" hidden aria-label="Person">
-  <label style="margin:0"><span class="l">Planning for</span><select id="personSel" aria-label="Person"></select></label>
+<section class="calc" id="personRow" aria-label="Profile">
+  <button type="button" id="personChip" aria-label="Switch profile"><span class="hexw" id="personChipHex"></span><span class="pcname"><small>Planning for</small><b id="personChipName"></b></span><span class="pcsw">Switch</span></button>
 </section>
 
 <section aria-labelledby="h-panel" class="calc">
@@ -630,9 +666,19 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <li>Never leave the panel running unattended, and protect your eyes.</li>
     </ul>
   </details>
+  <details><summary>Profiles and the start screen</summary>
+    <ul>
+      <li>When the app opens it shows a <b>profile screen</b> under the Redox logo: each profile is a hexagon with its picture or first letter. Tap one to open it, and the Calculator, timer, routines and protocol card then use that profile's About You answers.</li>
+      <li>The last hexagon always holds the Redox logo and means <b>Add profile</b>. Type a name and tap <b>Take photo</b> to use the camera or <b>Choose photo</b> to pick one from the phone. The picture is cropped to a square and shrunk.</li>
+      <li><b>Manage profiles</b> turns the hexagons into edit buttons: change a name or picture, or delete a profile (a second tap confirms, and the last profile cannot be deleted). Deleting keeps that profile's logs and photos.</li>
+      <li>On the Calculator, the <b>Planning for</b> bar at the top shows the open profile. Tap it to switch. It is also under About You as Switch profile, next to Name and picture.</li>
+      <li>Settings, General has <b>Show the profile screen when the app opens</b>. Untick it to open straight to the last profile you used.</li>
+      <li>Pictures stay on this device. They are never uploaded and are not included in exports, backups or shared links.</li>
+    </ul>
+  </details>
   <details><summary>About You and personal estimates</summary>
     <ul>
-      <li>Open Settings, then General, then <b>About You</b>. Every answer is optional: height and weight (the app works out BMI), sex, skin tone (the six Fitzpatrick types) and, for the scalp and temples and crown areas, how much hair you have.</li>
+      <li>Open Settings, then General, then <b>About You</b>. Answers save as you type and a "Saved for" note confirms each one. The <b>Save</b> button saves again and confirms it. Every answer is optional: height and weight (the app works out BMI), sex, skin tone (the six Fitzpatrick types) and, for the scalp and temples and crown areas, how much hair you have.</li>
       <li>Light loses strength passing through skin pigment, fat and, on the head, hair and skull. With your answers the app estimates how deep a target sits under fat-covered areas and how much of the light reaches it.</li>
       <li>The <b>dose slider keeps the published window</b>. When your answers change how much light reaches the target, a line under the slider shows your adjusted surface dose, and every time, timer, log entry and routine step uses it. The adjustment stays between 80% and 200% of the published dose and never goes above 150% of the top of the window.</li>
       <li>Anything you skip is assumed to match a typical study participant: skin type III, BMI about 25 and thin hair. With nothing filled in, nothing changes. Sex on its own changes nothing either: it only sets how much fat each point of BMI adds.</li>
@@ -735,12 +781,15 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <h3 class="dlg-h">Quick Start</h3>
   <label class="toggle"><input type="checkbox" id="stQs"><span>Show the Quick Start when the app opens</span></label>
   <p class="hint">It opens every time the app starts until you tick Don't show this at startup again on it, or turn this off. The full guide is under How to Use.</p>
+  <h3 class="dlg-h">Profile screen</h3>
+  <label class="toggle"><input type="checkbox" id="stWho"><span>Show the profile screen when the app opens</span></label>
+  <p class="hint">The start screen shows each profile as a hexagon. Tap one to open it. Untick this to open straight to the last profile you used. You can still switch from the Calculator or from About You below.</p>
   <h3 class="dlg-h">Session Logging</h3>
   <label class="toggle"><input type="checkbox" class="autoLogChk" data-k="timer"><span>Log automatically when the timer finishes</span></label>
   <label class="toggle"><input type="checkbox" class="autoLogChk" data-k="panel"><span>Log automatically when a Control Panel session finishes</span></label>
   <p class="hint">Unticked, a finished session waits for you to tap Log This Session, so you can check Log to and Side first. Both are also on the timer and the Control Panel. Stop and log always saves, and routine steps always log themselves.</p>
   <h3 class="dlg-h">About You (optional)</h3>
-  <p class="hint">Light has to pass through skin pigment, fat and, on the head, hair and skull. These answers change how deep the light is estimated to go and the surface dose that is used. Skip anything you do not know. They stay on this device and are never included in exports, backups or shared links.</p>
+  <p class="hint">Light has to pass through skin pigment, fat and, on the head, hair and skull. These answers change how deep the light is estimated to go and the surface dose that is used. Skip anything you do not know. Answers save as you type, and the Save button confirms it. They stay on this device and are never included in exports, backups or shared links.</p>
   <div class="row2"><label style="margin:0"><span class="l">Person</span><select id="mePerson"></select></label><label style="margin:0"><span class="l">Name</span><input id="mePName" type="text" maxlength="24"></label></div>
   <div class="acts"><button class="btn" id="mePAdd" type="button">Add person</button><button class="btn danger" id="mePDel" type="button" hidden>Delete this person</button></div>
   <label><span class="l">Log sessions to</span><select id="meLog"></select></label>
@@ -752,7 +801,9 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <label><span class="l">Skin tone</span><select id="meTone"><option value="0">Not set</option><option value="1">I. Very fair, always burns</option><option value="2">II. Fair, burns easily</option><option value="3">III. Medium, sometimes burns</option><option value="4">IV. Olive or light brown, rarely burns</option><option value="5">V. Brown, very rarely burns</option><option value="6">VI. Deep brown or black, never burns</option></select></label>
   <label><span class="l">Hair on your head</span><select id="meHair"><option value="">Not set</option><option value="none">None or shaved</option><option value="thin">Thin</option><option value="normal">Normal</option><option value="thick">Thick</option></select></label>
   <p class="hint">Hair only matters for the scalp and temples and crown areas. It blocks a lot of light and is the least certain input, so parting the hair or moving closer helps more than adding time. With nothing set, the app assumes a typical study participant: skin type III, BMI about 25 and thin hair.</p>
-  <button class="btn" id="meClear" type="button">Clear these answers</button>
+  <div class="acts"><button class="btn" id="mePic" type="button">Name and picture</button><button class="btn" id="meSwitch" type="button">Switch profile</button></div>
+  <p class="hint" id="meSaved" aria-live="polite"></p>
+  <div class="acts"><button class="btn primary" id="meSave" type="button">Save</button><button class="btn" id="meClear" type="button">Clear these answers</button></div>
   <h3 class="dlg-h">Safety</h3>
   <button class="btn" id="stSafety" type="button">Open the safety checklist</button>
   <h3 class="dlg-h">Back Up and Share</h3>
@@ -763,7 +814,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <p class="hint" id="stPhInfo"></p>
   <div class="acts"><button class="btn danger" id="stPhClear" type="button" hidden>Delete all photos</button><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 93. Released October 25, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 97. Released October 25, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
 </section>
 
 <section id="pg-work" class="pg learn" aria-labelledby="h-work">
@@ -773,7 +824,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 93. Released October 25, 2026.<br>© 2026 Redox. All rights reserved.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 97. Released October 25, 2026.<br>© 2026 Redox. All rights reserved.</p>
 </main>
 
 <dialog id="phAdd" aria-labelledby="phAddT">
@@ -856,6 +907,18 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 
 
 
+
+<dialog id="profDlg" aria-labelledby="profTitle">
+  <h2 id="profTitle" tabindex="-1">New profile</h2>
+  <div class="profpic"><span class="hexw"><span class="ring"><span class="hex" id="profPrev"></span></span></span></div>
+  <div class="acts"><button class="btn" id="profCam" type="button">Take photo</button><button class="btn" id="profPick" type="button">Choose photo</button><button class="btn" id="profNoPic" type="button" hidden>Remove photo</button></div>
+  <input id="profCamIn" type="file" accept="image/*" capture="user" hidden>
+  <input id="profPickIn" type="file" accept="image/*" hidden>
+  <label><span class="l">Name</span><input id="profName" type="text" maxlength="24" placeholder="For example Alex"></label>
+  <p class="hint">The picture is cropped to a square, shrunk and kept on this device only. It is never uploaded, exported or shared.</p>
+  <p class="err" id="profErr" role="alert"></p>
+  <div class="actions"><button class="btn primary" id="profSave" type="button">Save</button><button class="btn danger" id="profDel" type="button" hidden>Delete</button><button class="btn" id="profCancel" type="button">Cancel</button></div>
+</dialog>
 
 <dialog id="lpDlg" aria-labelledby="lpTitle">
   <h2 id="lpTitle" tabindex="-1" autofocus>New log profile</h2>
@@ -2826,7 +2889,7 @@ let stArm={log:false,reset:false};
 function renderSet(){
   stArm.log=false;stArm.reset=false;
   $("#stClearLog").textContent="Clear all session logs";$("#stReset").textContent="Reset profiles and settings";
-  $("#stQs").checked=!qsOff();meRender();
+  $("#stQs").checked=!qsOff();$("#stWho").checked=S.askWho!==false;meRender();
   phArm=false;$("#stPhClear").textContent="Delete all photos";phSettings();
 }
 $("#stSafety").addEventListener("click",function(){openD("#safeDlg")});
@@ -2836,7 +2899,7 @@ $("#stClearLog").addEventListener("click",function(){
 });
 $("#stReset").addEventListener("click",function(){
   if(!stArm.reset){stArm.reset=true;$("#stReset").textContent="Tap again to reset everything";return}
-  try{localStorage.removeItem("rdl.v2")}catch(e){}
+  try{localStorage.removeItem("rdl.v2");localStorage.removeItem("rdl.pics.v1")}catch(e){}
   location.reload();
 });
 /* ---------- Panel control (ESP32 over WiFi) ---------- */
@@ -2976,7 +3039,7 @@ const QS=[
  {t:"Welcome",h:"<p>This app turns your panel's readings into a session plan: how far to hold the panel, which light to use and how long to run it.</p><p>This quick tour takes about a minute. Every number is an educational estimate, not medical advice.</p>"},
  {t:"1. Set Up Your Panel",h:"<p>On the <b>Calculator</b> tab, pick your panel under Panel Profile. Choose a built-in preset, or tap <b>Edit</b> to enter your own readings. Readings can be in mW/cm\u00b2, W/m\u00b2 or Btu/(ft\u00b2\u00b7h), and the app converts them.</p><p>More readings at more distances means better numbers. The Measure My Panel guide in the Edit window walks you through it.</p>"},
  {t:"2. Choose a Treatment",h:"<p>Pick what you are treating and the target area. The app chooses the wavelength and shows a published dose window.</p><p>The Evidence section below shows how strong the research is and links the sources.</p>"},
- {t:"3. Read the Recommendation",h:"<p>You get a distance and one recommended time at full power, rounded to the nearest quarter minute.</p><p>Drag the <b>dose</b> slider to change how much light you want, or change the time goal or type a distance to adjust it. For a personal estimate, fill in <b>About You</b> in Settings, General: skin tone, height and weight, and hair. Add a person there to plan for someone else. <b>Lab View (Advanced)</b> adds the half-power Gentle option, depth and charts.</p>"},
+ {t:"3. Read the Recommendation",h:"<p>You get a distance and one recommended time at full power, rounded to the nearest quarter minute.</p><p>Drag the <b>dose</b> slider to change how much light you want, or change the time goal or type a distance to adjust it. For a personal estimate, fill in <b>About You</b> in Settings, General: skin tone, height and weight, and hair. Add a profile on the start screen to plan for someone else. <b>Lab View (Advanced)</b> adds the half-power Gentle option, depth and charts.</p>"},
  {t:"4. Run a Session",h:"<p>Tap <b>Start</b> on the Session Timer. It beeps when a part ends and logs the session for you when it finishes (untick <b>Log automatically</b> under the timer to log by hand instead). Then tap <b>Add Photo to This Session</b> if you want a progress photo with it.</p><p>For paired areas like the knee or shoulder, pick <b>Left</b>, <b>Right</b> or <b>Both</b> next to Log to. Have a compatible Redox panel? The <b>Control Panel</b> tab can run the session for you.</p>"},
  {t:"5. Build a Routine",h:"<p>Chain up to 10 protocols like a playlist. Set up each protocol on the Calculator and tap <b>Add to Routine</b>, then open <b>Calculator, Routines</b> to name it, reorder it and tap <b>Start Routine</b>.</p><p>Each step tells you where to place the panel, with a pause between steps. With a panel connected, the routine runs the panel for you. Not sure where to start? Try a <b>Preset Routine</b>, such as Knee Care or Leg Recovery.</p>"},
  {t:"6. Track Your Sessions",h:"<p>Every finished session is logged automatically, with its side and the routine it came from. Use <b>Log to</b> to keep separate logs, such as Panel and Mask.</p><p>Inside each log, sessions are sorted by treatment area, and paired areas split into Left and Right. Use the <b>Area</b> drop-down to see just one, and <b>Day, Week, Month, Year</b> or <b>All</b> to change the time range. Find it all under the gear, <b>Session Logs</b>.</p><p>Want to see change over time? Tap <b>Add Photo</b> there to keep progress photos, then compare them with <b>Before and After</b>. Photos stay on your phone.</p>"},
@@ -3091,11 +3154,122 @@ function renderWork(){
 }
 
 /* ---------- About You (personal inputs, kept on this device) ---------- */
+
+/* ---------- Profile screen (who is using the lab) ---------- */
+const PICKEY="rdl.pics.v1",ICON_URL="data:image/jpeg;base64,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";
+let PICS={};try{const o=JSON.parse(localStorage.getItem(PICKEY)||"{}");if(o&&typeof o==="object")PICS=o}catch(e){}
+const picOk=function(s){return typeof s==="string"&&s.length<250000&&/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(s)};
+function picOf(id){const v=PICS[id];return picOk(v)?v:""}
+function picStore(){try{localStorage.setItem(PICKEY,JSON.stringify(PICS));return true}catch(e){return false}}
+/* crop the middle square, shrink to 256 px and keep it as a small JPEG */
+function picFromFile(file,cb){
+  if(!file||!(/^image\//.test(file.type||"")||/\.(jpe?g|png|webp|gif|heic|heif)$/i.test(file.name||""))){cb(null);return}
+  const url=URL.createObjectURL(file),img=new Image();
+  img.onload=function(){
+    try{
+      const w=img.naturalWidth||img.width,hh=img.naturalHeight||img.height,s=Math.min(w,hh),c=document.createElement("canvas");
+      c.width=c.height=256;const x=c.getContext("2d");x.fillStyle="#222";x.fillRect(0,0,256,256);x.drawImage(img,(w-s)/2,(hh-s)/2,s,s,0,0,256,256);
+      URL.revokeObjectURL(url);const u=c.toDataURL("image/jpeg",0.82);cb(picOk(u)?u:null);
+    }catch(e){cb(null)}
+  };
+  img.onerror=function(){URL.revokeObjectURL(url);cb(null)};
+  img.src=url;
+}
+function hexHtml(p){
+  const pic=picOf(p.id),ini=(String(p.name||"?").trim()[0]||"?").toUpperCase();
+  return '<span class="ring"><span class="hex'+(pic?'':' nopic')+'"'+(pic?' style="background-image:url('+pic+')"':'')+'>'+(pic?'':'<b>'+escH(ini)+'</b>')+'</span></span>';
+}
+function personChipRender(){const p=S.me,c=$("#personChipHex");if(!c)return;c.innerHTML=hexHtml(p);$("#personChipName").textContent=p.name}
+let whoStart=false;
+function whoRender(){
+  const mng=$("#whoScr").classList.contains("manage");
+  $("#whoGrid").innerHTML=S.people.map(function(p){
+    return '<button type="button" class="hexb'+(p.id===S.person?' cur':'')+'" data-pid="'+escH(p.id)+'" aria-label="'+escH((mng?"Edit ":"Open ")+p.name)+'"'+(p.id===S.person?' aria-current="true"':'')+'><span class="hexw">'+hexHtml(p)+'</span><i class="pen" aria-hidden="true">&#9998;</i><span class="hexname">'+escH(p.name)+'</span></button>';
+  }).join("")+'<button type="button" class="hexb add" data-add="1" aria-label="Add profile"><span class="hexw"><span class="ring"><span class="hex" style="background-image:url('+ICON_URL+')"></span></span></span><span class="hexname">Add profile</span></button>';
+  $("#whoManage").textContent=mng?"Done":"Manage profiles";
+}
+function whoOpen(startup){
+  whoStart=!!startup;$("#whoScr").classList.remove("manage");$("#whoScr").hidden=false;
+  document.body.classList.add("who-open");$("#whoBack").hidden=!!startup;whoRender();window.scrollTo(0,0);
+}
+function whoClose(){document.body.classList.remove("who-open");$("#whoScr").hidden=true;window.scrollTo(0,0)}
+function whoPick(id){
+  const was=whoStart;whoStart=false;personSwitch(id,true);whoClose();
+  if(was)startupDialogs();else toast("Planning for "+S.me.name);
+}
+$("#whoGrid").addEventListener("click",function(e){
+  const b=e.target.closest(".hexb");if(!b)return;
+  if(b.dataset.add){profOpen(null);return}
+  if($("#whoScr").classList.contains("manage"))profOpen(b.dataset.pid);else whoPick(b.dataset.pid);
+});
+$("#whoManage").addEventListener("click",function(){$("#whoScr").classList.toggle("manage");whoRender()});
+$("#whoBack").addEventListener("click",whoClose);
+$("#personChip").addEventListener("click",function(){whoOpen(false)});
+$("#meSwitch").addEventListener("click",function(){whoOpen(false)});
+$("#mePic").addEventListener("click",function(){profOpen(S.person)});
+$("#stWho").addEventListener("change",function(e){S.askWho=e.target.checked;save()});
+/* add or edit a profile: name and picture */
+let prof=null;
+function profPrev(){
+  const el=$("#profPrev"),nm=($("#profName").value.trim()||"?");
+  el.className="hex"+(prof.pic?"":" nopic");el.style.backgroundImage=prof.pic?'url('+prof.pic+')':"";
+  el.innerHTML=prof.pic?"":'<b>'+escH(nm[0].toUpperCase())+'</b>';$("#profNoPic").hidden=!prof.pic;
+}
+function profOpen(id){
+  if(!id&&S.people.length>=PEOPLE_MAX){toast("That is the most profiles the app keeps ("+PEOPLE_MAX+")");return}
+  const p=id?S.people.find(function(x){return x.id===id}):null;
+  prof={id:p?p.id:null,pic:p?picOf(p.id):"",changed:false,delArm:false};
+  $("#profTitle").textContent=p?"Edit profile":"New profile";$("#profName").value=p?p.name:"";$("#profErr").textContent="";
+  $("#profDel").hidden=!p||S.people.length<2;$("#profDel").textContent="Delete";
+  profPrev();openD("#profDlg");
+  const a=document.activeElement;if(a&&a.tagName==="INPUT")a.blur();
+}
+$("#profName").addEventListener("input",function(){if(prof)profPrev()});
+$("#profCam").addEventListener("click",function(){$("#profCamIn").click()});
+$("#profPick").addEventListener("click",function(){$("#profPickIn").click()});
+["#profCamIn","#profPickIn"].forEach(function(s){
+  $(s).addEventListener("change",function(){
+    const f=this.files&&this.files[0];this.value="";if(!f||!prof)return;
+    picFromFile(f,function(u){
+      if(!u){$("#profErr").textContent="That picture could not be read. Try another one.";return}
+      prof.pic=u;prof.changed=true;$("#profErr").textContent="";profPrev();
+    });
+  });
+});
+$("#profNoPic").addEventListener("click",function(){prof.pic="";prof.changed=true;profPrev()});
+$("#profCancel").addEventListener("click",function(){closeD("#profDlg")});
+function profRefresh(){peopleFill();meRender();whoRender();personChipRender()}
+$("#profSave").addEventListener("click",function(){
+  if(!prof)return;
+  const name=$("#profName").value.trim().slice(0,24);
+  if(!name){$("#profErr").textContent="Enter a name.";return}
+  if(S.people.some(function(p){return p.id!==prof.id&&p.name.toLowerCase()===name.toLowerCase()})){$("#profErr").textContent="Another profile already has that name.";return}
+  let p;
+  if(prof.id){p=S.people.find(function(x){return x.id===prof.id});p.name=name}
+  else{p=cleanPerson({id:"p"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),name:name},S.people.length);S.people.push(p)}
+  if(prof.changed||!prof.id){if(prof.pic)PICS[p.id]=prof.pic;else delete PICS[p.id];if(!picStore())toast("The picture could not be saved on this device")}
+  save();closeD("#profDlg");profRefresh();
+  if(!prof.id)toast("Added "+name+". Tap the hexagon to open it.");
+  prof=null;
+});
+$("#profDel").addEventListener("click",function(){
+  if(!prof||!prof.id||S.people.length<2)return;
+  if(!prof.delArm){prof.delArm=true;$("#profDel").textContent="Tap again to delete";return}
+  const p=S.people.find(function(x){return x.id===prof.id}),gone=p?p.name:"";
+  S.people=S.people.filter(function(x){return x.id!==prof.id});delete PICS[prof.id];picStore();
+  if(S.person===prof.id)S.person=S.people[0].id;
+  save();closeD("#profDlg");prof=null;profRefresh();render();toast("Deleted "+gone+". Their logs and photos are kept.");
+});
+function startupDialogs(){
+  if(!safeAck()){$("#safeOk").disabled=true;openD("#safeDlg")}else maybeQs();
+  flushShare();
+}
+
 /* ---------- People ---------- */
 function peopleFill(){
   const opts=S.people.map(function(p){return '<option value="'+escH(p.id)+'">'+escH(p.name)+'</option>'}).join("");
-  ["#mePerson","#personSel"].forEach(function(s){const e=$(s);if(e){e.innerHTML=opts;e.value=S.person}});
-  $("#personRow").hidden=S.people.length<2;
+  const e=$("#mePerson");if(e){e.innerHTML=opts;e.value=S.person}
+  personChipRender();
 }
 function personLogFill(){
   const sel=$("#meLog");if(!sel)return;
@@ -3122,12 +3296,11 @@ $("#mePAdd").addEventListener("click",personAdd);
 $("#mePDel").addEventListener("click",function(){
   if(S.people.length<2)return;
   if(!personArm){personArm=true;$("#mePDel").textContent="Tap again to delete "+S.me.name;return}
-  const gone=S.me.name;S.people=S.people.filter(function(p){return p.id!==S.person});S.person=S.people[0].id;personArm=false;
+  const gone=S.me.name;delete PICS[S.person];picStore();S.people=S.people.filter(function(p){return p.id!==S.person});S.person=S.people[0].id;personArm=false;
   save();meRender();render();toast("Deleted "+gone+". Their logs and photos are kept.");
 });
 $("#mePerson").addEventListener("change",function(e){personSwitch(e.target.value)});
-$("#personSel").addEventListener("change",function(e){personSwitch(e.target.value)});
-$("#mePName").addEventListener("input",function(e){const v=e.target.value.trim();if(v){S.me.name=v.slice(0,24);save();peopleFill();$("#mePerson").value=S.person}});
+$("#mePName").addEventListener("input",function(e){const v=e.target.value.trim();if(v){S.me.name=v.slice(0,24);save();peopleFill();$("#mePerson").value=S.person;meNote("Saved for "+S.me.name+".")}});
 $("#mePName").addEventListener("blur",function(){if(!$("#mePName").value.trim())$("#mePName").value=S.me.name});
 $("#meLog").addEventListener("change",function(e){S.me.lp=e.target.value;save();if(S.me.lp&&S.logActive!==S.me.lp){S.logActive=S.me.lp;S.logArea="all";S.logSide="all";fillLogProfiles();save()}});
 
@@ -3139,6 +3312,8 @@ function meWhy(m){
   if(s.hair&&HAIR_AREAS[m.A.id])bits.push(s.hair+" hair");
   return bits.length?"Based on "+bits.join(", ")+".":"";
 }
+let meNoteT=null;
+function meNote(msg){const e=$("#meSaved");if(!e)return;e.textContent=msg;clearTimeout(meNoteT);meNoteT=setTimeout(function(){e.textContent=""},5000)}
 function meUnits(){return S.me&&S.me.u==="imperial"?"imperial":"metric"}
 function meRender(){
   const m=S.me,imp=meUnits()==="imperial";
@@ -3155,13 +3330,14 @@ function meRead(){
   const imp=meUnits()==="imperial",h=parseFloat($("#meH").value),w=parseFloat($("#meW").value);
   S.me.h=h>0?clamp(imp?h*2.54:h,100,250):0;S.me.w=w>0?clamp(imp?w/2.2046226:w,30,300):0;
   S.me.sex=$("#meSex").value;S.me.tone=+$("#meTone").value||0;S.me.hair=$("#meHair").value;
-  save();const b=meBmi();$("#meBmi").textContent=b?"BMI "+fmt(b,1)+". Used only to estimate how thick the fat layer is at each area.":"Enter height and weight to work out BMI.";
+  save();meNote("Saved for "+S.me.name+".");const b=meBmi();$("#meBmi").textContent=b?"BMI "+fmt(b,1)+". Used only to estimate how thick the fat layer is at each area.":"Enter height and weight to work out BMI.";
   render();
 }
 ["#meH","#meW"].forEach(function(s){$(s).addEventListener("input",meRead)});
 ["#meSex","#meTone","#meHair"].forEach(function(s){$(s).addEventListener("change",meRead)});
 document.querySelectorAll("[data-meu]").forEach(function(b){b.addEventListener("click",function(){S.me.u=b.dataset.meu;save();meRender()})});
-$("#meClear").addEventListener("click",function(){S.me={u:meUnits(),h:0,w:0,sex:"",tone:0,hair:""};save();meRender();render();toast("Answers cleared")});
+$("#meClear").addEventListener("click",function(){S.me={u:meUnits(),h:0,w:0,sex:"",tone:0,hair:""};save();meRender();render();toast("Answers cleared");meNote("Cleared for "+S.me.name+".")});
+$("#meSave").addEventListener("click",function(){meRead();toast("Saved for "+S.me.name+". Answers also save as you type.")});
 
 $("#howQs").addEventListener("click",openQs);
 
@@ -3905,8 +4081,7 @@ $("#impGo").addEventListener("click",function(){
 function initFeatures(){
   $("#hdrLogo").src=LOGO_URL;   // the same Redox wordmark that is on the protocol cards
   fillLogProfiles();initLib();applyNight();syncAutoLog();
-  if(!safeAck()){$("#safeOk").disabled=true;openD("#safeDlg")}else maybeQs();
-  flushShare();
+  if(S.askWho!==false)whoOpen(true);else startupDialogs();
 }
 
 fillSelects();fillProfiles();peopleFill();initFeatures();setView(S.view);render();
