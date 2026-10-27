@@ -51,6 +51,42 @@ body.who-open main>:not(.topbar):not(header):not(#whoScr){display:none!important
 .profpic{display:flex;justify-content:center;margin:6px 0 12px}
 .profpic .ring{--hw:112px}
 
+/* ---------- Check-in reports, goals and streaks ---------- */
+.goalcard{background:var(--raised);border-radius:14px;padding:12px 14px;margin:2px 0 14px}
+.goalcard .gtop{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.goalcard .gtop b{font-family:var(--serif);font-size:17px}
+.goalcard .pbar{background:var(--surface);margin:8px 0 10px}
+.goalcard .pbar b{display:block;height:100%;background:var(--red)}
+.gstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;text-align:center}
+.gstats b{display:block;font-family:var(--serif);font-size:22px}
+.gstats span{font-size:12.5px;color:var(--muted)}
+.gstrip{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px;margin:4px 0 6px}
+.gstrip i{display:block;aspect-ratio:1;border-radius:3px;background:var(--surface);border:1px solid var(--line)}
+.gstrip i.g1{background:var(--red);opacity:.4;border-color:transparent}
+.gstrip i.g2{background:var(--red);opacity:.7;border-color:transparent}
+.gstrip i.g3{background:var(--red);opacity:1;border-color:transparent}
+.gstrip i.gf{background:none;border-style:dashed;opacity:.5}
+.glegend{font-size:12px;color:var(--muted);margin:0 0 8px}
+.logtabs{display:flex;margin:6px 0 12px}
+.logtabs button{flex:1}
+.covline.covlow{color:var(--warn)}
+.optcard summary{cursor:pointer;font-weight:600;margin:6px 0}
+.optcard td,.optcard th{padding:5px 4px;font-size:13.5px;vertical-align:top}
+.repq{display:grid;grid-template-columns:1fr auto auto;gap:2px 10px;align-items:center;margin:10px 0}
+.repq output{font:600 18px var(--serif);min-width:2ch;text-align:right}
+.repq.un output,.repq.un .l{color:var(--muted)}
+.repq input[type=range]{grid-column:1/-1;width:100%}
+.repq.un input[type=range]{opacity:.55}
+.repq .repx{background:none;border:1px solid var(--line);border-radius:8px;color:var(--ink);width:28px;height:28px;font-size:16px;cursor:pointer}
+.fxchips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}
+.fxchips button{border:1px solid var(--line);background:var(--raised);color:var(--ink);border-radius:999px;padding:7px 12px;font:inherit;font-size:14px;cursor:pointer}
+.fxchips button[aria-pressed=true]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.repsum{margin:8px 0 12px;padding-left:18px}
+.repsum li{margin:3px 0}
+.repent .chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px}
+.repent .chips span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:13px}
+.repsel{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+
 html[data-theme="light"]:not(.red){
   --ground:#f6dfda; --glass:rgba(253,240,237,.86); --glassline:rgba(190,40,30,.28); --surface:#fdefec; --raised:#f2d6d0; --line:#dcb0a8;
   --ink:#2a1210; --muted:#744540; --red:#bf2619; --hexglow:rgba(198,40,28,.5); --nir:#6a44cc; --ok:#1f7236; --warn:#8f5000;
@@ -377,6 +413,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 
 <section class="calc" id="personRow" aria-label="Profile">
   <button type="button" id="personChip" aria-label="Switch profile"><span class="hexw" id="personChipHex"></span><span class="pcname"><small>Planning for</small><b id="personChipName"></b></span><span class="pcsw">Switch</span></button>
+  <p class="hint" id="goalLine" hidden style="margin:8px 2px 0"></p>
 </section>
 
 <section aria-labelledby="h-panel" class="calc">
@@ -426,10 +463,11 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <p class="hint" id="tmSeg"></p>
       <label style="display:block;margin:6px 0 10px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>
       <label class="toggle"><input type="checkbox" class="autoLogChk" data-k="timer"><span>Log automatically when the timer finishes</span></label>
+      <label class="toggle mqRow"><input type="checkbox" class="mqChk"><span class="mqTxt">Play music</span></label>
       <div class="siderow" hidden><span class="l">Side</span><div class="seg sideSeg" role="group" aria-label="Side"><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><button type="button" data-side="both">Both</button></div></div>
       <div class="acts" id="tmLogRow" hidden><button class="btn primary" id="tmLogNow" type="button">Log This Session</button></div>
       <div class="actions"><button class="btn primary" id="tmStart" type="button">Start</button><button class="btn" id="tmStopLog" type="button" hidden>Stop and log</button><button class="btn" id="tmReset" type="button">Reset</button></div>
-      <div class="acts" id="tmPhotoRow" hidden><button class="btn" id="tmPhoto" type="button" data-photo-sid="">Add Photo to This Session</button></div>
+      <div class="acts" id="tmPhotoRow" hidden><button class="btn" id="tmPhoto" type="button" data-photo-sid="">Add Photo to This Session</button><button class="btn" id="tmReport" type="button" data-report-sid="">File a Report</button></div>
       <p class="hint" id="tmHint"></p>
     </div>
   </div>
@@ -454,7 +492,9 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <h2 id="h-log">Session Logs</h2>
      <div class="lprow"><select id="lpSelect" class="lpSel" aria-label="Log profile"></select><button class="btn" id="lpNew" type="button">New</button><button class="btn" id="lpEdit" type="button">Edit</button></div>
   <p class="flag" id="logNotice" hidden style="border-left:4px solid var(--warn);padding:10px 12px;background:var(--raised);border-radius:10px;font-size:13.5px">This browser is not saving data for this page, so the log (and your profiles) last only until you close it. Open the hosted link or the home-screen app to keep them.</p>
+  <div class="seg logtabs" id="logTabs" role="group" aria-label="Logs section"><button type="button" data-lt="sessions" aria-pressed="true">Sessions</button><button type="button" data-lt="checkins" aria-pressed="false">Check-ins</button></div>
   <div id="logBody"></div>
+  <div id="repBody" hidden></div>
 </section>
 
 <section id="pg-lib" class="pg" aria-labelledby="h-lib">
@@ -569,11 +609,12 @@ svg text{fill:var(--muted);font:10px var(--sans)}
     <div class="seg" id="pnOpts" role="group" aria-label="Power option"><button type="button" data-p="100" aria-pressed="true">Fast, 100%</button><button type="button" data-p="50" aria-pressed="false">Gentle, 50%</button></div>
     <label style="display:block;margin-top:12px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>
     <label class="toggle"><input type="checkbox" class="autoLogChk" data-k="panel"><span>Log automatically when the panel session finishes</span></label>
+    <label class="toggle mqRow"><input type="checkbox" class="mqChk"><span class="mqTxt">Play music</span></label>
     <div class="siderow" hidden style="margin-top:10px"><span class="l">Side</span><div class="seg sideSeg" role="group" aria-label="Side"><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><button type="button" data-side="both">Both</button></div></div>
     <div class="pbar" style="margin-top:12px"><b id="pnBar"></b></div>
     <div class="acts"><button class="btn primary" id="pnStart" type="button">Start on the panel</button><button class="btn danger" id="pnStop" type="button" hidden>Stop and turn off</button></div>
     <div class="acts" id="pnLogRow" hidden><button class="btn primary" id="pnLogNow" type="button">Log This Session</button></div>
-    <div class="acts" id="pnPhotoRow" hidden><button class="btn" id="pnPhoto" type="button" data-photo-sid="">Add Photo to This Session</button></div>
+    <div class="acts" id="pnPhotoRow" hidden><button class="btn" id="pnPhoto" type="button" data-photo-sid="">Add Photo to This Session</button><button class="btn" id="pnReport" type="button" data-report-sid="">File a Report</button></div>
     <p class="hint">Safety: the panel enforces its own limits and turns itself off when a session ends, when manual control is left unattended, or if it overheats. Protect your eyes before turning it on, and stay within reach of the power switch.</p>
   </div>
 </section>
@@ -688,6 +729,59 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <li>These answers stay on this device and are not included in exports, backups or shared links.</li>
     </ul>
   </details>
+  <details><summary>Goals and streaks</summary>
+    <ul>
+      <li>On Settings, Session Logs, the top card shows <b>this week</b> against a goal you set (1 to 14 sessions, Monday to Sunday), your <b>day streak</b>, how many <b>weeks in a row you met the goal</b>, and your <b>best streak</b>. Under it, a 12-week strip shades each day by minutes: darker is more.</li>
+      <li>A streak counts days with at least one session in that log. If you have not done one yet today, yesterday still counts, so the streak ends only when a whole day passes without one. The goal and streak are per log, so different logs keep their own.</li>
+      <li>With a goal set, the Calculator shows "This week: 3 of 5 sessions" under the profile bar.</li>
+      <li><b>Remind me</b> makes a repeating calendar reminder (pick days and a time). Open the file it creates and your calendar app adds it with an alert. A web page cannot schedule its own notifications reliably, so the reminder lives in your calendar.</li>
+    </ul>
+  </details>
+  <details><summary>Best options and coverage</summary>
+    <ul>
+      <li>When you have entered the panel's <b>width and height</b> under Edit, the app checks how evenly the light covers the area you are treating. Under Recommended distance it says how much the <b>edges</b> get compared with the centre. It uses the same flat-panel light model as the distance estimates and a typical size for each area (an estimate, about 16 by 22 cm for a face, for example).</li>
+      <li>The recommended distance then skips distances where the edges would get under 70% of the centre, when other distances work. If the panel is too small for the area at any distance in range, the app says so and falls back to the time goal. If turning the panel a quarter turn is more even, it says that too.</li>
+      <li>In Lab View, <b>Best options</b> compares distance and power together: the best match for your time goal, the most even coverage, and the fastest that still works. Each row delivers the same dose, and <b>Use</b> sets that distance and power. Distances that are too weak for a deep target are left out, and very strong ones are flagged as likely to feel warm.</li>
+      <li>Without a panel size the app cannot judge evenness, so the recommendation is based on your time goal alone, as before.</li>
+    </ul>
+  </details>
+  <details><summary>Report for my doctor (PDF)</summary>
+    <ul>
+      <li>On Session Logs, tap <b>Doctor Report (PDF)</b> (on the Sessions page or the Check-ins page). Pick the period (30 days to a year), an area or all areas, the paper size, and whether to include <b>body details</b> (height, weight, BMI and skin type, off unless you tick it), your <b>notes</b> and <b>charts</b>.</li>
+      <li>The PDF covers the log that is open: sessions, minutes and estimated dose by area with the light, distance and power used; goal and streak; every rating with its average, range and a first-half to second-half comparison; charts of your two best-rated items with weekly minutes behind them; unwanted effects; and recent notes.</li>
+      <li>It is made on the phone, one or two pages, and goes to the share sheet (email, messages, print) or downloads. It is a self-reported summary and a conversation starter, not a diagnosis, and it says so on the page.</li>
+    </ul>
+  </details>
+  <details><summary>Home-screen shortcuts</summary>
+    <ul>
+      <li>Press and hold the app icon on your home screen to jump straight to <b>File a report</b>, <b>Routines</b>, <b>Session logs</b> or the <b>Control Panel</b>. They open the same app, after the profile screen.</li>
+      <li>The shortcuts come from the app's manifest file, so upload <b>manifest.webmanifest</b> along with index.html and sw.js. Phones read the manifest when the app is installed, so if the shortcuts do not appear, remove the app from the home screen and add it again.</li>
+    </ul>
+  </details>
+  <details><summary>Check-in reports (pain, comfort and more)</summary>
+    <ul>
+      <li>Settings, Session Logs, then <b>Check-ins</b> is a short survey. Tap <b>File a Report</b>, or tap it right after a session (next to Add Photo) to link the report to that session.</li>
+      <li>Rate what applies on a 0 to 10 scale: <b>symptoms</b> (pain, stiffness, soreness, swelling, skin irritation, where higher is worse) and <b>how you feel</b> (comfort, energy, mood, sleep, where higher is better). A dash means skipped, and the × clears a rating. You can also note how you compare with a week ago, tick unwanted effects (too hot, lingering redness, headache, eye strain, dizziness, tingling, trouble sleeping), and add notes.</li>
+      <li>The Check-ins page shows 30-day averages against the 30 days before, a chart of any rating over 30 days, 90 days or a year with your weekly minutes as faint bars behind it, and your reports by day. Filter by area, download or copy a CSV, and delete single reports or clear them.</li>
+      <li>Reports are your own record, not a diagnosis. A pattern on the chart does not prove cause. If pain is severe or getting worse, or you feel unwell, stop and see a clinician.</li>
+      <li>They stay on this device. <b>Export Everything</b> includes them, so Import restores them on this or another phone (a report that is already there is skipped). The CSV is for a spreadsheet. Deleting a log profile deletes its reports.</li>
+    </ul>
+  </details>
+  <details><summary>Sound, spoken prompts and music</summary>
+    <ul>
+      <li>Settings, General, <b>Sound</b> controls the beeps, the vibration, <b>spoken prompts</b> (the step, area and time, read aloud so you can keep your eyes closed) and <b>music</b>.</li>
+      <li><b>Play music during sessions</b> starts music when a session, routine step or panel session starts, fades it out when it ends, and pauses it when you pause. It dips for a moment under each beep. It is off until you turn it on, and there is a Play music tick on the timer, the routine and the Control Panel too.</li>
+      <li>Soft pads, Deep drone and Rain are generated on the phone while they play. They need no files, no internet and carry no licence, and the preview button lets you hear them. <b>My songs</b> plays audio files you add (up to 20 songs, 40 MB each) in shuffled order. The files stay in this phone's browser storage and are never uploaded, exported or shared.</li>
+      <li>Whether music keeps playing with the screen off depends on the phone and browser. The app keeps the screen on during a session to help, and the beeps and music share the phone's volume.</li>
+    </ul>
+  </details>
+  <details><summary>Panel cues (3, 2, 1 blink)</summary>
+    <ul>
+      <li>In a routine with a timed pause between steps, the last three seconds beep at 3, 2 and 1. When the routine runs on the connected panel, the panel also <b>blinks at 3, 2 and 1</b>, in time with the beeps, so you can see the next step coming with your eyes closed or the phone out of reach.</li>
+      <li>The blinks use the light the next step starts with (red, near-infrared or both). Under Settings, General, <b>Panel cues</b> you can turn them off or pick 15, 25, 35 or 50% brightness.</li>
+      <li>The panel does the timing itself, and limits the blinks to 50%, 5 blinks and 10 seconds. It only blinks while idle between steps, and any other command ends them at once. They need panel firmware 1.1 or newer; an older panel just beeps.</li>
+    </ul>
+  </details>
   <details><summary>Appearance (light and dark themes)</summary>
     <ul>
       <li>Open Settings, then General, then <b>Appearance</b>. <b>Dark</b> is the original look. <b>Light</b> is a lighter version of the red theme for bright rooms, with the same hexagon background in a soft red tint. <b>Auto</b> follows your phone and changes with it. The choice is remembered. A new install opens in Dark.</li>
@@ -781,6 +875,21 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <h3 class="dlg-h">Quick Start</h3>
   <label class="toggle"><input type="checkbox" id="stQs"><span>Show the Quick Start when the app opens</span></label>
   <p class="hint">It opens every time the app starts until you tick Don't show this at startup again on it, or turn this off. The full guide is under How to Use.</p>
+  <h3 class="dlg-h">Sound</h3>
+  <label class="toggle"><input type="checkbox" id="stCues"><span>Beeps at the end of each part and at 3, 2, 1</span></label>
+  <label class="toggle"><input type="checkbox" id="stVib"><span>Vibrate with the beeps</span></label>
+  <label class="toggle"><input type="checkbox" id="stSpeak"><span>Spoken prompts: step, area and time</span></label>
+  <label class="toggle"><input type="checkbox" id="stMusicOn"><span>Play music during sessions</span></label>
+  <label><span class="l">Music</span><select id="stMusic"><option value="pads">Soft pads (made on the phone)</option><option value="drone">Deep drone (made on the phone)</option><option value="rain">Rain (made on the phone)</option><option value="mine">My songs</option></select></label>
+  <label><span class="l">Music volume</span><input id="stMusicVol" type="range" min="5" max="100" step="5"></label>
+  <div class="acts"><button class="btn" id="stMusicTry" type="button">Play a preview</button><button class="btn" id="stSongAdd" type="button">Add songs</button><button class="btn danger" id="stSongClear" type="button" hidden>Remove all songs</button></div>
+  <input id="stSongIn" type="file" accept="audio/*" multiple hidden>
+  <p class="hint" id="stSongInfo"></p>
+  <p class="hint">Music starts when you start a session or routine and fades out when it ends or you pause. It is quieter for a moment under each beep. The three made-on-the-phone sounds need no files, no internet and no licence. My songs plays the audio files you add, in shuffled order, and keeps them on this phone only.</p>
+  <h3 class="dlg-h">Panel cues</h3>
+  <label class="toggle"><input type="checkbox" id="stPulse"><span>Blink the panel at 3, 2, 1 before the next routine step</span></label>
+  <label><span class="l">Blink brightness</span><select id="stPulseLv"><option value="15">15%</option><option value="25">25%</option><option value="35">35%</option><option value="50">50%</option></select></label>
+  <p class="hint">Needs a routine running on the connected panel with a timed pause between steps, and panel firmware 1.1 or newer. The blinks use the light the next step starts with. They sync with the 3, 2, 1 beeps, and the panel itself limits them to 50%, 5 blinks and 10 seconds and only blinks while it is idle.</p>
   <h3 class="dlg-h">Profile screen</h3>
   <label class="toggle"><input type="checkbox" id="stWho"><span>Show the profile screen when the app opens</span></label>
   <p class="hint">The start screen shows each profile as a hexagon. Tap one to open it. Untick this to open straight to the last profile you used. You can still switch from the Calculator or from About You below.</p>
@@ -814,7 +923,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <p class="hint" id="stPhInfo"></p>
   <div class="acts"><button class="btn danger" id="stPhClear" type="button" hidden>Delete all photos</button><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 97. Released October 25, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 99. Released October 26, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
 </section>
 
 <section id="pg-work" class="pg learn" aria-labelledby="h-work">
@@ -824,7 +933,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 97. Released October 25, 2026.<br>© 2026 Redox. All rights reserved.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 99. Released October 26, 2026.<br>© 2026 Redox. All rights reserved.</p>
 </main>
 
 <dialog id="phAdd" aria-labelledby="phAddT">
@@ -918,6 +1027,51 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <p class="hint">The picture is cropped to a square, shrunk and kept on this device only. It is never uploaded, exported or shared.</p>
   <p class="err" id="profErr" role="alert"></p>
   <div class="actions"><button class="btn primary" id="profSave" type="button">Save</button><button class="btn danger" id="profDel" type="button" hidden>Delete</button><button class="btn" id="profCancel" type="button">Cancel</button></div>
+</dialog>
+
+<dialog id="docDlg" aria-labelledby="docTitle">
+  <h2 id="docTitle" tabindex="-1">Report for my doctor</h2>
+  <p class="hint">Makes a PDF summary of this log's sessions and check-ins: counts, minutes, dose, ratings with charts, unwanted effects and notes. It is made on this phone and you choose what goes in. It is a self-reported record, not a diagnosis.</p>
+  <label><span class="l">Period</span><select id="docDays"><option value="30">Last 30 days</option><option value="90" selected>Last 90 days</option><option value="180">Last 6 months</option><option value="365">Last year</option></select></label>
+  <label><span class="l">Area</span><select id="docArea"></select></label>
+  <label><span class="l">Paper</span><select id="docPaper"><option value="letter">US Letter</option><option value="a4">A4</option></select></label>
+  <label class="toggle"><input type="checkbox" id="docBody"><span>Include my body details (height, weight, BMI, skin type)</span></label>
+  <label class="toggle"><input type="checkbox" id="docNotes" checked><span>Include my notes</span></label>
+  <label class="toggle"><input type="checkbox" id="docCharts" checked><span>Include charts</span></label>
+  <p class="err" id="docErr" role="alert"></p>
+  <div class="actions"><button class="btn primary" id="docMake" type="button">Create PDF</button><button class="btn" id="docCancel" type="button">Cancel</button></div>
+</dialog>
+
+<dialog id="repDlg" aria-labelledby="repTitle">
+  <h2 id="repTitle" tabindex="-1">File a report</h2>
+  <p class="hint">Rate only what applies. Anything left at a dash is skipped. This is your own record, not a diagnosis.</p>
+  <label><span class="l">About</span><select id="repArea"></select></label>
+  <label><span class="l">Type</span><select id="repKind"></select></label>
+  <h3 class="dlg-h">Symptoms (0 none, 10 worst)</h3><div id="repSym"></div>
+  <h3 class="dlg-h">How you feel (0 poor, 10 great)</h3><div id="repWell"></div>
+  <h3 class="dlg-h">Compared with a week ago</h3>
+  <div class="seg" id="repChg" role="group" aria-label="Compared with a week ago" style="display:flex;flex-wrap:wrap"></div>
+  <h3 class="dlg-h">Anything unwanted</h3><div class="fxchips" id="repFx"></div>
+  <label><span class="l">Notes</span><textarea id="repNote" rows="3" maxlength="600" placeholder="Anything else worth remembering"></textarea></label>
+  <p class="err" id="repErr" role="alert"></p>
+  <div class="actions"><button class="btn primary" id="repSave" type="button">Save report</button><button class="btn" id="repCancel" type="button">Cancel</button></div>
+</dialog>
+
+<dialog id="goalDlg" aria-labelledby="goalTitle">
+  <h2 id="goalTitle" tabindex="-1">Weekly goal</h2>
+  <p class="hint">How many sessions do you want each week for this log? Weeks run Monday to Sunday.</p>
+  <label><span class="l">Sessions per week</span><input id="goalN" type="number" inputmode="numeric" min="1" max="14" step="1"></label>
+  <div class="actions"><button class="btn primary" id="goalSave" type="button">Save goal</button><button class="btn" id="goalClear" type="button">No goal</button><button class="btn" id="goalCancel" type="button">Cancel</button></div>
+</dialog>
+
+<dialog id="remDlg" aria-labelledby="remTitle">
+  <h2 id="remTitle" tabindex="-1">Remind me</h2>
+  <p class="hint">Makes a repeating calendar reminder file. Open it on your phone and your calendar app adds it, with an alert at the time you pick.</p>
+  <div class="fxchips" id="remDays"></div>
+  <label><span class="l">Time</span><input id="remTime" type="time" value="19:00"></label>
+  <label><span class="l">Reminder text</span><input id="remText" type="text" maxlength="60" value="Redox session"></label>
+  <p class="err" id="remErr" role="alert"></p>
+  <div class="actions"><button class="btn primary" id="remMake" type="button">Create reminder</button><button class="btn" id="remCancel" type="button">Cancel</button></div>
 </dialog>
 
 <dialog id="lpDlg" aria-labelledby="lpTitle">
@@ -1157,6 +1311,9 @@ const HAIR_F={none:1,thin:0.75,normal:0.5,thick:0.35},HAIR_REF="thin";
 const HAIR_AREAS={scalp:1,crown:1},HEAD_AREAS={scalp:1,forehead:1,crown:1};
 /* fat thickness in mm at BMI 25.5 as [male, female]: abdomen, thigh and calf from ultrasound fat-patterning data, other areas estimated */
 const FAT_REF={face:[3,4],neck:[5,7],shoulder:[5,7],upback:[6,8],lowback:[8,10],chest:[8,12],upab:[18,23],lowab:[18,23],uparm:[6,10],elbow:[3,4],forearm:[4,5],hand:[2,2],hip:[12,25],thigh:[10,22],knee:[4,6],calf:[4.3,9.4],foot:[2,2]};
+/* typical treated area, width x height in cm as seen from the panel: estimates for an adult, used only for the coverage check */
+const AREA_SIZE={face:[16,22],scalp:[18,20],forehead:[16,8],crown:[16,16],neck:[12,14],shoulder:[15,15],upback:[32,25],lowback:[32,20],chest:[30,25],upab:[30,20],lowab:[30,20],uparm:[10,25],elbow:[10,10],forearm:[9,25],hand:[10,18],hip:[25,25],thigh:[18,35],knee:[14,14],calf:[12,30],foot:[10,25]};
+const COV_MIN=0.7,COMFORT_I=150;
 const REF_TONE=3,REF_BMI=25.5,SKULL_MM=6.5;
 function wlPos(nm){const W=TISSUE.wl,n=W.length;if(nm<=W[0])return[0,0,0];if(nm>=W[n-1])return[n-1,n-1,0];let j=1;while(W[j]<nm)j++;return[j-1,j,(nm-W[j-1])/(W[j]-W[j-1])]}
 function lnAt(row,grid,d){
@@ -1210,6 +1367,32 @@ function srcShape(g){
     tab={zs:zs,es:es};SRC_CACHE.set(key,tab);
   }
   return z=>{const x=Math.log(z),zs=tab.zs,es=tab.es;let k=1;while(k<zs.length-1&&zs[k]<x)k++;return Math.exp(es[k-1]+(x-zs[k-1])/(zs[k]-zs[k-1])*(es[k]-es[k-1]))};
+}
+const CELL_CACHE=new Map();
+function srcCells(g){
+  const key=g.W.toFixed(1)+"|"+g.H.toFixed(1);let c=CELL_CACHE.get(key);
+  if(!c){const nx=48,ny=Math.max(8,Math.min(48,Math.round(nx*g.H/g.W)));c=[];for(let a=0;a<nx;a++)for(let b=0;b<ny;b++)c.push([(a+.5)/nx*g.W-g.W/2,(b+.5)/ny*g.H-g.H/2]);CELL_CACHE.set(key,c)}
+  return c;
+}
+/* relative light at a point (x, y) on a plane z cm in front of the panel centre, from the same emitter model as srcShape */
+function srcAt(g,x,y,z){
+  const me=Math.log(0.5)/Math.log(Math.cos((g.beam||60)*Math.PI/360)),cells=srcCells(g);let s=0;
+  for(let i=0;i<cells.length;i++){const dx=x-cells[i][0],dy=y-cells[i][1];s+=Math.pow(z,me+1)/Math.pow(z*z+dx*dx+dy*dy,(me+3)/2)}
+  return s;
+}
+const COV_CACHE=new Map();
+/* how even the light is across the treated area at distance dcm: the weakest of 9 points (corners, edge middles, centre) against the centre */
+function covAt(prof,areaId,dcm){
+  const g=geomOf(prof),sz=AREA_SIZE[areaId];if(!g||!sz)return null;
+  const key=[g.W.toFixed(1),g.H.toFixed(1),areaId,dcm.toFixed(1)].join("|");
+  if(COV_CACHE.has(key))return COV_CACHE.get(key);
+  const one=function(aw,ah){
+    const c=srcAt(g,0,0,dcm),v=[];
+    [-1,0,1].forEach(function(sx){[-1,0,1].forEach(function(sy){v.push(srcAt(g,sx*aw/2,sy*ah/2,dcm)/c)})});
+    return {min:Math.min.apply(null,v),mean:v.reduce(function(a,b){return a+b},0)/v.length};
+  };
+  const a=one(sz[0],sz[1]),b=one(sz[1],sz[0]),rot=b.min>a.min+0.02,r=Object.assign({},rot?b:a,{rot:rot});
+  COV_CACHE.set(key,r);return r;
 }
 function geomOf(prof){const w=parseFloat(prof&&prof.pw),hh=parseFloat(prof&&prof.ph);return w>0&&hh>0?{W:toCm(w,prof.unit),H:toCm(hh,prof.unit),beam:60}:null}
 
@@ -1343,16 +1526,46 @@ function recommend(m){
   for(let d=Math.max(2.54,dmin*0.5);d<=dmax*3+1e-6;d+=step){
     const t=m.total(d,100,m.dose),I=m.irrSel(d);
     if(t==null||!isFinite(I))continue;
-    cand.push({d,t,I,e:Math.abs(t-goal),meas:d>=dmin-1e-6&&d<=dmax+1e-6});
+    cand.push({d,t,I,e:Math.abs(t-goal),meas:d>=dmin-1e-6&&d<=dmax+1e-6,cov:covAt(m.prof,m.A.id,d)});
   }
   if(!cand.length)return null;
-  const pool=need?cand.filter(c=>c.I>=need):cand;
-  if(!pool.length){const c=cand.reduce((a,b)=>b.I>a.I?b:a);return {d:c.d,short:true,I:c.I}}
+  let pool=need?cand.filter(c=>c.I>=need):cand;
+  if(!pool.length){const c=cand.reduce((a,b)=>b.I>a.I?b:a);return {d:c.d,short:true,I:c.I,cov:c.cov,lowCov:false}}
+  /* with the panel size known, prefer distances where the edges of the area still get at least 70% of the centre */
+  let lowCov=false;
+  if(pool.some(c=>c.cov)){const okc=pool.filter(c=>c.cov&&c.cov.min>=COV_MIN);if(okc.length)pool=okc;else lowCov=true}
   const better=(a,b)=>!a||b.e<a.e-1e-9||(Math.abs(b.e-a.e)<1e-9&&b.d>a.d);
   let best=null;
   pool.filter(c=>c.meas&&c.e/goal<=0.1).forEach(c=>{if(better(best,c))best=c});
   if(!best)pool.forEach(c=>{if(better(best,c))best=c});
-  return {d:best.d,short:false,I:best.I};
+  return {d:best.d,short:false,I:best.I,cov:best.cov,lowCov:lowCov};
+}
+/* the best few ways to deliver the dose: distance and power together, with the trade-offs shown */
+function optimize(m){
+  if(m.missing||!m.allPts.length)return [];
+  const ds=m.allPts.map(p=>p.d),dmin=Math.min.apply(null,ds),dmax=Math.max.apply(null,ds),step=m.prof.unit==="in"?2.54/2:1;
+  const goal=(parseFloat(S.goal)||10)*60,need=m.T.irrMin||0,all=[];
+  for(let d=Math.max(2.54,dmin*0.5);d<=dmax*3+1e-6;d+=step){
+    [100,50].forEach(function(p){
+      const t=m.total(d,p,m.dose),I=m.irrSel(d)*p/100;
+      if(t==null||!isFinite(I)||I<need)return;
+      all.push({d:d,p:p,t:t,I:I,cov:covAt(m.prof,m.A.id,d),meas:d>=dmin-1e-6&&d<=dmax+1e-6});
+    });
+  }
+  if(!all.length)return [];
+  const cm=function(o){return o.cov?o.cov.min:1},err=function(o){return Math.abs(o.t-goal)/goal};
+  const ok=all.filter(function(o){return cm(o)>=COV_MIN}),pool=ok.length?ok:all;
+  const pick=function(list,score){let b=null;list.forEach(function(o){if(!b||score(o)<score(b)-1e-9)b=o});return b};
+  const best=pick(pool,function(o){return err(o)+(o.p===50?0.04:0)+(o.I>COMFORT_I?(o.I-COMFORT_I)/600:0)+(o.meas?0:0.02)});
+  const near=pool.filter(function(o){return err(o)<=0.35&&o.p===100}),even=near.length&&all.some(function(o){return o.cov})?pick(near,function(o){return -cm(o)*10+err(o)}):null;
+  const fast=pick(pool.filter(function(o){return o.meas||!pool.some(function(x){return x.meas})}),function(o){return o.t});
+  const out=[];
+  [[best,"Best match"],[even,"Most even coverage"],[fast,"Fastest that still works"]].forEach(function(x){
+    if(!x[0])return;
+    const f=out.find(function(o){return Math.abs(o.d-x[0].d)<1e-6&&o.p===x[0].p});
+    if(f)f.labels.push(x[1]);else out.push(Object.assign({labels:[x[1]]},x[0]));
+  });
+  return out;
 }
 
 /* ---------- Evidence ---------- */
@@ -1573,8 +1786,10 @@ function render(){
   const rows=[100,75,50,25].map(p=>`<tr><td>${p}%</td><td>${fmtMin(m.rtotal(dcm,p,m.dose))}</td><td>${fmt(m.dose*m.pf*Math.min(1,600/m.total(dcm,p,m.dose)),1)} J/cm\u00b2</td></tr>`).join("");
   box.innerHTML=`
     <div class="hero"><div class="k">${manual?"Distance you picked":"Recommended distance"}</div><div class="v">${fmt(fromCm(dcm),1)} ${prof.unit}</div><div class="k lab" style="margin-top:2px">${m.segs.map(s=>`${fmt(m.irr(s.ch,dcm))} mW/cm\u00b2 ${s.label}`).join(", ")} at the surface, full power</div><div class="k simple-only" style="margin-top:2px">Light: ${m.segs.map(s=>s.label).join(" and ")}${prof.mode==="fixed"?" (together)":""}</div></div>
+    ${covHtml(m,dcm)}
     <div class="cards">${opt(100,'<span class="lab">Fast</span><span class="simple-only">Recommended</span>')}${opt(50,"Gentle","lab")}</div>
     <p class="hint lab">Pick either. Both deliver the same dose. Irradiance is assumed to scale linearly with the power setting.</p>
+    ${optHtml(m,dcm)}
     <div id="timerSlot"></div>
     <div class="lab">${chart(m,dcm)}</div>
     <table class="lab" style="margin-top:8px"><thead><tr><th>Power</th><th>Time to dose</th><th>Dose after 10 min</th></tr></thead><tbody>${rows}</tbody></table>
@@ -1944,6 +2159,28 @@ function unc(m,dcm){
   const solar=Math.abs(m.k-1)>0.005?0.20:0;
   return Math.min(Math.sqrt(base*base+solar*solar+(ext?0.0625:0)),0.6);
 }
+function covHtml(m,dcm){
+  const cv=covAt(m.prof,m.A.id,dcm),sz=AREA_SIZE[m.A.id];
+  if(!cv){return sz&&!geomOf(m.prof)?'<p class="hint lab">Add the panel size under Edit and the app also checks how evenly the light covers the '+escH(m.A.name.toLowerCase())+'.</p>':""}
+  const pct=Math.round(cv.min*100);
+  return '<p class="hint covline'+(cv.min<COV_MIN?' covlow':'')+'">'+(cv.min<COV_MIN?'Uneven here: the edges of the '+escH(m.A.name.toLowerCase())+' get only about '+pct+'% of the centre. Try another distance, turn the panel, or treat the area in two passes.':'Even coverage: the edges of the '+escH(m.A.name.toLowerCase())+' get about '+pct+'% of the centre.')+(cv.rot?' Holding the panel upright (turned a quarter turn) is more even.':'')+'</p>';
+}
+function optHtml(m,dcm){
+  const list=optimize(m);if(list.length<1)return "";
+  const hasCov=list.some(function(o){return o.cov});
+  const rows=list.map(function(o){
+    return '<tr><td><b>'+escH(o.labels.join(" and "))+'</b></td><td>'+fmt(fromCm(o.d,m.prof.unit),1)+' '+m.prof.unit+'</td><td>'+o.p+'%</td><td>'+fmtMin(o.t)+'</td>'+(hasCov?'<td>'+(o.cov?Math.round(o.cov.min*100)+'%':'-')+'</td>':'')+'<td><button class="btn" type="button" data-useopt="'+o.d.toFixed(2)+'|'+o.p+'"'+(Math.abs(o.d-dcm)<0.01&&o.p===tm.p?' disabled':'')+'>Use</button></td></tr>';
+  }).join("");
+  const warm=list.some(function(o){return o.I>COMFORT_I});
+  return '<details class="lab optcard" open><summary>Best options</summary><table style="margin:6px 0"><thead><tr><th></th><th>Distance</th><th>Power</th><th>Time</th>'+(hasCov?'<th>Edges</th>':'')+'<th></th></tr></thead><tbody>'+rows+'</tbody></table>'
+    +'<p class="hint">Each row delivers the same dose. Time is at the centre of the area.'+(hasCov?' Edges is the weakest point of the area as a share of the centre, from the flat-panel light model and a typical area size (an estimate).':'')+(warm?' The closest distances are strong enough to feel warm.':'')+'</p></details>';
+}
+document.addEventListener("click",function(e){
+  const b=e.target.closest("[data-useopt]");if(!b)return;
+  const v=b.dataset.useopt.split("|"),d=parseFloat(v[0]),p=+v[1];
+  if(!(d>0)||(p!==100&&p!==50))return;
+  S.distManualCm=d;tm.p=p;pn.p=p;save();render();
+});
 function curDist(m){
   if(S.distManualCm>0)return S.distManualCm;
   const r=recommend(m);return r?r.d:null;
@@ -1982,7 +2219,7 @@ const LOGKEY="rdl.log.v1";
 let memLog=null;
 function canStore(){try{localStorage.setItem("rdl.t","1");localStorage.removeItem("rdl.t");return true}catch(e){return false}}
 function getLog(){try{const v=JSON.parse(localStorage.getItem(LOGKEY));if(v)return v}catch(e){}return memLog||[]}
-function putLog(a){memLog=a;try{localStorage.setItem(LOGKEY,JSON.stringify(a))}catch(e){}}
+function putLog(a){memLog=a;try{localStorage.setItem(LOGKEY,JSON.stringify(a))}catch(e){}if(typeof goalLineUi==="function")goalLineUi()}
 $("#logBody").addEventListener("change",function(e){
   const t=e.target;
   if(t.id==="logAreaSel"){S.logArea=t.value;S.logSide="all";save();renderLog()}
@@ -2033,7 +2270,7 @@ $("#lpSave").addEventListener("click",function(){
 $("#lpDelete").addEventListener("click",function(){
   if(!lpArm){lpArm=true;$("#lpDelete").textContent="Tap again to delete";return}
   const id=lpEditId;
-  phDelWhere(function(x){return x.lp===id});
+  phDelWhere(function(x){return x.lp===id});repsPut(repsGet().filter(function(r){return r.lp!==id}));if(S.goals)delete S.goals[id];
   putLog(getLog().filter(function(e){return lpOf(e)!==id}));
   S.logProfiles=S.logProfiles.filter(function(p){return p.id!==id});
   S.logActive=S.logProfiles[0].id;
@@ -2041,7 +2278,7 @@ $("#lpDelete").addEventListener("click",function(){
 });
 document.addEventListener("change",function(e){
   const t=e.target;
-  if(t.classList&&t.classList.contains("lpSel")){S.logActive=t.value;save();fillLogProfiles();if(document.body.dataset.view==="log")renderLog()}
+  if(t.classList&&t.classList.contains("lpSel")){S.logActive=t.value;save();fillLogProfiles();goalLineUi();if(document.body.dataset.view==="log")renderLog()}
 });
 
 /* ---------- Left and right side (only for areas that come in pairs) ---------- */
@@ -2143,6 +2380,7 @@ function logChart(W,list){
 function renderLog(){
   $("#logNotice").hidden=canStore();
   fillLogProfiles();
+  logTabsUi();if(S.logTab==="checkins"){renderReps();return}
   const areas=logAreas();
   if(S.logArea&&S.logArea!=="all"&&!areas.some(function(x){return x.id===S.logArea})){S.logArea="all";save()}
   const scoped=S.logArea&&S.logArea!=="all";
@@ -2153,7 +2391,7 @@ function renderLog(){
   const rk=logRangeKey(),nowTs=Date.now(),a=logView().slice().sort(function(x,y){return y.ts-x.ts});
   const W=logWindow(rk,a,nowTs),lst=a.filter(function(e){return e.ts>=W.lo&&e.ts<W.end});
   const cur=logTotals(a,W.lo,W.end),prv=W.prev?logTotals(a,W.plo,W.lo):null;
-  let h='';
+  let h=goalCardHtml();
   if(logFor(S.logActive).length){
     h+='<div class="logfilter'+(sidesShown?' two':'')+'"><label><span class="l">Area</span><select id="logAreaSel" aria-label="Treatment area"><option value="all"'+(!scoped?' selected':'')+'>All Areas ('+logFor(S.logActive).length+')</option>'
       +areas.map(function(x){return '<option value="'+escH(x.id)+'"'+(S.logArea===x.id?' selected':'')+'>'+escH(x.name)+' ('+x.n+')</option>'}).join("")+'</select></label>';
@@ -2166,7 +2404,7 @@ function renderLog(){
   h+='<div class="stats"><div><b>'+cur.n+'</b><span>sessions, '+W.nm+'</span>'+dl(cur.n,prv&&prv.n)+'</div><div><b>'+fmt(cur.min,0)+'</b><span>minutes, '+W.nm+'</span>'+dl(cur.min,prv&&prv.min)+'</div><div><b>'+fmt(cur.dose,0)+'</b><span>J/cm\u00b2 delivered</span>'+dl(cur.dose,prv&&prv.dose)+'</div></div>';
   h+=logChart(W,a);
   h+=phBlockHtml(scoped);
-  h+='<div class="acts"><button class="btn" id="logDl" type="button">Download CSV</button><button class="btn" id="logCopy" type="button">Copy CSV</button><button class="btn" id="logShare" type="button">Share</button><button class="btn" id="logImp" type="button">Import</button><button class="btn danger" id="logClear" type="button">'+(scoped?"Clear "+escH(logScopeName())+" sessions":"Clear this log")+'</button></div>';
+  h+='<div class="acts"><button class="btn" id="logDl" type="button">Download CSV</button><button class="btn" id="logCopy" type="button">Copy CSV</button><button class="btn" id="logShare" type="button">Share</button><button class="btn" id="logImp" type="button">Import</button><button class="btn" id="docOpen1" data-doc="1" type="button">Doctor Report (PDF)</button><button class="btn danger" id="logClear" type="button">'+(scoped?"Clear "+escH(logScopeName())+" sessions":"Clear this log")+'</button></div>';
   h+='<p class="hint">Saved on this device only. Export now and then, because a phone can clear saved web app data.</p>';
   if(!a.length)h+='<p class="empty">No sessions in this log yet. Finish a session with the timer on the Calculator tab and it is logged here automatically.</p>';
   else h+='<p class="hint">'+(lst.length?'Showing '+plural(lst.length,"session")+' from '+W.nm+'.':'No sessions in this period. Try a longer range.')+'</p>';
@@ -2481,14 +2719,17 @@ function planSegs(p,ctx){return ctx.m.plan(ctx.dcm,p,ctx.m.dose).segs.map(functi
 function elapsed(){return tm.acc+(tm.running?(Date.now()-tm.t0)/1000:0)}
 function segAt(e){let c=0;for(let i=0;i<tm.segs.length;i++){c+=tm.segs[i].sec;if(e<c)return {i:i,left:c-e}}return {i:tm.segs.length-1,left:0}}
 function beep(f,d){
+  if(f>10&&S.sndCues===false)return;
+  ambDuck(700);
   try{
     if(!tm.ac){const C=window.AudioContext||window.webkitAudioContext;if(C)tm.ac=new C()}
     if(!tm.ac)return;
     const o=tm.ac.createOscillator(),g=tm.ac.createGain();o.frequency.value=f;g.gain.value=0.2;o.connect(g);g.connect(tm.ac.destination);o.start();o.stop(tm.ac.currentTime+d);
   }catch(e){}
 }
-function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms)}catch(e){}}
+function buzz(ms){if(S.vib===false)return;try{if(navigator.vibrate)navigator.vibrate(ms)}catch(e){}}
 function wake(on){
+  audioSession(on);
   try{
     if(on&&navigator.wakeLock&&!tm.lock)navigator.wakeLock.request("screen").then(function(l){tm.lock=l}).catch(function(){});
     if(!on&&tm.lock){tm.lock.release();tm.lock=null}
@@ -2512,7 +2753,7 @@ function tmRender(){
   $("#tmStopLog").hidden=!(e>0&&!tm.done);
   $("#tmLogRow").hidden=!tm.pending;
   $("#tmHint").textContent=tm.pending?"This session is not logged yet. Tap Log This Session to save it, or Reset to throw it away.":(autoLogOn("timer")?"Finishing the timer logs the session automatically. Keep the screen on while it runs.":"Finishing the timer does not log it by itself. Tap Log This Session afterwards to save it. Keep the screen on while it runs.");
-  const tp=!!(tm.lastSid&&PH.ok&&!tm.running&&(tm.done||e<=0));$("#tmPhotoRow").hidden=!tp;if(tp)$("#tmPhoto").dataset.photoSid=tm.lastSid;
+  const tq=!!(tm.lastSid&&!tm.running&&(tm.done||e<=0)),tp=tq&&PH.ok;$("#tmPhotoRow").hidden=!tq;$("#tmPhoto").hidden=!tp;if(tq){$("#tmPhoto").dataset.photoSid=tm.lastSid;$("#tmReport").dataset.reportSid=tm.lastSid}
   document.querySelectorAll("#tmOpts button").forEach(function(b){b.setAttribute("aria-pressed",String(+b.dataset.p===tm.p))});
   $("#tmBar").style.width=(tm.total?e/tm.total*100:0)+"%";
 }
@@ -2545,7 +2786,7 @@ function tmToggle(){
   if(tm.done)tmBuild(tm.p);
   if(tm.pending)toast("The last session was not logged");
   tm.lastSid="";tm.pending=null;
-  beep(1,.01);tm.t0=Date.now();tm.running=true;tm.iv=setInterval(tmTick,250);wake(true);tmRender();
+  beep(1,.01);tm.t0=Date.now();tm.running=true;tm.iv=setInterval(tmTick,250);wake(true);if(tm.acc===0)speak("Session started");tmRender();
 }
 function tmFinish(){
   clearInterval(tm.iv);tm.running=false;tm.acc=tm.total;tm.done=true;wake(false);
@@ -2553,7 +2794,7 @@ function tmFinish(){
   else{tm.pending=sessionEntry(tm.total);tm.lastSid=""}
   tmRender();
   beep(880,.25);setTimeout(function(){beep(880,.25)},350);setTimeout(function(){beep(1175,.4)},700);buzz([250,120,250,120,400]);
-  toast(tm.pending?"Session complete. Tap Log This Session to save it.":"Session complete and logged");
+  toast(tm.pending?"Session complete. Tap Log This Session to save it.":"Session complete and logged");speak("Session complete");
 }
 function tmStopLog(){
   const e=elapsed();
@@ -2889,7 +3130,7 @@ let stArm={log:false,reset:false};
 function renderSet(){
   stArm.log=false;stArm.reset=false;
   $("#stClearLog").textContent="Clear all session logs";$("#stReset").textContent="Reset profiles and settings";
-  $("#stQs").checked=!qsOff();$("#stWho").checked=S.askWho!==false;meRender();
+  $("#stQs").checked=!qsOff();$("#stWho").checked=S.askWho!==false;$("#stCues").checked=S.sndCues!==false;$("#stVib").checked=S.vib!==false;$("#stSpeak").checked=S.speak===true;$("#stMusicOn").checked=S.musicOn===true;$("#stMusic").value=["pads","drone","rain","mine"].indexOf(S.music)>=0?S.music:"pads";$("#stMusicVol").value=String(S.musicVol>=5&&S.musicVol<=100?S.musicVol:35);musicUiSync();muInfo();$("#stPulse").checked=S.pulseOn!==false;$("#stPulseLv").value=String([15,25,35,50].indexOf(S.pulsePct)>=0?S.pulsePct:25);meRender();
   phArm=false;$("#stPhClear").textContent="Delete all photos";phSettings();
 }
 $("#stSafety").addEventListener("click",function(){openD("#safeDlg")});
@@ -2951,7 +3192,7 @@ function pnRender(st){
   pnPhotoUi(!!s.active);
   if(s.active){pn.wasActive=true}
   else if(pn.wasActive){
-    pn.wasActive=false;
+    pn.wasActive=false;audioSession(false);
     if(s.done&&pn.ctx&&!pn.logged){pn.logged=true;const secs=Math.min(s.elapsed||pn.ctx.total,pn.ctx.total);
       if(autoLogOn("panel")){pn.lastSid=logPanelSession(secs);pn.pending=null}else{pn.pending=panelEntry(secs);pn.lastSid=""}
       pnPhotoUi(false);toast(pn.pending?"Session finished. Tap Log This Session to save it.":"Session finished and logged")}
@@ -2960,7 +3201,7 @@ function pnRender(st){
 function pnPhotoUi(active){
   const lr=$("#pnLogRow");if(lr)lr.hidden=!(pn.pending&&!active);
   const pr=$("#pnPhotoRow");if(!pr)return;
-  const on=!!(pn.lastSid&&PH.ok&&!active);pr.hidden=!on;if(on)$("#pnPhoto").dataset.photoSid=pn.lastSid;
+  const on=!!(pn.lastSid&&!active),onp=on&&PH.ok;pr.hidden=!on;$("#pnPhoto").hidden=!onp;if(on){$("#pnPhoto").dataset.photoSid=pn.lastSid;$("#pnReport").dataset.reportSid=pn.lastSid}
 }
 function pnPoll(){
   pnReq("/api/state").then(function(st){pn.connected=true;pnRender(st)}).catch(function(e){
@@ -2980,7 +3221,7 @@ function pnSet(){
   const a=+$("#pnC1").value,b=+$("#pnC2").value;
   pnReq("/api/set",{c1:a,c2:b}).then(pnRender).catch(function(e){pnMsg(pnHelp(e),true)});
 }
-function pnAllOff(){pnReq("/api/stop").then(pnRender).catch(function(e){pnMsg(pnHelp(e),true)})}
+function pnAllOff(){audioSession(false);pnReq("/api/stop").then(pnRender).catch(function(e){pnMsg(pnHelp(e),true)})}
 function pnPlan(){
   if(!LAST)return null;
   const m=LAST.m,d=LAST.dcm,p=pn.p;
@@ -3007,7 +3248,7 @@ function pnStart(){
   if(rt.phase!=="idle"&&rt.phase!=="done"){toast("A routine is running. Stop it first.");return}
   const pl=pnPlan();if(!pl){toast("Set up a protocol on the Calculator tab first");return}
   pn.ctx=pl;pn.logged=false;pn.wasActive=false;pn.lastSid="";pn.pending=null;pnPhotoUi(true);
-  pnReq("/api/session",{segs:pl.segs.map(function(s){return s.c1+":"+s.c2+":"+s.sec}).join(";")}).then(function(st){pn.wasActive=true;pnRender(st);toast("Session started on the panel")}).catch(function(e){pnMsg(pnHelp(e),true)});
+  pnReq("/api/session",{segs:pl.segs.map(function(s){return s.c1+":"+s.c2+":"+s.sec}).join(";")}).then(function(st){pn.wasActive=true;pnRender(st);toast("Session started on the panel");speak("Session started on the panel");audioSession(true)}).catch(function(e){pnMsg(pnHelp(e),true)});
 }
 function panelEntry(sec){
   const c=pn.ctx;if(!c)return null;const m=c.m;
@@ -3133,6 +3374,9 @@ function renderWork(){
   // 7 distance
   const rec=recommend(m),goal=parseFloat(S.goal)||10;
   let s7='<p>The app tries distances in steps of '+(u==='in'?'1.27 cm (half an inch)':'1 cm')+', works out the full-power time at each, '+(T.irrMin?'keeps only those that give at least '+T.irrMin+' mW/cm\u00b2 at the surface (this treatment needs it for depth), ':'')+'and picks the one closest to your '+goal+' minute goal, preferring a distance inside your measured range that lands within 10% of the goal.</p>';
+  {const cv0=covAt(prof,A.id,dcm),sz0=AREA_SIZE[A.id];
+    if(cv0)s7+='<p><b>Coverage check:</b> a typical '+escH(A.name.toLowerCase())+' is about '+sz0[0]+' \u00d7 '+sz0[1]+' cm (an estimate). From the flat-panel light model of your '+du(g.W)+' \u00d7 '+du(g.H)+' '+u+' panel, at '+dIn(dcm)+' the weakest of nine points across it (corners, edge middles and centre) gets <b>'+Math.round(cv0.min*100)+'%</b> of the centre'+(cv0.rot?', and turning the panel a quarter turn is more even':'')+'. Distances where that is under 70% are skipped when others work.</p>';
+    else if(sz0)s7+='<p>Coverage is not checked because no panel size is entered. Add it under Edit and the app also looks at how evenly the light reaches a typical '+escH(A.name.toLowerCase())+'.</p>';}
   if(S.distManualCm>0)s7+='<p>You picked '+dIn(dcm)+', so the search is skipped and that distance is used.</p>';
   else if(rec)s7+='<p>Result: <b>'+dIn(rec.d)+'</b>, full-power time '+fmtMin(m.total(rec.d,100,D))+', surface irradiance '+mw(rec.I)+'.'+(rec.short?' No distance reached the surface irradiance this treatment needs, so the strongest reachable is shown.':'')+'</p>';
   sec('7. Recommended distance',s7);
@@ -3154,6 +3398,678 @@ function renderWork(){
 }
 
 /* ---------- About You (personal inputs, kept on this device) ---------- */
+
+
+
+/* ---------- Goals, streaks and reminders ---------- */
+const dayNum=function(ts){const d=new Date(ts);return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()};
+const wkStart=function(ts){const d=new Date(ts),k=(d.getDay()+6)%7;return new Date(d.getFullYear(),d.getMonth(),d.getDate()-k).getTime()};
+function goalOf(){const g=S.goals&&S.goals[S.logActive];return g>=1&&g<=14?Math.round(g):0}
+function goalStats(entries,nowTs,perWeek){
+  const days=new Map(),weeks=new Map();
+  entries.forEach(function(e){const k=dayNum(e.ts);days.set(k,(days.get(k)||0)+e.sec/60);const w=wkStart(e.ts);weeks.set(w,(weeks.get(w)||0)+1)});
+  const T=new Date(nowTs),today=new Date(T.getFullYear(),T.getMonth(),T.getDate());
+  let cur=0,d=new Date(today);
+  if(!days.has(dayNum(d.getTime())))d.setDate(d.getDate()-1);        // no session yet today: the streak is still alive through yesterday
+  while(days.has(dayNum(d.getTime()))){cur++;d.setDate(d.getDate()-1)}
+  let best=0,run=0,prev=null;
+  Array.from(days.keys()).sort(function(a,b){return a-b}).forEach(function(k){
+    const dt=new Date(Math.floor(k/10000),Math.floor(k%10000/100)-1,k%100);
+    if(prev&&Math.round((dt-prev)/864e5)===1)run++;else run=1;
+    if(run>best)best=run;prev=dt;
+  });
+  const cw=wkStart(nowTs),thisWeek=weeks.get(cw)||0;
+  let onGoal=0;
+  if(perWeek){
+    let w=cw;if(thisWeek<perWeek)w=new Date(new Date(cw).getFullYear(),new Date(cw).getMonth(),new Date(cw).getDate()-7).getTime();
+    while((weeks.get(w)||0)>=perWeek){onGoal++;const x=new Date(w);w=new Date(x.getFullYear(),x.getMonth(),x.getDate()-7).getTime()}
+  }
+  const strip=[],s0=new Date(cw);
+  for(let i=0;i<84;i++){const x=new Date(s0.getFullYear(),s0.getMonth(),s0.getDate()-77+i),m=days.get(dayNum(x.getTime()))||0;strip.push({ts:x.getTime(),min:m,future:x.getTime()>today.getTime()})}
+  return {cur:cur,best:best,thisWeek:thisWeek,onGoal:onGoal,strip:strip};
+}
+function goalCardHtml(){
+  const a=logFor(S.logActive),g=goalOf(),st=goalStats(a,Date.now(),g);
+  const lvl=function(c){return c.future?"gf":(c.min<=0?"g0":(c.min<10?"g1":(c.min<20?"g2":"g3")))};
+  let h='<div class="goalcard"><div class="gtop"><b>'+(g?'This week':'Streak')+'</b><span>'+(g?st.thisWeek+' of '+g+' session'+(g>1?'s':''):'No weekly goal set')+'</span></div>';
+  if(g)h+='<div class="pbar" aria-label="Progress this week"><b style="width:'+Math.min(100,Math.round(st.thisWeek/g*100))+'%"></b></div>';
+  h+='<div class="gstats"><div><b>'+st.cur+'</b><span>day streak</span></div><div><b>'+(g?st.onGoal:"-")+'</b><span>weeks on goal</span></div><div><b>'+st.best+'</b><span>best streak, days</span></div></div>';
+  h+='<div class="gstrip" role="img" aria-label="Sessions over the last 12 weeks">'+st.strip.map(function(c){return '<i class="'+lvl(c)+'" title="'+escH(new Date(c.ts).toLocaleDateString(undefined,{month:"short",day:"numeric"}))+': '+Math.round(c.min)+' min"></i>'}).join("")+'</div>';
+  h+='<p class="glegend">Last 12 weeks, newest on the right: darker means more minutes that day (under 10, under 20, 20 or more).</p>';
+  h+='<div class="acts"><button class="btn" id="goalSet" type="button">'+(g?"Change goal":"Set a weekly goal")+'</button><button class="btn" id="goalRemind" type="button">Remind me</button></div></div>';
+  return h;
+}
+function goalLineUi(){
+  const e=$("#goalLine");if(!e)return;const g=goalOf();
+  if(!g){e.hidden=true;return}
+  const st=goalStats(logFor(S.logActive),Date.now(),g);
+  e.hidden=false;e.textContent="This week: "+st.thisWeek+" of "+g+" sessions"+(st.cur>1?" · "+st.cur+" day streak":"")+".";
+}
+document.addEventListener("click",function(e){
+  const b=e.target.closest("#goalSet,#goalRemind");if(!b)return;
+  if(b.id==="goalSet"){$("#goalN").value=goalOf()||3;openD("#goalDlg")}else remOpen();
+});
+$("#goalSave").addEventListener("click",function(){
+  const n=Math.round(+$("#goalN").value);if(!(n>=1&&n<=14)){toast("Pick 1 to 14 sessions a week");return}
+  S.goals=S.goals||{};S.goals[S.logActive]=n;save();closeD("#goalDlg");renderLog();goalLineUi();toast("Goal saved: "+n+" a week");
+});
+$("#goalClear").addEventListener("click",function(){if(S.goals)delete S.goals[S.logActive];save();closeD("#goalDlg");renderLog();goalLineUi()});
+$("#goalCancel").addEventListener("click",function(){closeD("#goalDlg")});
+const REM_DAYS=[["MO","Mon"],["TU","Tue"],["WE","Wed"],["TH","Thu"],["FR","Fri"],["SA","Sat"],["SU","Sun"]];
+function remOpen(){
+  $("#remDays").innerHTML=REM_DAYS.map(function(d,i){return '<button type="button" data-d="'+d[0]+'" aria-pressed="'+(i%2===0&&i<5)+'">'+d[1]+'</button>'}).join("");
+  $("#remErr").textContent="";openD("#remDlg");
+}
+$("#remDays").addEventListener("click",function(e){const b=e.target.closest("button");if(b)b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"))});
+$("#remCancel").addEventListener("click",function(){closeD("#remDlg")});
+function icsText(days,time,text){
+  const now=new Date(Date.now()),pad=function(n){return String(n).padStart(2,"0")},idx={MO:1,TU:2,WE:3,TH:4,FR:5,SA:6,SU:0};
+  const hm=time.split(":"),hh=+hm[0],mm=+hm[1];
+  let d=new Date(now.getFullYear(),now.getMonth(),now.getDate(),hh,mm,0);
+  for(let i=0;i<8;i++){if(days.indexOf(Object.keys(idx).find(function(k){return idx[k]===d.getDay()}))>=0&&d.getTime()>now.getTime())break;d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1,hh,mm,0)}
+  const stamp=now.getUTCFullYear()+pad(now.getUTCMonth()+1)+pad(now.getUTCDate())+"T"+pad(now.getUTCHours())+pad(now.getUTCMinutes())+pad(now.getUTCSeconds())+"Z";
+  const start=d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+"T"+pad(hh)+pad(mm)+"00";
+  const esc=function(s){return String(s).replace(/[\\;,]/g,function(c){return "\\"+c}).replace(/\r?\n/g," ")};
+  return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Redox Dosimetry Lab//Reminder//EN","CALSCALE:GREGORIAN","BEGIN:VEVENT","UID:redox-"+Date.now().toString(36)+"@redox-lab","DTSTAMP:"+stamp,"DTSTART:"+start,"DURATION:PT30M","RRULE:FREQ=WEEKLY;BYDAY="+days.join(","),"SUMMARY:"+esc(text),"DESCRIPTION:"+esc("Time for your session. Open Redox Dosimetry Lab."),"BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+esc(text),"TRIGGER:PT0S","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n")+"\r\n";
+}
+$("#remMake").addEventListener("click",function(){
+  const days=Array.prototype.map.call($("#remDays").querySelectorAll('[aria-pressed="true"]'),function(b){return b.dataset.d});
+  if(!days.length){$("#remErr").textContent="Pick at least one day.";return}
+  const time=$("#remTime").value;if(!/^\d\d:\d\d$/.test(time)){$("#remErr").textContent="Pick a time.";return}
+  const text=($("#remText").value.trim()||"Redox session").slice(0,60),ics=icsText(days,time,text);
+  closeD("#remDlg");
+  try{
+    const f=new File([ics],"redox-reminder.ics",{type:"text/calendar"});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:"Redox reminder"}).catch(function(){});return}
+  }catch(e){}
+  if(downloadText("redox-reminder.ics",ics,"text/calendar"))toast("Reminder file saved. Open it to add it to your calendar.");
+  else copyText(ics,"Could not save the file, so the reminder text was copied.");
+});
+
+/* ---------- Check-in reports (a short survey: pain, comfort and more) ---------- */
+const REPKEY="rdl.reps.v1";let memReps=null;
+const REP_SYM=[["pain","Pain"],["stiff","Stiffness"],["sore","Soreness"],["swell","Swelling"],["skin","Skin irritation"]];
+const REP_WELL=[["comfort","Comfort during the session"],["energy","Energy"],["mood","Mood"],["sleep","Sleep last night"]];
+const REP_ALL=REP_SYM.concat(REP_WELL);
+const REP_FX=[["hot","Felt too hot"],["red","Redness that lingered"],["head","Headache"],["eyes","Eye strain or glare"],["dizzy","Dizziness"],["tingle","Tingling or itching"],["sleepfx","Trouble sleeping"],["other","Something else (see notes)"]];
+const REP_CHG=[[-2,"Much worse"],[-1,"Worse"],[0,"Same"],[1,"Better"],[2,"Much better"]];
+const REP_KINDS=[["after","After a session"],["daily","Daily check-in"],["weekly","Weekly review"],["other","Other"]];
+function repClean(r){
+  if(!r||typeof r!=="object"||typeof r.id!=="string")return null;
+  const v={};REP_ALL.forEach(function(f){const x=r.v&&r.v[f[0]];if(typeof x==="number"&&x>=0&&x<=10)v[f[0]]=Math.round(x)});
+  const fx=(Array.isArray(r.fx)?r.fx:[]).filter(function(k){return REP_FX.some(function(f){return f[0]===k})});
+  const chg=typeof r.chg==="number"&&r.chg>=-2&&r.chg<=2?Math.round(r.chg):null;
+  return {id:r.id.slice(0,40),ts:+r.ts>0?+r.ts:0,lp:String(r.lp||""),pid:String(r.pid||""),pnm:String(r.pnm||"").slice(0,24),ar:String(r.ar||""),arn:String(r.arn||"").slice(0,40),side:["left","right","both"].indexOf(r.side)>=0?r.side:"",
+    sid:String(r.sid||""),kind:REP_KINDS.some(function(k){return k[0]===r.kind})?r.kind:"other",v:v,fx:fx,chg:chg,note:String(r.note||"").slice(0,600)};
+}
+function repsGet(){try{const v=JSON.parse(localStorage.getItem(REPKEY));if(Array.isArray(v))return v.map(repClean).filter(Boolean)}catch(e){}return (memReps||[]).map(repClean).filter(Boolean)}
+function repsPut(a){memReps=a;try{localStorage.setItem(REPKEY,JSON.stringify(a))}catch(e){}}
+function repOut(r){return {ts:r.ts,kind:r.kind,ar:r.ar,arn:r.arn,side:r.side,v:r.v,fx:r.fx,chg:r.chg,note:r.note,pnm:r.pnm,logProfile:lpName(repLpOf(r))}}
+function cleanReportIn(o){
+  if(!o||typeof o!=="object")return null;
+  const ts=+o.ts;if(!(ts>0&&ts<4102444800000))return null;
+  const r=repClean({id:"x",ts:ts,lp:"",pid:"",pnm:o.pnm,ar:o.ar,arn:o.arn,side:o.side,sid:"",kind:o.kind,v:o.v,fx:o.fx,chg:o.chg,note:o.note});
+  if(!r||(!Object.keys(r.v).length&&!r.fx.length&&r.chg==null&&!r.note))return null;
+  const A=AREAS.find(function(a){return a.id===r.ar})||AREAS.find(function(a){return a.name.toLowerCase()===String(r.arn).toLowerCase()});
+  r.ar=A?A.id:"";r.arn=A?A.name:"";
+  r.id="r"+ts.toString(36)+"i"+(impSeq++);return r;
+}
+const repKey=function(r,lp){return [lp,r.ts,r.kind,r.ar,JSON.stringify(r.v),r.fx.join(","),r.chg,r.note].join("|")};
+function planReports(list){
+  const seen=new Set(repsGet().map(function(r){return repKey(r,repLpOf(r))})),out={items:[],bad:0,dup:0};
+  list.forEach(function(o){
+    const r=cleanReportIn(o);if(!r){out.bad++;return}
+    const nm=titleCase(String(o&&o.logProfile||"").trim().slice(0,30));
+    const lp=nm?S.logProfiles.find(function(x){return x.name.toLowerCase()===nm.toLowerCase()}):S.logProfiles.find(function(x){return x.id===S.logActive});
+    const k=repKey(r,lp?lp.id:"new:"+nm.toLowerCase());
+    if(seen.has(k)){out.dup++;return}
+    seen.add(k);out.items.push({r:r,nm:nm,lp:lp||null});
+  });
+  return out;
+}
+function importReports(list){
+  const plan=planReports(list),all=repsGet();let added=0;
+  plan.items.forEach(function(it){
+    let lp=it.lp;
+    if(!lp){lp=S.logProfiles.find(function(x){return x.name.toLowerCase()===it.nm.toLowerCase()});if(!lp){lp={id:"lp"+Date.now()+"r"+S.logProfiles.length,name:it.nm};S.logProfiles.push(lp)}}
+    it.r.lp=lp.id;all.push(it.r);added++;
+  });
+  repsPut(all);save();fillLogProfiles();
+  return {added:added,dup:plan.dup,bad:plan.bad};
+}
+const repLpOf=function(r){return r.lp&&S.logProfiles.some(function(x){return x.id===r.lp})?r.lp:S.logProfiles[0].id};
+function repsScope(){return repsGet().filter(function(r){return repLpOf(r)===S.logActive&&(!S.repArea||S.repArea==="all"||r.ar===S.repArea)}).sort(function(a,b){return b.ts-a.ts})}
+function logTabsUi(){
+  const t=S.logTab==="checkins"?"checkins":"sessions";
+  document.querySelectorAll("#logTabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.lt===t))});
+  $("#logBody").hidden=t!=="sessions";$("#repBody").hidden=t!=="checkins";
+}
+document.addEventListener("click",function(e){
+  const b=e.target.closest("#logTabs button");if(!b)return;
+  S.logTab=b.dataset.lt;save();renderLog();
+});
+function repRows(list,ctr){return list.map(function(f){return '<div class="repq un" data-k="'+f[0]+'"><span class="l">'+escH(f[1])+'</span><output>&ndash;</output><button type="button" class="repx" aria-label="Clear '+escH(f[1])+'" hidden>&times;</button><input type="range" min="0" max="10" step="1" value="5" aria-label="'+escH(f[1])+'"></div>'}).join("")}
+let repCtx=null;
+function repOpen(ctx){
+  ctx=ctx||{};
+  const ent=ctx.sid?getLog().find(function(e){return e.id===ctx.sid}):null;
+  repCtx={sid:ctx.sid||"",kind:ctx.sid?"after":(ctx.kind||"daily"),ar:ent?ent.ar:(ctx.ar||""),side:ent?(ent.side||""):"",chg:null,fx:[]};
+  $("#repArea").innerHTML='<option value="">General (no specific area)</option>'+AREAS.map(function(a){return '<option value="'+escH(a.id)+'">'+escH(a.name)+'</option>'}).join("");
+  $("#repArea").value=repCtx.ar;
+  $("#repKind").innerHTML=REP_KINDS.map(function(k){return '<option value="'+k[0]+'">'+k[1]+'</option>'}).join("");$("#repKind").value=repCtx.kind;
+  $("#repSym").innerHTML=repRows(REP_SYM);$("#repWell").innerHTML=repRows(REP_WELL);
+  $("#repChg").innerHTML=REP_CHG.map(function(c){return '<button type="button" data-c="'+c[0]+'" aria-pressed="false">'+c[1]+'</button>'}).join("");
+  $("#repFx").innerHTML=REP_FX.map(function(f){return '<button type="button" data-k="'+f[0]+'" aria-pressed="false">'+f[1]+'</button>'}).join("");
+  $("#repNote").value="";$("#repErr").textContent="";
+  $("#repTitle").textContent=ent?"Report on "+ent.trn+", "+ent.arn:"File a report";
+  openD("#repDlg");
+}
+document.addEventListener("click",function(e){const b=e.target.closest("[data-report-sid]");if(b&&b.dataset.reportSid)repOpen({sid:b.dataset.reportSid})});
+function repRate(row,on){
+  const out=row.querySelector("output"),inp=row.querySelector("input"),x=row.querySelector(".repx");
+  row.classList.toggle("un",!on);x.hidden=!on;out.textContent=on?inp.value:"\u2013";if(!on)inp.value=5;
+}
+["#repSym","#repWell"].forEach(function(s){
+  $(s).addEventListener("input",function(e){const r=e.target.closest(".repq");if(r&&e.target.type==="range")repRate(r,true)});
+  $(s).addEventListener("click",function(e){
+    const r=e.target.closest(".repq");if(!r)return;
+    if(e.target.classList.contains("repx"))repRate(r,false);
+    else if(e.target.type==="range"&&r.classList.contains("un"))repRate(r,true);   // tapping the slider without moving it still rates the middle value
+  });
+});
+$("#repChg").addEventListener("click",function(e){
+  const b=e.target.closest("button");if(!b)return;const on=b.getAttribute("aria-pressed")!=="true";
+  document.querySelectorAll("#repChg button").forEach(function(x){x.setAttribute("aria-pressed","false")});
+  if(on)b.setAttribute("aria-pressed","true");
+});
+$("#repFx").addEventListener("click",function(e){const b=e.target.closest("button");if(b)b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"))});
+$("#repCancel").addEventListener("click",function(){closeD("#repDlg")});
+$("#repSave").addEventListener("click",function(){
+  const v={};
+  document.querySelectorAll("#repSym .repq,#repWell .repq").forEach(function(r){if(!r.classList.contains("un"))v[r.dataset.k]=+r.querySelector("input").value});
+  const fx=Array.prototype.map.call(document.querySelectorAll('#repFx [aria-pressed="true"]'),function(b){return b.dataset.k});
+  const cb=document.querySelector('#repChg [aria-pressed="true"]'),chg=cb?+cb.dataset.c:null,note=$("#repNote").value.trim();
+  if(!Object.keys(v).length&&!fx.length&&chg==null&&!note){$("#repErr").textContent="Rate at least one thing, pick a side effect, or add a note.";return}
+  const ar=$("#repArea").value,area=AREAS.find(function(a){return a.id===ar});
+  const rep={id:"r"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),ts:Date.now(),lp:S.logActive,pid:S.person,pnm:S.me.name,ar:ar,arn:area?area.name:"",side:repCtx&&ar===repCtx.ar?repCtx.side:"",sid:repCtx?repCtx.sid:"",kind:$("#repKind").value,v:v,fx:fx,chg:chg,note:note.slice(0,600)};
+  const a=repsGet();a.push(rep);repsPut(a);closeD("#repDlg");
+  const worry=(v.pain>=8)||fx.indexOf("dizzy")>=0||fx.indexOf("eyes")>=0;
+  toast(worry?"Report saved. If pain is severe or you feel unwell, stop and talk to a clinician.":"Report saved");
+  if(document.body.dataset.view==="log")renderLog();
+});
+function repSummaryHtml(list){
+  const now=Date.now(),d30=30*864e5,cur=list.filter(function(r){return r.ts>now-d30}),prv=list.filter(function(r){return r.ts<=now-d30&&r.ts>now-2*d30});
+  const avg=function(rs,k){const x=rs.filter(function(r){return r.v[k]!=null}).map(function(r){return r.v[k]});return x.length?{m:x.reduce(function(a,b){return a+b},0)/x.length,n:x.length}:null};
+  const lines=REP_ALL.map(function(f){
+    const c=avg(cur,f[0]);if(!c)return "";const p=avg(prv,f[0]);
+    let t=escH(f[1])+": "+fmt(c.m,1)+" on average ("+c.n+" rating"+(c.n>1?"s":"")+")";
+    if(p){const dlt=c.m-p.m;t+=Math.abs(dlt)<0.05?", the same as the 30 days before":", "+fmt(Math.abs(dlt),1)+(dlt<0?" lower":" higher")+" than the 30 days before"}
+    return "<li>"+t+"</li>";
+  }).join("");
+  return lines?'<p class="hint" style="margin-bottom:0">Last 30 days (a rating only counts when you gave one):</p><ul class="repsum">'+lines+'</ul>':'<p class="hint">Nothing rated in the last 30 days yet.</p>';
+}
+function repChart(list,metric,days){
+  const now=Date.now(),lo=now-days*864e5,W=320,H=176,L=28,R=8,T=10,B=26,pw=W-L-R,ph=H-T-B;
+  const X=function(ts){return L+(ts-lo)/(now-lo)*pw},Y=function(v){return T+(1-v/10)*ph};
+  const pts=list.filter(function(r){return r.v[metric]!=null&&r.ts>=lo}).sort(function(a,b){return a.ts-b.ts});
+  const wk=7*864e5,nb=Math.ceil(days/7),bars=new Array(nb).fill(0);
+  logFor(S.logActive).forEach(function(e){if(e.ts>=lo&&e.ts<=now&&(!S.repArea||S.repArea==="all"||areaKey(e)===S.repArea)){const i=Math.min(nb-1,Math.floor((e.ts-lo)/wk));bars[i]+=e.sec/60}});
+  const mx=Math.max.apply(null,bars.concat([1]));
+  let g='';
+  [0,5,10].forEach(function(v){g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(v).toFixed(1)+'" y2="'+Y(v).toFixed(1)+'" stroke="var(--line)" stroke-width=".6"/><text x="'+(L-4)+'" y="'+(Y(v)+3).toFixed(1)+'" text-anchor="end" font-size="9" style="fill:var(--muted)">'+v+'</text>'});
+  bars.forEach(function(m,i){if(m>0){const bh=m/mx*ph*.45,bx=L+i/nb*pw;g+='<rect x="'+bx.toFixed(1)+'" y="'+(T+ph-bh).toFixed(1)+'" width="'+(pw/nb*.7).toFixed(1)+'" height="'+bh.toFixed(1)+'" fill="var(--ink)" opacity=".13"/>'}});
+  if(pts.length>1)g+='<polyline fill="none" stroke="var(--red)" stroke-width="2" stroke-linejoin="round" points="'+pts.map(function(r){return X(r.ts).toFixed(1)+","+Y(r.v[metric]).toFixed(1)}).join(" ")+'"/>';
+  pts.forEach(function(r){g+='<circle cx="'+X(r.ts).toFixed(1)+'" cy="'+Y(r.v[metric]).toFixed(1)+'" r="3.2" fill="var(--red)" stroke="var(--surface)" stroke-width="1.2"/>'});
+  const dl=function(ts){return new Date(ts).toLocaleDateString(undefined,{month:"short",day:"numeric"})};
+  g+='<text x="'+L+'" y="'+(H-8)+'" font-size="9" style="fill:var(--muted)">'+escH(dl(lo))+'</text><text x="'+(W-R)+'" y="'+(H-8)+'" text-anchor="end" font-size="9" style="fill:var(--muted)">'+escH(dl(now))+'</text>';
+  return {svg:'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+escH((REP_ALL.find(function(f){return f[0]===metric})||[0,metric])[1])+' over time" style="width:100%;height:auto">'+g+'</svg>',n:pts.length};
+}
+function repCsv(){
+  const rows=repsScope().slice().sort(function(a,b){return a.ts-b.ts}),q=function(v){return '"'+String(v==null?"":v).replace(/"/g,'""')+'"'};
+  const head=["date_time","person","type","area","side","session_id"].concat(REP_ALL.map(function(f){return f[0]}),["change_vs_week_ago","side_effects","note"]);
+  return [head.join(",")].concat(rows.map(function(r){return [new Date(r.ts).toISOString(),r.pnm,r.kind,r.arn,r.side,r.sid].concat(REP_ALL.map(function(f){return r.v[f[0]]==null?"":r.v[f[0]]}),[r.chg==null?"":r.chg,r.fx.join(";"),r.note]).map(q).join(",")})).join("\n");
+}
+function renderReps(){
+  const b=$("#repBody"),all=repsGet().filter(function(r){return repLpOf(r)===S.logActive}),list=repsScope();
+  const areas=[],seen={};all.forEach(function(r){if(r.ar&&!seen[r.ar]){seen[r.ar]=1;areas.push({id:r.ar,name:r.arn||r.ar})}});
+  areas.sort(function(a,b){return a.name.localeCompare(b.name)});
+  if(S.repArea&&S.repArea!=="all"&&!seen[S.repArea]&&S.repArea!==""){S.repArea="all"}
+  const metric=REP_ALL.some(function(f){return f[0]===S.repMetric})?S.repMetric:"pain",days=[30,90,365].indexOf(S.repDays)>=0?S.repDays:90;
+  let h='<div class="acts"><button class="btn primary" id="repNew" type="button">File a Report</button></div>';
+  if(!all.length){
+    h+='<p class="empty">No check-ins yet. Tap File a Report to rate pain, stiffness, comfort, energy and more in under a minute. It also appears after each session. Your ratings are charted here next to how often you used the panel.</p>';
+  }else{
+    if(areas.length)h+='<div class="repsel"><label style="flex:1"><span class="l">Area</span><select id="repAreaSel" aria-label="Report area"><option value="all">All areas ('+all.length+')</option>'+areas.map(function(a){return '<option value="'+escH(a.id)+'"'+(S.repArea===a.id?' selected':'')+'>'+escH(a.name)+'</option>'}).join("")+'</select></label></div>';
+    h+=repSummaryHtml(list);
+    h+='<div class="repsel"><label style="flex:1"><span class="l">Chart</span><select id="repMetricSel" aria-label="Chart this rating">'+REP_ALL.map(function(f){return '<option value="'+f[0]+'"'+(f[0]===metric?' selected':'')+'>'+escH(f[1])+'</option>'}).join("")+'</select></label></div>';
+    h+='<div class="seg" id="repDaysSeg" role="group" aria-label="Chart range" style="margin-bottom:6px">'+[[30,"30 days"],[90,"90 days"],[365,"Year"]].map(function(d){return '<button type="button" data-d="'+d[0]+'" aria-pressed="'+(d[0]===days)+'">'+d[1]+'</button>'}).join("")+'</div>';
+    const ch=repChart(list,metric,days);
+    h+=ch.n?ch.svg+'<p class="hint">Red line: your rating (0 to 10). Faint bars: minutes of sessions each week, so you can see use next to how you felt. A pattern is not proof that one caused the other.</p>':'<p class="hint">No ratings for this in the period. Try a longer range.</p>';
+    h+='<div class="acts"><button class="btn" id="repDl" type="button">Download CSV</button><button class="btn" id="repCopy" type="button">Copy CSV</button><button class="btn" id="docOpen2" data-doc="1" type="button">Doctor Report (PDF)</button><button class="btn danger" id="repClear" type="button">Clear these reports</button></div>';
+    h+='<p class="hint">Saved on this device only. Export Everything includes them, so a backup restores them. The CSV is for a spreadsheet. This is your own record, not a diagnosis. Check in with a clinician about anything that worries you.</p>';
+    let lastDay="";
+    list.forEach(function(r){
+      const d=new Date(r.ts),day=d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
+      if(day!==lastDay){h+='<h3 class="dlg-h">'+escH(day)+'</h3>';lastDay=day}
+      const chips=REP_ALL.filter(function(f){return r.v[f[0]]!=null}).map(function(f){return '<span>'+escH(f[1])+' '+r.v[f[0]]+'</span>'}).concat(r.chg!=null?['<span>'+escH(REP_CHG.find(function(c){return c[0]===r.chg})[1])+' vs a week ago</span>']:[]).concat(r.fx.map(function(k){return '<span>'+escH(REP_FX.find(function(f){return f[0]===k})[1])+'</span>'}));
+      h+='<div class="entry repent"><div class="eh"><b>'+escH((REP_KINDS.find(function(k){return k[0]===r.kind})||[0,"Report"])[1])+(r.arn?', '+escH(r.arn)+(r.side?' ('+SIDE_NAMES[r.side]+')':''):'')+'</b><button class="rm" type="button" data-repdel="'+escH(r.id)+'" aria-label="Delete this report">&times;</button></div>'
+        +'<p>'+escH(d.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"}))+(S.people.length>1&&r.pnm?', '+escH(r.pnm):'')+'</p>'+(chips.length?'<div class="chips">'+chips.join("")+'</div>':'')+(r.note?'<p class="note">'+escH(r.note)+'</p>':'')+'</div>';
+    });
+  }
+  b.innerHTML=h;
+}
+let repDelArm="";
+$("#repBody").addEventListener("click",function(e){
+  const t=e.target;
+  if(t.closest("#repNew")){repOpen({kind:"daily"});return}
+  const d=t.closest("[data-repdel]");
+  if(d){const id=d.dataset.repdel;if(repDelArm!==id){repDelArm=id;d.textContent="Delete?";setTimeout(function(){repDelArm=""},3500);return}
+    repsPut(repsGet().filter(function(r){return r.id!==id}));repDelArm="";renderReps();toast("Report deleted");return}
+  const s=t.closest("#repDaysSeg button");if(s){S.repDays=+s.dataset.d;save();renderReps();return}
+  if(t.closest("#repDl")){if(downloadText("redox-reports.csv",repCsv(),"text/csv"))toast("Saved redox-reports.csv");else copyText(repCsv(),"Could not download, so it was copied instead.");return}
+  if(t.closest("#repCopy")){copyText(repCsv(),"Reports copied as CSV");return}
+  const c=t.closest("#repClear");
+  if(c){if(c.dataset.arm!=="1"){c.dataset.arm="1";c.textContent="Tap again to clear";setTimeout(function(){c.dataset.arm="";c.textContent="Clear these reports"},3500);return}
+    const ids=repsScope().map(function(r){return r.id});repsPut(repsGet().filter(function(r){return ids.indexOf(r.id)<0}));renderReps();toast("Reports cleared")}
+});
+$("#repBody").addEventListener("change",function(e){
+  if(e.target.id==="repMetricSel"){S.repMetric=e.target.value;save();renderReps()}
+  else if(e.target.id==="repAreaSel"){S.repArea=e.target.value;save();renderReps()}
+});
+
+const PDF_W=[[278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584],[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,333,333,584,584,584,611,975,722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,722,667,611,722,667,944,667,667,611,333,278,333,584,556,333,556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,389,556,333,611,556,778,556,556,500,389,280,389,584]];
+/* ---------- A small PDF writer and the report for a doctor ---------- */
+const PDF_MAP={"\u2013":"-","\u2014":"-","\u2018":"'","\u2019":"'","\u201c":'"',"\u201d":'"',"\u00b7":"-","\u00d7":"x","\u2022":"-","\u00b0":" deg","\u2192":"->","\u2191":"up","\u2193":"down","\u00b2":"2","\u2264":"<=","\u2265":">=","\u2026":"..."};
+function pdfT(s){return String(s==null?"":s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^\x20-\x7e]/g,function(c){return PDF_MAP[c]!==undefined?PDF_MAP[c]:" "})}
+const pdfEsc=function(s){return s.replace(/[\\()]/g,function(c){return "\\"+c})};
+function pdfW(s,size,bold){const t=PDF_W[bold?1:0];let w=0;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);w+=t[(c>=32&&c<=126?c:63)-32]}return w*size/1000}
+function pdfFit(s,w,size,bold){s=pdfT(s);if(pdfW(s,size,bold)<=w)return s;while(s.length>1&&pdfW(s+"...",size,bold)>w)s=s.slice(0,-1);return s+"..."}
+function pdfWrap(s,w,size,bold){
+  const out=[];let line="";
+  pdfT(s).split(/\s+/).filter(Boolean).forEach(function(word){
+    const t=line?line+" "+word:word;
+    if(pdfW(t,size,bold)<=w||!line)line=t;else{out.push(line);line=word}
+  });
+  if(line)out.push(line);return out.length?out:[""];
+}
+function pdfNew(W,H){
+  const M=46,pages=[];
+  const d={W:W,H:H,M:M,cw:W-2*M,y:0,pg:null,
+    page:function(){d.pg=[];pages.push(d.pg);d.y=H-M;return d},
+    op:function(s){d.pg.push(s)},
+    color:function(r,g,b){d.op(r.toFixed(3)+" "+g.toFixed(3)+" "+b.toFixed(3)+" rg "+r.toFixed(3)+" "+g.toFixed(3)+" "+b.toFixed(3)+" RG")},
+    text:function(s,x,y,size,bold){d.op("BT /"+(bold?"F2":"F1")+" "+size+" Tf "+x.toFixed(2)+" "+y.toFixed(2)+" Td ("+pdfEsc(pdfT(s))+") Tj ET")},
+    line:function(x1,y1,x2,y2,w){d.op((w||.6)+" w "+x1.toFixed(2)+" "+y1.toFixed(2)+" m "+x2.toFixed(2)+" "+y2.toFixed(2)+" l S")},
+    rect:function(x,y,w,hh,fill){d.op(x.toFixed(2)+" "+y.toFixed(2)+" "+w.toFixed(2)+" "+hh.toFixed(2)+" re "+(fill?"f":"S"))},
+    poly:function(pts){if(pts.length<2)return;d.op("1.6 w 1 J 1 j "+pts.map(function(p,i){return p[0].toFixed(2)+" "+p[1].toFixed(2)+(i?" l":" m")}).join(" ")+" S")},
+    dot:function(cx,cy,r){const k=.5523*r;d.op([cx+r,cy,"m",cx+r,cy+k,cx+k,cy+r,cx,cy+r,"c",cx-k,cy+r,cx-r,cy+k,cx-r,cy,"c",cx-r,cy-k,cx-k,cy-r,cx,cy-r,"c",cx+k,cy-r,cx+r,cy-k,cx+r,cy,"c f"].map(function(v){return typeof v==="number"?v.toFixed(2):v}).join(" "))},
+    need:function(hh){if(d.y-hh<M+14)d.page()},
+    para:function(s,size,bold,opt){
+      opt=opt||{};const x=M+(opt.indent||0),w=d.cw-(opt.indent||0),lead=size*1.35;
+      pdfWrap(s,w,size,bold).forEach(function(ln){d.need(lead);d.y-=lead;d.text(ln,x,d.y,size,bold)});
+      d.y-=opt.after==null?3:opt.after;
+    },
+    h2:function(s){d.need(66);d.y-=8;d.color(.75,.15,.1);d.y-=14;d.text(s,M,d.y,12,true);d.color(0,0,0);d.line(M,d.y-4,W-M,d.y-4,.5);d.y-=7},
+    table:function(cols,head,rows){
+      const tot=cols.reduce(function(a,b){return a+b},0),sc=d.cw/tot,cw=cols.map(function(c){return c*sc});
+      const draw=function(r,bold){
+        d.need(15);d.y-=13;let x=M;
+        r.forEach(function(c,i){d.text(pdfFit(c,cw[i]-6,9,bold),x+(i?0:0),d.y,9,bold);x+=cw[i]});
+      };
+      draw(head,true);d.line(M,d.y-3,W-M,d.y-3,.4);d.y-=2;
+      rows.forEach(function(r){draw(r,false)});d.y-=4;
+    },
+    build:function(title){
+      const n=pages.length;
+      pages.forEach(function(pg,i){pg.push("0 g 0 G BT /F1 8 Tf "+M+" 26 Td (Page "+(i+1)+" of "+n+" - Redox Dosimetry Lab, a self-reported record and not a diagnosis) Tj ET")});
+      let out="%PDF-1.4\n",offs=[0];
+      const obj=function(i,body){offs[i]=out.length;out+=i+" 0 obj\n"+body+"\nendobj\n"};
+      const kids=[];
+      obj(1,"<< /Type /Catalog /Pages 2 0 R >>");
+      obj(3,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+      obj(4,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+      pages.forEach(function(pg,i){
+        const c=5+i*2,p=6+i*2,s=pg.join("\n");kids.push(p+" 0 R");
+        obj(c,"<< /Length "+s.length+" >>\nstream\n"+s+"\nendstream");
+        obj(p,"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 "+W+" "+H+"] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents "+c+" 0 R >>");
+      });
+      obj(2,"<< /Type /Pages /Kids ["+kids.join(" ")+"] /Count "+n+" >>");
+      const info=5+n*2,dt=new Date(Date.now()),pad=function(x){return String(x).padStart(2,"0")};
+      obj(info,"<< /Title ("+pdfEsc(pdfT(title))+") /Creator (Redox Dosimetry Lab) /CreationDate (D:"+dt.getUTCFullYear()+pad(dt.getUTCMonth()+1)+pad(dt.getUTCDate())+pad(dt.getUTCHours())+pad(dt.getUTCMinutes())+pad(dt.getUTCSeconds())+"Z) >>");
+      const size=info+1,xr=out.length;
+      out+="xref\n0 "+size+"\n0000000000 65535 f \n";
+      for(let i=1;i<size;i++)out+=String(offs[i]).padStart(10,"0")+" 00000 n \n";
+      out+="trailer\n<< /Size "+size+" /Root 1 0 R /Info "+info+" 0 R >>\nstartxref\n"+xr+"\n%%EOF\n";
+      const u=new Uint8Array(out.length);for(let i=0;i<out.length;i++)u[i]=out.charCodeAt(i)&255;
+      return u;
+    }
+  };
+  return d;
+}
+function docOpen(){
+  const lp=logFor(S.logActive),seen={},areas=[];
+  lp.forEach(function(e){const k=areaKey(e);if(!seen[k]){seen[k]=1;areas.push({id:k,name:e.arn})}});
+  repsGet().filter(function(r){return repLpOf(r)===S.logActive}).forEach(function(r){if(r.ar&&!seen[r.ar]){seen[r.ar]=1;areas.push({id:r.ar,name:r.arn||r.ar})}});
+  areas.sort(function(a,b){return a.name.localeCompare(b.name)});
+  $("#docArea").innerHTML='<option value="all">All areas</option>'+areas.map(function(a){return '<option value="'+escH(a.id)+'">'+escH(a.name)+'</option>'}).join("");
+  let us=false;try{us=/-(US|CA|MX|PH)\b/i.test(navigator.language||"")}catch(e){}
+  $("#docPaper").value=us||!navigator.language?"letter":"a4";
+  $("#docErr").textContent="";$("#docBody").checked=false;openD("#docDlg");
+}
+function docModel(o){
+  const now=Date.now(),lo=now-o.days*864e5,scopeOk=function(ar){return o.area==="all"||ar===o.area};
+  const ents=logFor(S.logActive).filter(function(e){return e.ts>=lo&&e.ts<=now&&scopeOk(areaKey(e))}).sort(function(a,b){return a.ts-b.ts});
+  const reps=repsGet().filter(function(r){return repLpOf(r)===S.logActive&&r.ts>=lo&&r.ts<=now&&scopeOk(r.ar)}).sort(function(a,b){return a.ts-b.ts});
+  const num=function(x){return typeof x==="number"&&isFinite(x)?x:0};
+  const tot={n:ents.length,min:ents.reduce(function(a,e){return a+e.sec/60},0),dose:ents.reduce(function(a,e){return a+num(e.dose)},0)};
+  const common=function(list){const c={};list.forEach(function(v){c[v]=(c[v]||0)+1});return Object.keys(c).sort(function(a,b){return c[b]-c[a]})[0]||""};
+  const by={};
+  ents.forEach(function(e){const k=areaKey(e),a=by[k]||(by[k]={name:e.arn+(e.side&&SIDED.has(e.ar)?" ("+SIDE_NAMES[e.side]+")":""),n:0,min:0,dose:0,light:[],dist:[],power:[]});a.n++;a.min+=e.sec/60;a.dose+=num(e.dose);a.light.push(e.light);a.dist.push(e.dist!==""&&e.dist!=null?e.dist+" "+e.unit:"");a.power.push(e.power+"%")});
+  const areaRows=Object.keys(by).map(function(k){const a=by[k];return {name:a.name,n:a.n,min:a.min,avgDose:a.n?a.dose/a.n:0,light:common(a.light),dist:common(a.dist),power:common(a.power)}}).sort(function(a,b){return b.n-a.n});
+  const metrics=REP_ALL.map(function(f){
+    const pts=reps.filter(function(r){return r.v[f[0]]!=null}).map(function(r){return {ts:r.ts,v:r.v[f[0]]}});
+    if(!pts.length)return null;
+    const avg=function(a){return a.length?a.reduce(function(s,p){return s+p.v},0)/a.length:null};
+    const mid=lo+(now-lo)/2,first=pts.filter(function(p){return p.ts<mid}),second=pts.filter(function(p){return p.ts>=mid});
+    return {k:f[0],name:f[1],sym:REP_SYM.some(function(s){return s[0]===f[0]}),n:pts.length,avg:avg(pts),min:Math.min.apply(null,pts.map(function(p){return p.v})),max:Math.max.apply(null,pts.map(function(p){return p.v})),a1:avg(first),a2:avg(second),n1:first.length,n2:second.length,pts:pts};
+  }).filter(Boolean);
+  const fx=REP_FX.map(function(f){return {name:f[1],n:reps.filter(function(r){return r.fx.indexOf(f[0])>=0}).length}}).filter(function(x){return x.n>0}).sort(function(a,b){return b.n-a.n});
+  const g=goalOf(),gs=goalStats(logFor(S.logActive),now,g);
+  const me=S.me,b={};
+  if(o.body){
+    const bmi=meBmi(),imp=me.u==="imperial";
+    if(me.h>0)b.h=imp?fmt(me.h/2.54,1)+" in":fmt(me.h,0)+" cm";
+    if(me.w>0)b.w=imp?fmt(me.w*2.2046226,0)+" lb":fmt(me.w,0)+" kg";
+    if(bmi>0)b.bmi=fmt(bmi,1);
+    if(me.tone>0)b.skin="Fitzpatrick type "+["I","II","III","IV","V","VI"][me.tone-1];
+    if(me.sex)b.sex=me.sex;
+  }
+  return {o:o,now:now,lo:lo,person:me.name,log:lpName(S.logActive),areaName:o.area==="all"?"All areas":((AREAS.find(function(a){return a.id===o.area})||{}).name||(ents[0]&&ents[0].arn)||(reps[0]&&reps[0].arn)||o.area),ents:ents,reps:reps,tot:tot,areaRows:areaRows,metrics:metrics,fx:fx,goal:g,gs:gs,body:b,weekly:ents.length/(o.days/7),
+    notes:o.notes?reps.filter(function(r){return r.note}).slice(-8).reverse():[],
+    weeks:(function(){const nb=Math.ceil(o.days/7),bars=new Array(nb).fill(0);ents.forEach(function(e){const i=Math.min(nb-1,Math.floor((e.ts-lo)/(7*864e5)));bars[i]+=e.sec/60});return bars})()};
+}
+function docChart(d,m,mod,title){
+  const W=d.cw,H=104,L=26,x0=d.M+L,x1=d.M+W-4,top=d.y-16,yb=top-H+14,ph=H-24;
+  d.need(H+34);
+  d.y-=14;d.text(title+" (0 to 10)",d.M,d.y,9,true);
+  const top2=d.y-6,bot=top2-ph,Y=function(v){return bot+v/10*ph},X=function(ts){return x0+(ts-mod.lo)/(mod.now-mod.lo)*(x1-x0)};
+  d.color(.93,.93,.93);d.rect(x0,bot,x1-x0,ph,true);
+  const mx=Math.max.apply(null,mod.weeks.concat([1])),bw=(x1-x0)/mod.weeks.length;
+  d.color(.8,.8,.8);mod.weeks.forEach(function(v,i){if(v>0)d.rect(x0+i*bw+bw*.15,bot,bw*.7,v/mx*ph*.45,true)});
+  d.color(.7,.7,.7);[0,5,10].forEach(function(v){d.line(x0,Y(v),x1,Y(v),.4)});
+  d.color(.3,.3,.3);[0,5,10].forEach(function(v){d.text(String(v),d.M+8,Y(v)-3,8,false)});
+  d.color(.75,.15,.1);d.poly(m.pts.map(function(p){return [X(p.ts),Y(p.v)]}));
+  m.pts.forEach(function(p){d.dot(X(p.ts),Y(p.v),2.2)});
+  d.color(.3,.3,.3);
+  const dl=function(ts){return new Date(ts).toLocaleDateString(undefined,{month:"short",day:"numeric"})};
+  d.text(dl(mod.lo),x0,bot-11,8,false);const re=dl(mod.now);d.text(re,x1-pdfW(re,8,false),bot-11,8,false);
+  d.text("Grey bars: minutes of sessions per week",x0+90,bot-11,8,false);
+  d.color(0,0,0);d.y=bot-18;
+}
+function docBuild(o){
+  const mod=docModel(o),W=o.paper==="a4"?595:612,H=o.paper==="a4"?842:792,d=pdfNew(W,H).page();
+  const dt=function(ts){return new Date(ts).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"})};
+  d.color(.75,.15,.1);d.text("Redox Dosimetry Lab",d.M,d.y-9,9,true);d.color(0,0,0);d.y-=12;
+  d.y-=20;d.text("Session and check-in summary",d.M,d.y,19,true);d.y-=6;
+  d.line(d.M,d.y-4,W-d.M,d.y-4,1);d.y-=6;
+  const info=[["Person",mod.person],["Log",mod.log],["Period",dt(mod.lo)+" to "+dt(mod.now)+" ("+o.days+" days)"],["Area",mod.areaName],["Prepared",dt(mod.now)]];
+  if(mod.body.h||mod.body.w||mod.body.bmi||mod.body.skin||mod.body.sex)info.push(["Body details",[mod.body.sex,mod.body.h,mod.body.w,mod.body.bmi?"BMI "+mod.body.bmi:"",mod.body.skin].filter(Boolean).join(", ")]);
+  info.forEach(function(r){d.need(14);d.y-=13;d.text(r[0],d.M,d.y,9.5,true);d.text(pdfFit(r[1],d.cw-90,9.5,false),d.M+90,d.y,9.5,false)});
+  d.h2("Sessions");
+  if(!mod.tot.n)d.para("No sessions were logged in this period.",10,false);
+  else{
+    d.para(mod.tot.n+" session"+(mod.tot.n>1?"s":"")+", "+fmt(mod.tot.min,0)+" minutes in total ("+fmt(mod.tot.min/mod.tot.n,1)+" minutes on average), about "+fmt(mod.weekly,1)+" per week. Estimated surface dose delivered: "+fmt(mod.tot.dose,0)+" J/cm2 in total, "+fmt(mod.tot.dose/mod.tot.n,1)+" J/cm2 per session.",10,false);
+    if(mod.goal)d.para("Goal: "+mod.goal+" session"+(mod.goal>1?"s":"")+" a week. Weeks in a row on goal: "+mod.gs.onGoal+". Current day streak: "+mod.gs.cur+", best streak: "+mod.gs.best+" days.",10,false);
+    d.table([30,10,9,11,20,12,8],["Area","Sessions","Minutes","Avg dose","Light","Distance","Power"],mod.areaRows.map(function(a){return [a.name,String(a.n),fmt(a.min,0),fmt(a.avgDose,1)+" J/cm2",a.light,a.dist,a.power]}));
+    d.para("Doses are estimates from the panel readings and the person's own settings in the app. Distances are the panel to skin.",8.5,false);
+  }
+  d.h2("Check-ins (rated by the person)");
+  if(!mod.metrics.length)d.para("No ratings were filed in this period.",10,false);
+  else{
+    d.para(mod.reps.length+" report"+(mod.reps.length>1?"s":"")+". Symptoms use 0 (none) to 10 (worst). How-I-feel items use 0 (poor) to 10 (great). Only items the person rated are shown.",9.5,false);
+    d.table([30,10,12,12,12,12,12],["Rating","Count","Average","Lowest","Highest","First half","Second half"],mod.metrics.map(function(m){return [m.name+(m.sym?"":" *"),String(m.n),fmt(m.avg,1),String(m.min),String(m.max),m.a1==null?"-":fmt(m.a1,1),m.a2==null?"-":fmt(m.a2,1)]}));
+    d.para("* higher is better. First half and second half are the averages of the first and second half of the period, so a change between them shows direction only.",8.5,false);
+    if(o.charts){
+      const picks=mod.metrics.filter(function(m){return m.n>=2}).sort(function(a,b){return (b.k==="pain")-(a.k==="pain")||b.n-a.n}).slice(0,2);
+      picks.forEach(function(m){docChart(d,m,mod,m.name)});
+    }
+  }
+  if(mod.fx.length){d.h2("Unwanted effects reported");d.table([60,15],["Effect","Times reported"],mod.fx.map(function(x){return [x.name,String(x.n)]}))}
+  if(o.notes&&mod.notes.length){d.h2("Notes (most recent)");mod.notes.forEach(function(r){d.para(dt(r.ts)+(r.arn?", "+r.arn:"")+": "+r.note,9.5,false,{indent:0,after:4})})}
+  d.h2("About this report");
+  d.para("This summary was made by the person using Redox Dosimetry Lab, an educational red and near-infrared light dose calculator. The session numbers come from the panel readings and settings entered in the app and are estimates, not measurements. The ratings are the person's own and are not a diagnosis. It is not a medical record. Please use it as a starting point for a conversation.",9,false);
+  return d.build("Redox session and check-in summary");
+}
+function downloadBlob(name,blob){
+  try{const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},2000);return true}catch(e){return false}
+}
+document.addEventListener("click",function(e){if(e.target.closest("[data-doc]"))docOpen()});
+$("#docCancel").addEventListener("click",function(){closeD("#docDlg")});
+$("#docMake").addEventListener("click",function(){
+  const o={days:+$("#docDays").value||90,area:$("#docArea").value||"all",paper:$("#docPaper").value==="a4"?"a4":"letter",body:$("#docBody").checked,notes:$("#docNotes").checked,charts:$("#docCharts").checked};
+  let bytes;try{bytes=docBuild(o)}catch(err){$("#docErr").textContent="The report could not be made on this phone.";return}
+  const name="redox-report-"+dayStamp()+".pdf",blob=new Blob([bytes],{type:"application/pdf"});
+  closeD("#docDlg");
+  try{
+    const f=new File([blob],name,{type:"application/pdf"});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:"Redox report"}).catch(function(){});return}
+  }catch(x){}
+  if(downloadBlob(name,blob))toast("Saved "+name);else toast("This browser could not save the PDF");
+});
+
+/* ---------- Sound: spoken prompts and music (made on the phone, or your own songs) ---------- */
+const AMB={on:false,bus:null,master:null,nodes:[],timers:[],el:null,vol:.35,stopT:null};
+function ambCtx(){
+  if(!tm.ac){const C=window.AudioContext||window.webkitAudioContext;if(C)tm.ac=new C()}
+  if(tm.ac&&tm.ac.state==="suspended"&&tm.ac.resume)tm.ac.resume().catch(function(){});
+  return tm.ac||null;
+}
+function ambReverb(c,bus,sec,level){
+  const conv=c.createConvolver(),len=Math.floor(c.sampleRate*sec),buf=c.createBuffer(2,len,c.sampleRate);
+  for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6)}
+  conv.buffer=buf;const g=c.createGain();g.gain.value=level;conv.connect(g);g.connect(bus);return conv;
+}
+function ambNoise(c){
+  const len=Math.floor(c.sampleRate*4),buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);let b0=0,b1=0,b2=0;
+  for(let i=0;i<len;i++){const w=Math.random()*2-1;b0=.99765*b0+w*.0990460;b1=.96300*b1+w*.2965164;b2=.57000*b2+w*1.0526913;d[i]=(b0+b1+b2+w*.1848)*.11}
+  return buf;
+}
+function ambPads(c,bus){
+  const wet=ambReverb(c,bus,2.8,.35),chords=[[130.81,196.0,246.94,329.63],[110.0,164.81,261.63,329.63],[87.31,174.61,220.0,261.63],[98.0,146.83,246.94,293.66]];
+  let k=0;
+  function play(){
+    const t=c.currentTime,ch=chords[k%chords.length];k++;
+    ch.forEach(function(f,i){
+      [-4,4].forEach(function(det){
+        const o=c.createOscillator(),g=c.createGain(),lp=c.createBiquadFilter();
+        o.type=i<2?"sine":"triangle";o.frequency.value=f;o.detune.value=det;lp.type="lowpass";lp.frequency.value=900;
+        g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.06,t+6);g.gain.linearRampToValueAtTime(.0001,t+17);
+        o.connect(lp);lp.connect(g);g.connect(bus);g.connect(wet);o.start(t);o.stop(t+17.5);AMB.nodes.push(o);
+      });
+    });
+  }
+  play();AMB.timers.push(setInterval(play,12000));
+}
+function ambDrone(c,bus){
+  const wet=ambReverb(c,bus,3.5,.4);
+  [[55,.09,0],[82.41,.06,5],[110,.035,-6],[164.81,.02,3]].forEach(function(a){
+    const o=c.createOscillator(),g=c.createGain(),lfo=c.createOscillator(),lg=c.createGain();
+    o.type="sine";o.frequency.value=a[0];o.detune.value=a[2];g.gain.value=a[1];
+    lfo.frequency.value=.04+Math.random()*.06;lg.gain.value=a[1]*.5;lfo.connect(lg);lg.connect(g.gain);
+    o.connect(g);g.connect(bus);g.connect(wet);o.start();lfo.start();AMB.nodes.push(o,lfo);
+  });
+}
+function ambRain(c,bus){
+  const src=c.createBufferSource(),hp=c.createBiquadFilter(),lp=c.createBiquadFilter(),g=c.createGain(),lfo=c.createOscillator(),lg=c.createGain();
+  src.buffer=ambNoise(c);src.loop=true;hp.type="highpass";hp.frequency.value=500;lp.type="lowpass";lp.frequency.value=6500;g.gain.value=.55;
+  lfo.frequency.value=.07;lg.gain.value=.12;lfo.connect(lg);lg.connect(g.gain);
+  src.connect(hp);hp.connect(lp);lp.connect(g);g.connect(bus);src.start();lfo.start();AMB.nodes.push(src,lfo);
+  const o=c.createOscillator(),og=c.createGain();o.type="sine";o.frequency.value=48;og.gain.value=.04;o.connect(og);og.connect(bus);o.start();AMB.nodes.push(o);
+}
+function ambStart(style){
+  const c=ambCtx();if(!c||AMB.on)return false;
+  if(AMB.cleanup){clearTimeout(AMB.stopT);AMB.cleanup()}      // a fade-out from a moment ago is finished off first, so nothing keeps playing
+  AMB.vol=(S.musicVol>=5&&S.musicVol<=100?S.musicVol:35)/100;
+  const master=c.createGain(),bus=c.createGain();master.gain.value=0;bus.gain.value=1;bus.connect(master);
+  AMB.master=master;AMB.bus=bus;AMB.nodes=[];AMB.timers=[];
+  let routed=false;
+  try{
+    if(c.createMediaStreamDestination&&typeof Audio!=="undefined"){
+      const dst=c.createMediaStreamDestination();master.connect(dst);
+      AMB.el=AMB.el||new Audio();AMB.el.srcObject=dst.stream;
+      const p=AMB.el.play();routed=true;
+      if(p&&p.catch)p.catch(function(){try{master.connect(c.destination)}catch(e){}});
+    }
+  }catch(e){routed=false}
+  if(!routed)master.connect(c.destination);
+  if(style==="drone")ambDrone(c,bus);else if(style==="rain")ambRain(c,bus);else ambPads(c,bus);
+  master.gain.setTargetAtTime(AMB.vol*.9,c.currentTime,.9);
+  AMB.on=true;mediaTag(true);
+  return true;
+}
+function ambStop(){
+  if(!AMB.on)return;
+  const c=tm.ac,m=AMB.master,nodes=AMB.nodes,timers=AMB.timers,el=AMB.el;
+  AMB.on=false;timers.forEach(clearInterval);
+  try{m.gain.cancelScheduledValues(c.currentTime);m.gain.setTargetAtTime(0,c.currentTime,.9)}catch(e){}
+  AMB.cleanup=function(){
+    AMB.cleanup=null;
+    nodes.forEach(function(n){try{n.stop()}catch(e){}});
+    try{m.disconnect()}catch(e){}
+    if(el){try{el.pause();el.srcObject=null}catch(e){}}
+  };
+  AMB.stopT=setTimeout(AMB.cleanup,4200);
+  mediaTag(false);
+}
+function ambDuck(ms){
+  if(!AMB.on||!AMB.bus||!tm.ac)return;
+  try{const t=tm.ac.currentTime,g=AMB.bus.gain;g.cancelScheduledValues(t);g.setTargetAtTime(.35,t,.02);g.setTargetAtTime(1,t+(ms||700)/1000,.25)}catch(e){}
+}
+function mediaTag(on){
+  try{
+    if(!navigator.mediaSession)return;
+    if(on&&typeof MediaMetadata!=="undefined")navigator.mediaSession.metadata=new MediaMetadata({title:"Redox session music",artist:"Redox Dosimetry Lab"});
+    navigator.mediaSession.playbackState=on?"playing":"none";
+  }catch(e){}
+}
+/* my songs: the audio files stay in this phone's browser storage */
+const MU={db:null,list:[],ok:true,playing:false,el:null,url:"",order:[],i:0,fadeT:null};
+function muOpen(){
+  return new Promise(function(res,rej){
+    if(typeof indexedDB==="undefined"||!indexedDB){rej(new Error("no idb"));return}
+    let rq;try{rq=indexedDB.open("rdl-music",1)}catch(e){rej(e);return}
+    rq.onupgradeneeded=function(){const db=rq.result;if(!db.objectStoreNames.contains("meta"))db.createObjectStore("meta",{keyPath:"id"});if(!db.objectStoreNames.contains("data"))db.createObjectStore("data",{keyPath:"id"})};
+    rq.onsuccess=function(){res(rq.result)};rq.onerror=function(){rej(rq.error)};
+  });
+}
+const muReq=function(r){return new Promise(function(res,rej){r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}})};
+const muTx=function(tx){return new Promise(function(res,rej){tx.oncomplete=function(){res()};tx.onerror=function(){rej(tx.error)};tx.onabort=function(){rej(tx.error||new Error("aborted"))}})};
+async function muInit(){
+  try{MU.db=await muOpen();MU.list=await muReq(MU.db.transaction("meta").objectStore("meta").getAll());MU.ok=true}
+  catch(e){MU.ok=false;MU.list=[]}
+  muInfo();
+}
+function muInfo(){
+  const n=MU.list.length,mb=MU.list.reduce(function(a,t){return a+t.size},0)/1048576;
+  const e=$("#stSongInfo");if(!e)return;
+  e.textContent=!MU.ok?"This browser would not open storage for songs, so My songs is not available.":(n?n+" song"+(n>1?"s":"")+" on this phone, "+fmt(mb,1)+" MB.":"No songs added yet. Tap Add songs to pick audio files from your phone.");
+  $("#stSongClear").hidden=!n;
+}
+async function muAdd(files){
+  if(!MU.ok||!MU.db){toast("Songs cannot be stored in this browser");return}
+  let added=0,skipped=0;
+  for(const f of files){
+    if(MU.list.length>=20){skipped++;continue}
+    if(!(/^audio\//.test(f.type||"")||/\.(mp3|m4a|aac|ogg|oga|opus|wav|flac|webm)$/i.test(f.name||""))||f.size>40*1048576){skipped++;continue}
+    const id="m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),meta={id:id,name:String(f.name||"Song").replace(/\.[a-z0-9]{2,5}$/i,"").slice(0,60),size:f.size,ts:Date.now()};
+    try{const tx=MU.db.transaction(["meta","data"],"readwrite");tx.objectStore("meta").put(meta);tx.objectStore("data").put({id:id,blob:f});await muTx(tx);MU.list.push(meta);added++}
+    catch(e){skipped++}
+  }
+  muInfo();
+  toast((added?"Added "+added+" song"+(added>1?"s":""):"No songs added")+(skipped?". Skipped "+skipped+" (audio files up to 40 MB, 20 songs).":"."));
+}
+async function muClear(){
+  if(!MU.db)return;muStop();
+  const tx=MU.db.transaction(["meta","data"],"readwrite");tx.objectStore("meta").clear();tx.objectStore("data").clear();
+  try{await muTx(tx)}catch(e){}
+  MU.list=[];muInfo();toast("Songs removed");
+}
+function muFade(el,to,ms,done){
+  clearInterval(MU.fadeT);const from=el.volume,steps=12;let k=0;
+  MU.fadeT=setInterval(function(){k++;try{el.volume=Math.max(0,Math.min(1,from+(to-from)*k/steps))}catch(e){}if(k>=steps){clearInterval(MU.fadeT);if(done)done()}},ms/steps);
+}
+async function muNext(){
+  if(!MU.playing||!MU.list.length)return;
+  if(MU.i>=MU.order.length){MU.order=MU.list.map(function(t){return t.id}).sort(function(){return Math.random()-.5});MU.i=0}
+  const id=MU.order[MU.i++];let rec;
+  try{rec=await muReq(MU.db.transaction("data").objectStore("data").get(id))}catch(e){rec=null}
+  if(!MU.playing)return;
+  if(!rec||!rec.blob){muNext();return}
+  if(MU.url){try{URL.revokeObjectURL(MU.url)}catch(e){}}
+  MU.url=URL.createObjectURL(rec.blob);
+  const el=MU.el||(MU.el=new Audio());el.src=MU.url;el.volume=0;el.onended=function(){muNext()};
+  const vol=(S.musicVol>=5&&S.musicVol<=100?S.musicVol:35)/100;
+  const p=el.play();
+  if(p&&p.then)p.then(function(){muFade(el,vol,2500)},function(){});else muFade(el,vol,2500);
+  mediaTag(true);
+}
+function muPlay(){
+  if(!MU.list.length){toast("Add songs under Settings, General, Sound first");return false}
+  if(MU.playing)return true;
+  MU.playing=true;MU.order=[];MU.i=0;muNext();return true;
+}
+function muStop(){
+  if(!MU.playing)return;MU.playing=false;const el=MU.el;
+  if(el)muFade(el,0,2500,function(){try{el.pause()}catch(e){}});
+  mediaTag(false);
+}
+/* start and stop with a session */
+let musicPrev=null;
+function musicStart(){
+  if(AMB.on||MU.playing)return;
+  if(S.music==="mine")muPlay();else ambStart(["pads","drone","rain"].indexOf(S.music)>=0?S.music:"pads");
+}
+function musicStop(){ambStop();muStop()}
+function audioSession(on){if(on){if(S.musicOn===true)musicStart()}else musicStop()}
+function musicUiSync(){
+  const txt="Play music ("+({pads:"soft pads",drone:"deep drone",rain:"rain",mine:"my songs"}[S.music]||"soft pads")+")";
+  document.querySelectorAll(".mqChk").forEach(function(c){c.checked=S.musicOn===true});
+  document.querySelectorAll(".mqTxt").forEach(function(t){t.textContent=txt});
+}
+document.addEventListener("change",function(e){
+  if(!e.target.classList||!e.target.classList.contains("mqChk"))return;
+  S.musicOn=e.target.checked;save();musicUiSync();if($("#stMusicOn"))$("#stMusicOn").checked=S.musicOn;
+  const live=tm.running||(rt.running&&rt.phase!=="idle")||(pn.st&&pn.st.session&&pn.st.session.active);
+  if(S.musicOn&&live)musicStart();else if(!S.musicOn)musicStop();
+});
+function speak(t){
+  if(S.speak!==true)return;
+  try{
+    if(!window.speechSynthesis||typeof SpeechSynthesisUtterance==="undefined")return;
+    ambDuck(2600);window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(t);u.rate=.95;window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function sayTime(sec){const m=Math.round(sec/60);return m>=1?m+" minute"+(m>1?"s":""):Math.round(sec)+" seconds"}
+$("#stCues").addEventListener("change",function(e){S.sndCues=e.target.checked;save()});
+$("#stVib").addEventListener("change",function(e){S.vib=e.target.checked;save()});
+$("#stSpeak").addEventListener("change",function(e){S.speak=e.target.checked;save();if(S.speak)speak("Spoken prompts are on")});
+$("#stMusicOn").addEventListener("change",function(e){S.musicOn=e.target.checked;save();musicUiSync()});
+$("#stMusic").addEventListener("change",function(e){S.music=e.target.value;save();musicUiSync();if(AMB.on||MU.playing){musicStop();setTimeout(musicStart,300)}});
+$("#stMusicVol").addEventListener("input",function(e){
+  S.musicVol=+e.target.value;save();AMB.vol=S.musicVol/100;
+  try{if(AMB.on&&AMB.master)AMB.master.gain.setTargetAtTime(AMB.vol*.9,tm.ac.currentTime,.1)}catch(x){}
+  if(MU.playing&&MU.el)MU.el.volume=S.musicVol/100;
+});
+$("#stMusicTry").addEventListener("click",function(){
+  if(AMB.on||MU.playing){musicStop();$("#stMusicTry").textContent="Play a preview";return}
+  beep(1,.01);musicStart();
+  if(AMB.on||MU.playing){$("#stMusicTry").textContent="Stop preview";setTimeout(function(){if($("#stMusicTry").textContent==="Stop preview"){musicStop();$("#stMusicTry").textContent="Play a preview"}},20000)}
+});
+$("#stSongAdd").addEventListener("click",function(){$("#stSongIn").click()});
+$("#stSongIn").addEventListener("change",function(){const f=[].slice.call(this.files||[]);this.value="";if(f.length)muAdd(f)});
+$("#stSongClear").addEventListener("click",function(){if($("#stSongClear").dataset.arm!=="1"){$("#stSongClear").dataset.arm="1";$("#stSongClear").textContent="Tap again to remove all";setTimeout(function(){$("#stSongClear").dataset.arm="";$("#stSongClear").textContent="Remove all songs"},4000);return}$("#stSongClear").dataset.arm="";$("#stSongClear").textContent="Remove all songs";muClear()});
+muInit();
 
 /* ---------- Profile screen (who is using the lab) ---------- */
 const PICKEY="rdl.pics.v1",ICON_URL="data:image/jpeg;base64,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";
@@ -3179,7 +4095,7 @@ function hexHtml(p){
   const pic=picOf(p.id),ini=(String(p.name||"?").trim()[0]||"?").toUpperCase();
   return '<span class="ring"><span class="hex'+(pic?'':' nopic')+'"'+(pic?' style="background-image:url('+pic+')"':'')+'>'+(pic?'':'<b>'+escH(ini)+'</b>')+'</span></span>';
 }
-function personChipRender(){const p=S.me,c=$("#personChipHex");if(!c)return;c.innerHTML=hexHtml(p);$("#personChipName").textContent=p.name}
+function personChipRender(){const p=S.me,c=$("#personChipHex");if(!c)return;c.innerHTML=hexHtml(p);$("#personChipName").textContent=p.name;goalLineUi()}
 let whoStart=false;
 function whoRender(){
   const mng=$("#whoScr").classList.contains("manage");
@@ -3208,6 +4124,8 @@ $("#personChip").addEventListener("click",function(){whoOpen(false)});
 $("#meSwitch").addEventListener("click",function(){whoOpen(false)});
 $("#mePic").addEventListener("click",function(){profOpen(S.person)});
 $("#stWho").addEventListener("change",function(e){S.askWho=e.target.checked;save()});
+$("#stPulse").addEventListener("change",function(e){S.pulseOn=e.target.checked;save()});
+$("#stPulseLv").addEventListener("change",function(e){S.pulsePct=+e.target.value;save()});
 /* add or edit a profile: name and picture */
 let prof=null;
 function profPrev(){
@@ -3238,7 +4156,7 @@ $("#profPick").addEventListener("click",function(){$("#profPickIn").click()});
 });
 $("#profNoPic").addEventListener("click",function(){prof.pic="";prof.changed=true;profPrev()});
 $("#profCancel").addEventListener("click",function(){closeD("#profDlg")});
-function profRefresh(){peopleFill();meRender();whoRender();personChipRender()}
+function profRefresh(){peopleFill();meRender();whoRender();personChipRender();goalLineUi()}
 $("#profSave").addEventListener("click",function(){
   if(!prof)return;
   const name=$("#profName").value.trim().slice(0,24);
@@ -3260,9 +4178,21 @@ $("#profDel").addEventListener("click",function(){
   if(S.person===prof.id)S.person=S.people[0].id;
   save();closeD("#profDlg");prof=null;profRefresh();render();toast("Deleted "+gone+". Their logs and photos are kept.");
 });
+/* home-screen shortcuts open the app with ?go=report, routines, logs, panel or calc */
+const GO=(function(){try{return new URLSearchParams(location.search).get("go")||""}catch(e){return ""}})();
+let goDone=false;
+function applyGo(){
+  if(goDone||!GO)return;goDone=true;
+  try{history.replaceState(null,"",location.pathname+location.hash)}catch(e){}
+  if(GO==="routines")setView("routines");
+  else if(GO==="logs"){S.logTab="sessions";save();setView("log")}
+  else if(GO==="report"){S.logTab="checkins";save();setView("log");if(!document.querySelector("dialog[open]"))repOpen({kind:"daily"})}
+  else if(GO==="panel")setView("panel");
+  else if(GO==="calc")setView("calc");
+}
 function startupDialogs(){
   if(!safeAck()){$("#safeOk").disabled=true;openD("#safeDlg")}else maybeQs();
-  flushShare();
+  flushShare();applyGo();
 }
 
 /* ---------- People ---------- */
@@ -3449,9 +4379,10 @@ function renderRoutines(){
     html+='<div class="rtbox"><h3 class="dlg-h" style="margin-top:0">Run this routine</h3>'
       +(pn.connected?'<label class="toggle"><input type="checkbox" id="rtPanel" checked><span>Run the panel for each step</span></label>':'<p class="hint">Connect a panel on the Control Panel tab and it will run automatically for each step. Without one, the routine is a guided timer.</p>')
       +'<label style="display:block;margin:6px 0 10px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>'
+      +'<label class="toggle mqRow"><input type="checkbox" class="mqChk"><span class="mqTxt">Play music</span></label>'
       +'<button class="btn primary" id="rtStart" type="button">Start Routine</button></div>';
   }
-  b.innerHTML=head+html;fillLogProfiles();
+  b.innerHTML=head+html;fillLogProfiles();musicUiSync();
 }
 let rtEditId=null,rtArm=false;
 function openRt(id){
@@ -3522,9 +4453,10 @@ function rtWhere(i){
   return "Place the panel "+fmt(fromCm(x.dcm,x.prof.unit),1)+(x.prof.unit==="in"?" inches":" cm")+" from your "+m.A.name.toLowerCase()+(st.side?" ("+SIDE_NAMES[st.side].toLowerCase()+")":"")+". "+(st.p===100?"Fast":"Gentle")+" at "+st.p+"% power. Light: "+m.segs.map(function(s){return s.label}).join(" + ")+".";
 }
 function rtBegin(i){
-  rt.i=i;rt.phase="run";rt.acc=0;rt.t0=Date.now();rt.running=true;rt.fired=0;
+  rtCueClear();rt.i=i;rt.phase="run";rt.acc=0;rt.t0=Date.now();rt.running=true;rt.fired=0;
   clearInterval(rt.iv);rt.iv=setInterval(rtTick,250);
   beep(880,.25);buzz(150);
+  speak("Step "+(i+1)+" of "+rt.steps.length+". "+rt.titles[i]+". "+sayTime(rt.plans[i].pl.total));
   rtPanelStart(0);rtRender(true);
 }
 function rtPanelStart(el){
@@ -3545,6 +4477,28 @@ function rtPanelStart(el){
     if(rt.panelOk){rt.panelOk=false;toast("Panel not reachable. Continuing with the timer only.")}
   });
 }
+/* the last three seconds of a pause between steps: a beep and, on a connected panel, a blink at 3, 2 and 1 */
+function rtCueClear(){(rt.cueT||[]).forEach(clearTimeout);rt.cueT=[]}
+function rtCueSchedule(){
+  rtCueClear();
+  const left=rt.left-(Date.now()-rt.t0)/1000;
+  const marks=[3,2,1].filter(function(s){return s<=left+0.001});
+  marks.forEach(function(s,idx){
+    rt.cueT.push(setTimeout(function(){
+      beep(520,.08);
+      if(idx===0)rtPanelPulse(marks.length);
+    },Math.max(0,(left-s)*1000)));
+  });
+}
+function rtPanelPulse(n){
+  if(!rt.panel||S.pulseOn===false)return;
+  if(!(pn.st&&pn.st.pulse!==undefined))return;       // older panel firmware has no blink command
+  const x=rt.plans[rt.i+1];if(!x)return;
+  const s0=x.pl.segs[0];let a=(s0.ch==="660"||s0.ch==="both")?1:0,b=(s0.ch==="850"||s0.ch==="both")?1:0;
+  if(pn.swap){const t=a;a=b;b=t}
+  const lv=[15,25,35,50].indexOf(S.pulsePct)>=0?S.pulsePct:25;
+  pnReq("/api/pulse",{n:n,c1:a?lv:0,c2:b?lv:0,on:250,period:1000}).catch(function(){});
+}
 function rtPanelStop(){if(rt.panel)pnReq("/api/stop").then(pnRender).catch(function(){})}
 function rtLog(sec,early){
   rt.lastSid="";
@@ -3556,7 +4510,7 @@ function rtLog(sec,early){
   const a=getLog();a.push(e);putLog(a);
   rt.lastSid=e.id;
 }
-const rtPhotoBtn=function(){return rt.lastSid&&PH.ok?'<div class="acts"><button class="btn" type="button" data-photo-sid="'+escH(rt.lastSid)+'">Add Photo to Last Step</button></div>':""};
+const rtPhotoBtn=function(){return rt.lastSid?'<div class="acts">'+(PH.ok?'<button class="btn" type="button" data-photo-sid="'+escH(rt.lastSid)+'">Add Photo to Last Step</button>':'')+'<button class="btn" type="button" data-report-sid="'+escH(rt.lastSid)+'">Report on Last Step</button></div>':""};
 function rtTick(){
   if(!rt.running)return;
   if(rt.phase==="run"){
@@ -3565,7 +4519,6 @@ function rtTick(){
     if(el>=pl.total){rtStepDone(pl.total,false);return}
   }else if(rt.phase==="gap"){
     const left=rt.left-(Date.now()-rt.t0)/1000;
-    if(left>0&&left<=3&&Math.ceil(left)!==rt.lastBeep){rt.lastBeep=Math.ceil(left);beep(520,.08)}
     if(left<=0){rtBegin(rt.i+1);return}
   }
   rtRender(false);
@@ -3577,20 +4530,20 @@ function rtStepDone(sec,early){
   if(rt.i>=rt.steps.length-1){
     rt.phase="done";wake(false);
     setTimeout(function(){beep(1175,.4)},700);buzz([250,120,250,120,400]);
-    toast("Routine complete and logged");rtRender(true);return;
+    toast("Routine complete and logged");speak("Routine complete");rtRender(true);return;
   }
   if(rt.gap<0){rt.phase="wait";rtRender(true);return}
-  rt.phase="gap";rt.left=rt.gap;rt.t0=Date.now();rt.running=true;rt.lastBeep=-1;
-  rt.iv=setInterval(rtTick,250);rtRender(true);
+  rt.phase="gap";rt.left=rt.gap;rt.t0=Date.now();rt.running=true;
+  rt.iv=setInterval(rtTick,250);rtCueSchedule();speak("Rest. Next: "+rt.titles[rt.i+1]);rtRender(true);
 }
 function rtAction(a){
   if(a==="pause"){
     if(rt.running){
       if(rt.phase==="run")rt.acc+=(Date.now()-rt.t0)/1000;else rt.left-=(Date.now()-rt.t0)/1000;
-      rt.running=false;clearInterval(rt.iv);rtPanelStop();
+      rt.running=false;clearInterval(rt.iv);rtCueClear();rtPanelStop();audioSession(false);
     }else{
-      rt.t0=Date.now();rt.running=true;rt.iv=setInterval(rtTick,250);
-      if(rt.phase==="run")rtPanelStart(rt.acc);
+      rt.t0=Date.now();rt.running=true;rt.iv=setInterval(rtTick,250);audioSession(true);
+      if(rt.phase==="run")rtPanelStart(rt.acc);else if(rt.phase==="gap")rtCueSchedule();
     }
     rtRender(true);
   }else if(a==="skip"){
@@ -3599,7 +4552,7 @@ function rtAction(a){
     clearInterval(rt.iv);rtBegin(rt.i+1);
   }else if(a==="stop"){
     if(rt.phase==="run"){rtLog(Math.min(rtElapsed(),rt.plans[rt.i].pl.total),true)}
-    rtPanelStop();clearInterval(rt.iv);rt.running=false;rt.phase="idle";wake(false);
+    rtPanelStop();rtCueClear();clearInterval(rt.iv);rt.running=false;rt.phase="idle";wake(false);
     toast("Routine stopped");renderRoutines();rtMini();
   }else if(a==="close"){
     rt.phase="idle";renderRoutines();rtMini();
@@ -3691,7 +4644,8 @@ function logsFile(){
 }
 function everythingFile(){
   const ss=getLog().map(sessionOut);
-  return {count:S.profiles.length+S.routines.length+ss.length,text:JSON.stringify(Object.assign(fileHead("backup"),{profiles:S.profiles.map(profileOut),routines:S.routines.map(routineOut),logProfiles:S.logProfiles.map(function(p){return p.name}),sessions:ss}),null,1)};
+  const rp=repsGet().map(repOut);
+  return {count:S.profiles.length+S.routines.length+ss.length+rp.length,text:JSON.stringify(Object.assign(fileHead("backup"),{profiles:S.profiles.map(profileOut),routines:S.routines.map(routineOut),logProfiles:S.logProfiles.map(function(p){return p.name}),sessions:ss,reports:rp}),null,1)};
 }
 function expNow(){return ex.kind==="profiles"?profilesFile():(ex.kind==="routines"?routinesFile():(ex.kind==="all"?everythingFile():logsFile()))}
 function expName(){return {profiles:"redox-panel-profiles-",routines:"redox-routines-",logs:"redox-session-logs-",all:"redox-backup-"}[ex.kind]+dayStamp()+".json"}
@@ -3707,9 +4661,9 @@ function openExport(kind){
     $("#expHint").textContent=S.routines.length?"Pick the routines to put in the file. The panel profiles they use come along, so the times work on the other phone. Preset routines are already in every copy of the app.":"You have no routines of your own yet. Preset routines are already in every copy of the app, and you can copy one to My Routines first.";
     $("#expList").innerHTML=tick(S.routines);
   }else if(kind==="all"){
-    const n=getLog().length;
+    const n=getLog().length,nr=repsGet().length;
     $("#expTitle").textContent="Export Everything";
-    $("#expHint").textContent="A complete backup: "+S.profiles.length+" panel profile"+(S.profiles.length===1?"":"s")+", "+S.routines.length+" routine"+(S.routines.length===1?"":"s")+" and "+n+" session"+(n===1?"":"s")+" across "+S.logProfiles.length+" log"+(S.logProfiles.length===1?"":"s")+". Restore it with Import on this or another phone.";
+    $("#expHint").textContent="A complete backup: "+S.profiles.length+" panel profile"+(S.profiles.length===1?"":"s")+", "+S.routines.length+" routine"+(S.routines.length===1?"":"s")+" and "+n+" session"+(n===1?"":"s")+" across "+S.logProfiles.length+" log"+(S.logProfiles.length===1?"":"s")+(nr?", plus "+nr+" check-in report"+(nr===1?"":"s"):"")+". Restore it with Import on this or another phone.";
     $("#expList").innerHTML="";
   }else{
     const n=getLog().length;
@@ -3932,13 +4886,13 @@ function analyzeImport(){
     go.disabled=false;return;
   }
   if(isObj&&j.type==="backup"){
-    const ps=profs(j.profiles),rs=routs(j.routines),sess=(Array.isArray(j.sessions)?j.sessions:[]).slice(0,20000);
-    const plan=planSessions(sess),good=plan.items.length;
-    if(!ps.length&&!rs.length&&!good){msg.textContent="Nothing usable was found in this backup.";return}
-    imp.kind="backup";imp.data={ps:ps,rs:rs,sess:sess};
+    const ps=profs(j.profiles),rs=routs(j.routines),sess=(Array.isArray(j.sessions)?j.sessions:[]).slice(0,20000),reps=(Array.isArray(j.reports)?j.reports:[]).slice(0,5000);
+    const plan=planSessions(sess),good=plan.items.length,rplan=planReports(reps),rgood=rplan.items.length;
+    if(!ps.length&&!rs.length&&!good&&!(rgood+rplan.dup)){msg.textContent="Nothing usable was found in this backup.";return}
+    imp.kind="backup";imp.data={ps:ps,rs:rs,sess:sess,reps:reps};
     const dups=plan.items.filter(function(it){return it.dupIn}).length,skip=$("#impSkip").checked;
     if(good)$("#impSkipRow").hidden=false;
-    msg.textContent="Backup with "+plural(ps.length,"panel profile")+", "+plural(rs.length,"routine")+" and "+plural(good,"session")+"."
+    msg.textContent="Backup with "+plural(ps.length,"panel profile")+", "+plural(rs.length,"routine")+(reps.length?", ":" and ")+plural(good,"session")+(reps.length?" and "+plural(rgood+rplan.dup,"check-in report")+(rplan.dup?" ("+rplan.dup+" already here and skipped)":""):"")+"."
       +(good?(dups?" "+dups+" of the sessions "+(dups>1?"are":"is")+" already in your logs and will be "+(skip?"skipped.":"added again."):" None of the sessions are in your logs yet."):"")
       +" Profiles you already have are reused, and the rest are added.";
     go.disabled=false;return;
@@ -4067,10 +5021,11 @@ $("#impGo").addEventListener("click",function(){
     if(view==="routines")renderRoutines();
     toast(rr.added?"Added "+plural(rr.added,"routine")+" under My Routines in Calculator, Routines."+(rr.skipped?" "+rr.skipped+" already there.":""):"Nothing new. "+(rr.skipped>1?"These routines are":"This routine is")+" already in My Routines.");
   }else if(imp.kind==="backup"){
-    const d=imp.data,np0=S.profiles.length,map=mergeProfiles(d.ps),rr=d.rs.length?importRoutines(d.rs,map):{added:0,skipped:0},sr=d.sess.length?importSessions(d.sess,skip):null;
+    const d=imp.data,np0=S.profiles.length,map=mergeProfiles(d.ps),rr=d.rs.length?importRoutines(d.rs,map):{added:0,skipped:0},sr=d.sess.length?importSessions(d.sess,skip):null,rp=d.reps&&d.reps.length?importReports(d.reps):null;
     closeD("#impDlg");render();
     if(inLog)renderLog();if(view==="routines")renderRoutines();
-    toast("Restored "+plural(S.profiles.length-np0,"new panel profile")+", "+plural(rr.added,"routine")+(sr?" and "+plural(sr.added,"session"):"")+(rr.skipped||(sr&&sr.dup)?". Already there: "+((rr.skipped||0)+(sr?sr.dup:0))+".":"."));
+    toast("Restored "+plural(S.profiles.length-np0,"new panel profile")+", "+plural(rr.added,"routine")+(sr?(rp?", ":" and ")+plural(sr.added,"session"):"")+(rp?" and "+plural(rp.added,"check-in report"):"")+(rr.skipped||(sr&&sr.dup)||(rp&&rp.dup)?". Already there: "+((rr.skipped||0)+(sr?sr.dup:0)+(rp?rp.dup:0))+".":"."));
+    if(inLog&&document.body.dataset.view==="log")renderLog();
   }else{
     const r=importSessions(imp.data,skip);closeD("#impDlg");
     if(inLog)renderLog();
