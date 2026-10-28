@@ -890,11 +890,11 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <p class="hint" id="stPhInfo"></p>
   <div class="acts"><button class="btn danger" id="stPhClear" type="button" hidden>Delete all photos</button><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 106. Released October 27, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 107. Released October 27, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 106. Released October 27, 2026.<br>© 2026 Redox. All rights reserved.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 107. Released October 27, 2026.<br>© 2026 Redox. All rights reserved.</p>
 </main>
 
 <dialog id="phAdd" aria-labelledby="phAddT">
@@ -2999,7 +2999,9 @@ function pnHelp(err){
   if(pn.mode==="ble"&&!SAMEORIGIN){
     if(err&&err.name==="NotFoundError")return "No panel was chosen. Tap Connect and pick Redox Panel from the Bluetooth list.";
     if(err&&err.name==="SecurityError")return "Bluetooth is blocked here. Allow Bluetooth for this site in Chrome, and make sure Bluetooth is on in the phone.";
-    return "Could not reach the panel over Bluetooth. Check that it is powered, within a few metres, and that no other phone is connected to it.";
+    const why=err?((err.name&&err.name!=="Error"?err.name+": ":"")+(err.message||"")):"";
+    if(err&&err.message==="timeout")return "Connected by Bluetooth, but the panel did not answer. Check the panel key and that the firmware was uploaded with Bluetooth on. ("+why+")";
+    return "Could not reach the panel over Bluetooth. Check that it is powered, within a few metres, and that no other phone is connected to it. ("+why+")";
   }
   let t="Could not reach the panel at "+(SAMEORIGIN?"this address":pn.addr)+". Check that it is powered and on the same WiFi.";
   if(!SAMEORIGIN&&location.protocol==="https:")t+=" On Android Chrome, tap Allow when it asks to find devices on your local network. On iPhone, this page cannot reach the panel: open the panel's own address in Safari instead, for example http://"+pn.addr+".";
