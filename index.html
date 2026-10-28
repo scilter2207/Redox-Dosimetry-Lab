@@ -57,21 +57,9 @@ body.who-open main>:not(.topbar):not(header):not(#whoScr){display:none!important
 .goalcard .gtop b{font-family:var(--serif);font-size:17px}
 .goalcard .pbar{background:var(--surface);margin:8px 0 10px}
 .goalcard .pbar b{display:block;height:100%;background:var(--red)}
-.gstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;text-align:center}
-.gstats b{display:block;font-family:var(--serif);font-size:22px}
-.gstats span{font-size:12.5px;color:var(--muted)}
-.gstrip{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px;margin:4px 0 6px}
-.gstrip i{display:block;aspect-ratio:1;border-radius:3px;background:var(--surface);border:1px solid var(--line)}
-.gstrip i.g1{background:var(--red);opacity:.4;border-color:transparent}
-.gstrip i.g2{background:var(--red);opacity:.7;border-color:transparent}
-.gstrip i.g3{background:var(--red);opacity:1;border-color:transparent}
-.gstrip i.gf{background:none;border-style:dashed;opacity:.5}
-.glegend{font-size:12px;color:var(--muted);margin:0 0 8px}
+.glegend{font-size:14px;color:var(--muted);margin:0 0 10px}
 .logtabs{display:flex;margin:6px 0 12px}
 .logtabs button{flex:1}
-.covline.covlow{color:var(--warn)}
-.optcard summary{cursor:pointer;font-weight:600;margin:6px 0}
-.optcard td,.optcard th{padding:5px 4px;font-size:13.5px;vertical-align:top}
 .repq{display:grid;grid-template-columns:1fr auto auto;gap:2px 10px;align-items:center;margin:10px 0}
 .repq output{font:600 18px var(--serif);min-width:2ch;text-align:right}
 .repq.un output,.repq.un .l{color:var(--muted)}
@@ -108,7 +96,7 @@ main{max-width:560px;margin:0 auto;display:grid;gap:20px}
 header{padding:8px 2px 0}
 h1{font:400 22px/1.1 var(--serif);margin:0;letter-spacing:.4px;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 12px;color:var(--ink)}
 h1 span{font-weight:500;-webkit-text-stroke:.5px currentColor}   /* the stroke thickens the letters smoothly even on phones whose serif font has only regular and bold */
-.hlogo{height:40px;width:auto;display:block;position:relative;top:2px}   /* the logo has a little empty space under its letters; this moves the letters themselves onto the text baseline */
+.hlogo{touch-action:manipulation;-webkit-tap-highlight-color:transparent;height:40px;width:auto;display:block;position:relative;top:2px}   /* the logo has a little empty space under its letters; this moves the letters themselves onto the text baseline */
 .sub{margin:6px 0 0;color:var(--muted)}
 h2{font:600 19px/1.2 var(--serif);margin:0 0 14px}
 section{background:var(--glass);border:1px solid var(--glassline);border-radius:16px;padding:18px 16px;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
@@ -227,9 +215,9 @@ details[open] summary{margin-bottom:14px}
 .tabs button.ico{flex:0 0 56px;padding:0;display:flex;align-items:center;justify-content:center}
 .ico svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .subtabs{display:none;gap:4px;background:var(--surface);border-radius:10px;padding:3px;margin-top:-10px}
-body[data-view="simple"] #subTabs,body[data-view="lab"] #subTabs,body[data-view="routines"] #subTabs,body[data-view="lib"] #subTabs2,body[data-view="learn"] #subTabs2,body[data-view="set"] #subTabs3,body[data-view="log"] #subTabs3,body[data-view="how"] #subTabs3,body[data-view="work"] #subTabs3{display:flex}
+body[data-view="simple"] #subTabs,body[data-view="lab"] #subTabs,body[data-view="routines"] #subTabs,body[data-view="calcs"] #subTabs,body[data-view="lib"] #subTabs2,body[data-view="learn"] #subTabs2,body[data-view="set"] #subTabs3,body[data-view="log"] #subTabs3,body[data-view="how"] #subTabs3{display:flex}
 .subtabs button{flex:1;min-width:0;min-height:32px;padding:0 4px;border:0;border-radius:7px;background:transparent;color:var(--muted);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
-#subTabs3 button{font-size:clamp(10.5px,3.05vw,12.5px)}
+#subTabs3 button,#subTabs.four button{font-size:clamp(10.5px,3.05vw,12.5px)}
 .subtabs button[aria-pressed=true]{background:var(--raised);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
 .tabs button{flex:1 1 auto;min-height:54px;padding:0 12px;font-size:16px;white-space:normal;line-height:1.15;text-align:center;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-weight:600;cursor:pointer}
 .tabs button[aria-pressed=true]{background:var(--ink);color:var(--ground)}
@@ -242,8 +230,8 @@ body[data-view="lab"] .simple-only{display:none!important}
 .actions{flex-wrap:wrap}
 
 .pg{display:none}
-body[data-view="log"] #pg-log,body[data-view="lib"] #pg-lib,body[data-view="learn"] #pg-learn,body[data-view="set"] #pg-set,body[data-view="how"] #pg-how,body[data-view="work"] #pg-work,body[data-view="routines"] #pg-routines,body[data-view="panel"] #pg-panel{display:block}
-body[data-view="log"] .calc,body[data-view="lib"] .calc,body[data-view="learn"] .calc,body[data-view="set"] .calc,body[data-view="how"] .calc,body[data-view="work"] .calc,body[data-view="routines"] .calc,body[data-view="panel"] .calc{display:none!important}
+body[data-view="log"] #pg-log,body[data-view="lib"] #pg-lib,body[data-view="learn"] #pg-learn,body[data-view="set"] #pg-set,body[data-view="how"] #pg-how,body[data-view="routines"] #pg-routines,body[data-view="calcs"] #pg-calcs,body[data-view="panel"] #pg-panel{display:block}
+body[data-view="log"] .calc,body[data-view="lib"] .calc,body[data-view="learn"] .calc,body[data-view="set"] .calc,body[data-view="how"] .calc,body[data-view="routines"] .calc,body[data-view="calcs"] .calc,body[data-view="panel"] .calc{display:none!important}
 .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .acts .btn{flex:1;min-width:110px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
@@ -396,15 +384,15 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 </div>
 <h2 class="hubtitle" id="hubTitle" hidden></h2>
 <div class="subtabs" id="subTabs" role="group" aria-label="Calculator view">
-  <button type="button" data-sub="simple" aria-pressed="true">Simple View</button>
-  <button type="button" data-sub="lab" aria-pressed="false">Lab View (Advanced)</button>
+  <button type="button" data-sub="simple" aria-pressed="true">Protocols</button>
+  <button type="button" data-sub="lab" id="labTab" aria-pressed="false" hidden>Lab View</button>
+  <button type="button" data-sub="calcs" id="calcsTab" aria-pressed="false" hidden>Calculations</button>
   <button type="button" data-sub="routines" aria-pressed="false">Routines</button>
 </div>
 <div class="subtabs" id="subTabs3" role="group" aria-label="Settings section">
   <button type="button" data-sub="set" aria-pressed="true">General</button>
   <button type="button" data-sub="log" aria-pressed="false">Session Logs</button>
   <button type="button" data-sub="how" aria-pressed="false">How to Use</button>
-  <button type="button" data-sub="work" aria-pressed="false">Calculations</button>
 </div>
 <div class="subtabs" id="subTabs2" role="group" aria-label="Learn section">
   <button type="button" data-sub="learn" aria-pressed="true">Guides</button>
@@ -432,12 +420,11 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <h2 id="h-treat">Treatment</h2>
   <label><span class="l">What are you treating?</span><select id="treatment"></select></label>
   <label><span class="l">Target area</span><select id="area"></select></label>
-  <div class="row2 lab">
+  <div class="row2">
     <label><span class="l">Depth to target (mm)</span><input id="depth" type="number" inputmode="decimal" step="0.5" min="0.5"></label>
     <div class="chip" id="verdict" aria-live="polite"></div>
   </div>
-  <p class="hint lab" id="depthHint"></p>
-  <div class="bars lab" id="trans" style="margin-top:12px"></div>
+  <p class="hint" id="depthHint"></p>
 </section>
 
 <section aria-labelledby="h-proto" class="calc">
@@ -445,7 +432,6 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <div class="dose"><span style="color:var(--muted);font-size:14px">Dose per session</span><output id="doseOut" for="dose"></output></div>
   <input id="dose" type="range" aria-label="Dose per session in joules per square centimeter">
   <div class="range-ends"><span id="doseLo"></span><span>published window</span><span id="doseHi"></span></div>
-  <p class="hint" id="doseYou" hidden></p>
   <div class="row2" style="margin-bottom:6px">
     <label style="margin:0"><span class="l">Time goal (full power)</span>
       <select id="goal"><option value="3">About 3 min</option><option value="5">About 5 min</option><option value="8">About 8 min</option><option value="10">About 10 min</option><option value="15">About 15 min</option><option value="20">About 20 min</option><option value="30">About 30 min</option><option value="custom" disabled hidden>Set by distance</option></select></label>
@@ -461,6 +447,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <div class="clock" id="tmClock">0:00</div>
       <div class="pbar"><b id="tmBar"></b></div>
       <p class="hint" id="tmSeg"></p>
+      <p class="hint" id="tmStale" hidden></p>
       <label style="display:block;margin:6px 0 10px"><span class="l">Log to</span><select class="lpSel" aria-label="Log to"></select></label>
       <label class="toggle"><input type="checkbox" class="autoLogChk" data-k="timer"><span>Log automatically when the timer finishes</span></label>
       <label class="toggle mqRow"><input type="checkbox" class="mqChk"><span class="mqTxt">Play music</span></label>
@@ -478,6 +465,12 @@ svg text{fill:var(--muted);font:10px var(--sans)}
     <summary>Evidence and reasoning</summary>
     <div id="evidence"></div>
   </details>
+</section>
+
+<section id="pg-calcs" class="pg" aria-labelledby="h-calcs">
+  <h2 id="h-calcs">Calculations</h2>
+  <p class="hint">Every number on the Protocols page, worked through step by step with your current choices. Change a choice there and come back to see the numbers move. Educational estimates, not medical advice.</p>
+  <div id="workBody"></div>
 </section>
 
 
@@ -592,7 +585,9 @@ svg text{fill:var(--muted);font:10px var(--sans)}
 
 <section id="pg-panel" class="pg" aria-labelledby="h-panelc">
   <h2 id="h-panelc">Control Panel</h2>
-  <p class="hint">Controls a compatible Redox panel over your WiFi. The panel runs timed sessions by itself and turns off when they end.</p>
+  <p class="hint">Controls a compatible Redox panel over Bluetooth or WiFi. Bluetooth needs no router or internet. The panel runs timed sessions by itself and turns off when they end.</p>
+  <label><span class="l">Connection</span><select id="pnMode" aria-label="Connection type"><option value="ble">Bluetooth</option><option value="wifi">WiFi</option></select></label>
+  <p class="hint" id="pnModeNote" hidden>Bluetooth is not available in this browser. Use Chrome on Android for Bluetooth, or use WiFi.</p>
   <div id="pnAddrRow"><label><span class="l">Panel address</span><input id="pnAddr" type="text" inputmode="url" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="panel.local"></label></div>
   <label><span class="l">Panel key</span><input id="pnKey" type="password" autocapitalize="none" autocorrect="off" placeholder="The key set in the panel firmware"></label>
   <label class="toggle"><input type="checkbox" id="pnSwap"><span>Channel 1 is near-infrared (swap the two channels)</span></label>
@@ -638,7 +633,6 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <details><summary>Set up your panel</summary>
     <ul>
       <li><b>Panel Profile</b> (top of the Calculator tab) is the panel every number is based on. <b>Presets</b> are built-in popular panels. <b>My Presets</b> are your own.</li>
-      <li><b>Panel size</b> (optional, in the Edit window): enter the width and height of the lit area. The app then estimates output at distances you did not measure from how light spreads off a flat LED panel instead of a rough rule. Readings you entered always take priority between your first and last distance.</li>
       <li>The line under the picker shows the panel's irradiance at 6 inches after the solar meter correction. The word estimated means 6 inches is outside your readings.</li>
       <li><b>Edit</b> opens the profile window. Add each wavelength in nm with the share of the panel's output it makes, then total irradiance readings (mW/cm²) at different distances with every wavelength on at 100% power. Tick Wavelengths fire together if red and near-infrared cannot be switched separately.</li>
       <li><b>Solar meter correction:</b> solar meters read high on LEDs. Use 0.5 for solar meter readings and 1.0 for spectrometer or lab numbers.</li>
@@ -659,19 +653,13 @@ svg text{fill:var(--muted);font:10px var(--sans)}
     <ul>
       <li><b>Recommended distance</b> is how far to hold the panel from the skin.</li>
       <li><b>Time goal and Distance:</b> pick a time and the app finds the distance, or type a distance and the times update. Deep targets need a minimum irradiance at the surface, so the app can recommend a session shorter than your goal and says so.</li>
-      <li>Simple View gives one recommendation, at full power. <b>Lab View (Advanced)</b> shows two: <b>Fast</b> at 100% power and <b>Gentle</b> at 50%. Both deliver the same dose, so pick whichever fits your time. Switching to Simple View puts the timer, the Control Panel and Add to Routine back on full power.</li>
+      <li>The recommendation is at full power. Both the timer and the Control Panel use the same time, so what you read is what runs.</li>
       <li><b>Dose slider:</b> drag it to change the dose per session within the published window for the treatment. The distance and times update as you drag, and the two ends show the window. It is in both views.</li>
-      <li><b>Rounding:</b> every session time is rounded to the nearest quarter minute, so 2:47 becomes 2.75 min (2:45) and 2:53 becomes 3 min. That can run up to 7 seconds short or long, which is far inside the uncertainty on every time. The Session Timer, the Control Panel and the Protocol Card use exactly the same time as the cards.</li>
+      <li><b>Changing settings mid-session:</b> the timer follows the recommendation whenever it is stopped or finished. If you pause a session and then change the dose, distance or goal, the timer keeps the numbers you started with, and a note under it says what it will finish in, what the recommendation is now, and to tap Reset to switch.</li>
+      <li><b>Rounding:</b> every session time is rounded to the nearest quarter minute, so 2:47 becomes 2:45 and 2:53 becomes 3:00. That can run up to 7 seconds short or long, which is far inside the uncertainty on every time. Times are written the way the timer clock writes them, minutes and seconds (9:45 is 9 minutes 45 seconds), so the recommendation, the timer, the Control Panel and the Protocol Card always read the same. The Session Timer, the Control Panel and the Protocol Card use exactly the same time as the cards.</li>
       <li><b>Likely</b> under each time is the range it could fall in. The range widens when the panel numbers are a manufacturer claim, when a solar meter correction is applied, and when the distance is outside your readings.</li>
       <li>Warnings appear under the options. Read them, especially cautions for brain and core treatments.</li>
       <li><b>Protocol Card</b> makes a shareable image of the protocol.</li>
-    </ul>
-  </details>
-  <details><summary>Simple View and Lab View</summary>
-    <ul>
-      <li><b>Simple View</b> shows the panel, treatment, the dose slider, distance, time, one recommendation and the timer.</li>
-      <li><b>Lab View (Advanced)</b> adds the Gentle half-power option, a depth override, the share of light reaching the target, the irradiance at the surface, a chart and table of power against time, and your panel's evenness map.</li>
-      <li>Both views use the same settings, so changes carry over.</li>
     </ul>
   </details>
   <details><summary>Routines (playlists of protocols)</summary>
@@ -688,7 +676,7 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   </details>
   <details><summary>Run a session</summary>
     <ul>
-      <li>The <b>Session Timer</b> sits under the recommendation. Choose Fast or Gentle, then tap Start.</li>
+      <li>The <b>Session Timer</b> sits under the recommendation. Tap Start.</li>
       <li>It beeps and vibrates when a part ends or the session finishes. Turn the volume up and the silent switch off. Keep the screen on, because phones can pause timers when the screen locks.</li>
       <li>Two-wavelength sessions run each wavelength in turn.</li>
       <li><b>Stop and log</b> saves the time you actually ran. Finishing the timer saves the whole session automatically.</li>
@@ -700,8 +688,8 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <details><summary>Control Panel (compatible Redox panel)</summary>
     <ul>
       <li>For a compatible Redox panel with its controller. Everything on the page stays greyed out until it connects.</li>
-      <li>Enter the panel address (usually panel.local) and the panel key you set in the firmware, then tap Connect.</li>
-      <li><b>Android Chrome:</b> tap Allow when it asks to find devices on your local network. <b>iPhone:</b> the web version cannot reach the panel, so open the panel's own address, such as http://panel.local, in Safari.</li>
+      <li><b>Bluetooth</b> (default, Android Chrome): needs no router or internet. Type the panel key you set in the firmware, tap Connect, and choose <b>Redox Panel</b> in the list that appears. Keep the phone within a few metres.</li>
+      <li><b>WiFi</b>: pick WiFi under Connection, enter the panel address (usually panel.local) and the key, then tap Connect. On Android Chrome, tap Allow when it asks to find devices on your local network. <b>iPhone</b> cannot use Bluetooth in a browser, so open the panel's own address, such as http://panel.local, in Safari.</li>
       <li><b>Manual control</b> has a slider for each wavelength and a Turn Panel Off button. If the app stops checking in, the panel turns itself off.</li>
       <li><b>Start on the Panel</b> sends the Calculator's protocol. The panel runs it by itself and turns off when it ends, even if the phone disconnects. The app logs it when it finishes.</li>
       <li>Never leave the panel running unattended, and protect your eyes.</li>
@@ -713,42 +701,31 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <li>The last hexagon always holds the Redox logo and means <b>Add profile</b>. Type a name and tap <b>Take photo</b> to use the camera or <b>Choose photo</b> to pick one from the phone. The picture is cropped to a square and shrunk.</li>
       <li><b>Manage profiles</b> turns the hexagons into edit buttons: change a name or picture, or delete a profile (a second tap confirms, and the last profile cannot be deleted). Deleting keeps that profile's logs and photos.</li>
       <li>On the Calculator, the <b>Planning for</b> bar at the top shows the open profile. Tap it to switch. It is also under About You as Switch profile, next to Name and picture.</li>
+      <li>Settings, General, <b>Profiles and About You</b> has the same controls plus <b>Add person</b>, <b>Delete this person</b>, <b>Name and picture</b> and <b>Log sessions to</b>: pick a log there and opening that profile switches Log to it, so their sessions and photos stay together.</li>
       <li>Settings, General has <b>Show the profile screen when the app opens</b>. Untick it to open straight to the last profile you used.</li>
       <li>Pictures stay on this device. They are never uploaded and are not included in exports, backups or shared links.</li>
     </ul>
   </details>
-  <details><summary>About You and personal estimates</summary>
+  <details><summary>About You (BMI and depth)</summary>
     <ul>
-      <li>Open Settings, then General, then <b>About You</b>. Answers save as you type and a "Saved for" note confirms each one. The <b>Save</b> button saves again and confirms it. Every answer is optional: height and weight (the app works out BMI), sex, skin tone (the six Fitzpatrick types) and, for the scalp and temples and crown areas, how much hair you have.</li>
-      <li>Light loses strength passing through skin pigment, fat and, on the head, hair and skull. With your answers the app estimates how deep a target sits under fat-covered areas and how much of the light reaches it.</li>
-      <li>The <b>dose slider keeps the published window</b>. When your answers change how much light reaches the target, a line under the slider shows your adjusted surface dose, and every time, timer, log entry and routine step uses it. The adjustment stays between 80% and 200% of the published dose and never goes above 150% of the top of the window.</li>
-      <li>Anything you skip is assumed to match a typical study participant: skin type III, BMI about 25 and thin hair. With nothing filled in, nothing changes. Sex on its own changes nothing either: it only sets how much fat each point of BMI adds.</li>
-      <li>Skin tone and hair are applied in full. The effect of fat thickness is applied at half strength, because published doses were not tuned to a fixed amount of light at the target and the estimate gets extremely steep at depth. The page under the slider shows the result.</li>
-      <li>The skin tone numbers rest on published melanin ranges, the fat estimates on ultrasound data for the abdomen, thigh and calf and on estimates for other areas, and the hair loss is the roughest input. Treat the adjustment as a physics-based starting point, not a measurement of you.</li>
-      <li><b>People:</b> tap <b>Add person</b> under About You to keep separate answers for someone else, for example a partner or a family member. Each person has a name and their own answers, and the Calculator, timer, routines and protocol card all use the person who is picked. Once there are two or more people, a <b>Planning for</b> picker appears at the top of the Calculator. Choose a log under <b>Log sessions to</b> and switching to that person also switches Log to, so their sessions and photos stay together. Deleting a person keeps their logs and photos.</li>
-      <li>These answers stay on this device and are not included in exports, backups or shared links.</li>
+      <li>Under Settings, General, Profiles and About You, enter <b>height and weight</b> for each profile. Both are optional. They give a BMI.</li>
+      <li>For areas with a fat layer over the target (thigh, hip, abdomen, upper arm and so on), the app compares your BMI with a typical 25.5 and <b>adjusts the estimated depth</b> to the target: higher BMI means deeper, lower means shallower. The depth decides which light is used (red, both, or near-infrared) and the mix of the two, so a deeper target uses more near-infrared. The change is shown under the depth box as "Adjusted for your BMI".</li>
+      <li>It does <b>not</b> change the dose or the time on its own. It is not applied to skin treatments, to the head, or to a depth you type yourself. The fat thickness for each area is an estimate and BMI is a rough guide, so type a depth if you know better.</li>
+      <li><b>Skin type</b> is optional and is only used in the PDF report for your doctor, if you tick Include my body details. Everything here stays on this device and is never included in exports, backups or shared links.</li>
     </ul>
   </details>
-  <details><summary>Goals and streaks</summary>
+  <details><summary>Weekly goal and streak</summary>
     <ul>
-      <li>On Settings, Session Logs, the top card shows <b>this week</b> against a goal you set (1 to 14 sessions, Monday to Sunday), your <b>day streak</b>, how many <b>weeks in a row you met the goal</b>, and your <b>best streak</b>. Under it, a 12-week strip shades each day by minutes: darker is more.</li>
-      <li>A streak counts days with at least one session in that log. If you have not done one yet today, yesterday still counts, so the streak ends only when a whole day passes without one. The goal and streak are per log, so different logs keep their own.</li>
+      <li>On Settings, Session Logs, the top card shows how many sessions you did <b>this week</b> against a goal you set (1 to 14 a week, Monday to Sunday) and your <b>day streak</b>.</li>
+      <li>A streak counts days in a row with at least one session in that log. If you have not done one yet today, yesterday still counts, so the streak ends only when a whole day passes without one. The goal and streak are per log.</li>
       <li>With a goal set, the Calculator shows "This week: 3 of 5 sessions" under the profile bar.</li>
       <li><b>Remind me</b> makes a repeating calendar reminder (pick days and a time). Open the file it creates and your calendar app adds it with an alert. A web page cannot schedule its own notifications reliably, so the reminder lives in your calendar.</li>
-    </ul>
-  </details>
-  <details><summary>Best options and coverage</summary>
-    <ul>
-      <li>When you have entered the panel's <b>width and height</b> under Edit, the app checks how evenly the light covers the area you are treating. Under Recommended distance it says how much the <b>edges</b> get compared with the centre. It uses the same flat-panel light model as the distance estimates and a typical size for each area (an estimate, about 16 by 22 cm for a face, for example).</li>
-      <li>The recommended distance then skips distances where the edges would get under 70% of the centre, when other distances work. If the panel is too small for the area at any distance in range, the app says so and falls back to the time goal. If turning the panel a quarter turn is more even, it says that too.</li>
-      <li>In Lab View, <b>Best options</b> compares distance and power together: the best match for your time goal, the most even coverage, and the fastest that still works. Each row delivers the same dose, and <b>Use</b> sets that distance and power. Distances that are too weak for a deep target are left out, and very strong ones are flagged as likely to feel warm.</li>
-      <li>Without a panel size the app cannot judge evenness, so the recommendation is based on your time goal alone, as before.</li>
     </ul>
   </details>
   <details><summary>Report for my doctor (PDF)</summary>
     <ul>
       <li>On Session Logs, tap <b>Doctor Report (PDF)</b> (on the Sessions page or the Check-ins page). Pick the period (30 days to a year), an area or all areas, the paper size, and whether to include <b>body details</b> (height, weight, BMI and skin type, off unless you tick it), your <b>notes</b> and <b>charts</b>.</li>
-      <li>The PDF covers the log that is open: sessions, minutes and estimated dose by area with the light, distance and power used; goal and streak; every rating with its average, range and a first-half to second-half comparison; charts of your two best-rated items with weekly minutes behind them; unwanted effects; and recent notes.</li>
+      <li>The PDF covers the log that is open: sessions, minutes and estimated dose by area with the light, distance and power used; this week against your goal and the day streak; every rating with its average, range and a first-half to second-half comparison; charts of your two best-rated items with weekly minutes behind them; unwanted effects; and recent notes.</li>
       <li>It is made on the phone, one or two pages, and goes to the share sheet (email, messages, print) or downloads. It is a self-reported summary and a conversation starter, not a diagnosis, and it says so on the page.</li>
     </ul>
   </details>
@@ -789,20 +766,13 @@ svg text{fill:var(--muted);font:10px var(--sans)}
       <li>At full strength the filter leaves only red, so the text colors are lifted toward full red to stay readable. Charts, heat maps and the logo follow the theme too. Photos and the protocol card image keep their own colors.</li>
     </ul>
   </details>
-  <details><summary>Calculations (show your work)</summary>
-    <ul>
-      <li>Open Settings, then <b>Calculations</b>. It works through the current recommendation step by step with real numbers: panel output at the distance, depth to the target, which light is used, how much light reaches the target, the adjustment for you, the session time with its likely range, how the distance is chosen, and where the numbers come from.</li>
-      <li>It uses whatever is selected on the Calculator (treatment, area, panel, distance, dose) plus About You, so change a choice there and open it again to see the numbers move.</li>
-      <li>The last section lists what was checked against published measurements and what was not.</li>
-    </ul>
-  </details>
   <details><summary>Session Logs</summary>
     <ul>
       <li>Open them from the gear, then Session Logs. Every finished session is saved with treatment, area, side, panel, light, distance, power, minutes and dose. Timer sessions, Control Panel sessions and each step of a routine all log automatically. Routine steps carry a note with the routine name and step number.</li>
       <li><b>Log profiles</b> keep separate logs, for example Panel and Mask. Use the picker with New and Edit to add, rename or delete one (deleting also deletes its sessions). Choose where a session goes with <b>Log to</b> on the timer, the Control Panel and the routine runner.</li>
       <li><b>Area filter:</b> the Area drop-down lists every area you have logged, with how many sessions each has. The first time you log Face, Face joins the list, and every later Face session goes under it. Pick one to see only that area's totals, chart, list and CSV. All Areas shows everything.</li>
       <li><b>Sides:</b> for areas with a left and right, such as the knee, shoulder, elbow, hip and ankle, pick Left, Right or Both before a session. Choosing that area in the Area drop-down then adds a Side drop-down with All Sides, Left, Right and Both, so you can track each side on its own.</li>
-      <li><b>Time range:</b> Day, Week, Month, Year and All switch what the totals, the chart and the session list cover. Day is today by the hour, Week the last 7 days, Month the last 30 days, Year the last 12 months by month, and All is everything. Each total shows how it moved compared with the period before it. Progress Photos and the CSV, Share and Clear buttons follow the Area and Side filters, not the time range.</li>
+      <li><b>Time range:</b> Week, Month, Year and All switch what the totals, the chart and the session list cover. Week is the last 7 days by day, Month the last 4 weeks by week, Year the last 12 months by month, and All is everything by month. The red bar in the chart is the current day, week or month. Each total shows how it moved compared with the period before it. Progress Photos and the CSV, Share and Clear buttons follow the Area and Side filters, not the time range.</li>
       <li>The page shows totals, a chart, <b>Progress Photos</b> and the list of sessions for whatever you have selected.</li>
       <li><b>Download CSV</b> and <b>Copy CSV</b> export the area and side you are viewing for all dates, with log profile, area and side columns. <b>Clear</b> removes only what is selected (the whole log, one area, or one side of an area) after a second tap. Settings, then General, has Clear All Session Logs.</li>
       <li>Logs live on this phone only. Export them now and then, because a phone can clear saved web app data. <b>Import</b> on this page brings an exported CSV or backup back in.</li>
@@ -897,19 +867,16 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <label class="toggle"><input type="checkbox" class="autoLogChk" data-k="timer"><span>Log automatically when the timer finishes</span></label>
   <label class="toggle"><input type="checkbox" class="autoLogChk" data-k="panel"><span>Log automatically when a Control Panel session finishes</span></label>
   <p class="hint">Unticked, a finished session waits for you to tap Log This Session, so you can check Log to and Side first. Both are also on the timer and the Control Panel. Stop and log always saves, and routine steps always log themselves.</p>
-  <h3 class="dlg-h">About You (optional)</h3>
-  <p class="hint">Light has to pass through skin pigment, fat and, on the head, hair and skull. These answers change how deep the light is estimated to go and the surface dose that is used. Skip anything you do not know. Answers save as you type, and the Save button confirms it. They stay on this device and are never included in exports, backups or shared links.</p>
+  <h3 class="dlg-h">Profiles and About You</h3>
+  <p class="hint">Each profile has a name, a picture and its own log. Height and weight are optional: they give a BMI that adjusts the estimated depth to the target where there is a fat layer, which can move the light toward near-infrared. Skin type is optional and only goes into the PDF report for your doctor. Answers save as you type, and the Save button confirms it. They stay on this device and are never included in exports, backups or shared links.</p>
   <div class="row2"><label style="margin:0"><span class="l">Person</span><select id="mePerson"></select></label><label style="margin:0"><span class="l">Name</span><input id="mePName" type="text" maxlength="24"></label></div>
   <div class="acts"><button class="btn" id="mePAdd" type="button">Add person</button><button class="btn danger" id="mePDel" type="button" hidden>Delete this person</button></div>
   <label><span class="l">Log sessions to</span><select id="meLog"></select></label>
-  <p class="hint">Each person keeps their own answers below. Once there are two or more people, a Planning for picker appears at the top of the Calculator. Pick a log here and switching to this person also switches Log to, so their sessions and photos stay together.</p>
+  <p class="hint">Pick a log here and opening this profile also switches Log to it, so their sessions and photos stay together.</p>
   <div class="seg" role="group" aria-label="Units" style="margin-bottom:12px"><button type="button" data-meu="metric">cm and kg</button><button type="button" data-meu="imperial">in and lb</button></div>
   <div class="row2"><label style="margin:0"><span class="l" id="meHL">Height (cm)</span><input id="meH" type="number" inputmode="decimal" step="any" min="0"></label><label style="margin:0"><span class="l" id="meWL">Weight (kg)</span><input id="meW" type="number" inputmode="decimal" step="any" min="0"></label></div>
   <p class="hint" id="meBmi"></p>
-  <label><span class="l">Sex (used with BMI to estimate fat)</span><select id="meSex"><option value="">Not set</option><option value="female">Female</option><option value="male">Male</option></select></label>
-  <label><span class="l">Skin tone</span><select id="meTone"><option value="0">Not set</option><option value="1">I. Very fair, always burns</option><option value="2">II. Fair, burns easily</option><option value="3">III. Medium, sometimes burns</option><option value="4">IV. Olive or light brown, rarely burns</option><option value="5">V. Brown, very rarely burns</option><option value="6">VI. Deep brown or black, never burns</option></select></label>
-  <label><span class="l">Hair on your head</span><select id="meHair"><option value="">Not set</option><option value="none">None or shaved</option><option value="thin">Thin</option><option value="normal">Normal</option><option value="thick">Thick</option></select></label>
-  <p class="hint">Hair only matters for the scalp and temples and crown areas. It blocks a lot of light and is the least certain input, so parting the hair or moving closer helps more than adding time. With nothing set, the app assumes a typical study participant: skin type III, BMI about 25 and thin hair.</p>
+  <label><span class="l">Skin type</span><select id="meTone"><option value="0">Not set</option><option value="1">I. Very fair, always burns</option><option value="2">II. Fair, burns easily</option><option value="3">III. Medium, sometimes burns</option><option value="4">IV. Olive or light brown, rarely burns</option><option value="5">V. Brown, very rarely burns</option><option value="6">VI. Deep brown or black, never burns</option></select></label>
   <div class="acts"><button class="btn" id="mePic" type="button">Name and picture</button><button class="btn" id="meSwitch" type="button">Switch profile</button></div>
   <p class="hint" id="meSaved" aria-live="polite"></p>
   <div class="acts"><button class="btn primary" id="meSave" type="button">Save</button><button class="btn" id="meClear" type="button">Clear these answers</button></div>
@@ -923,17 +890,11 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <p class="hint" id="stPhInfo"></p>
   <div class="acts"><button class="btn danger" id="stPhClear" type="button" hidden>Delete all photos</button><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 99. Released October 26, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
-</section>
-
-<section id="pg-work" class="pg learn" aria-labelledby="h-work">
-  <h2 id="h-work">How the Calculations Work</h2>
-  <p class="hint">Every number on the Calculator, worked through step by step with your current choices: the treatment, area, panel and distance on the Calculator, plus anything filled in under About You. Change a choice there and come back to see the numbers move. Educational estimates, not medical advice.</p>
-  <div id="workBody"></div>
+  <p class="hint">Redox Dosimetry Lab, app build 106. Released October 27, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 99. Released October 26, 2026.<br>© 2026 Redox. All rights reserved.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 106. Released October 27, 2026.<br>© 2026 Redox. All rights reserved.</p>
 </main>
 
 <dialog id="phAdd" aria-labelledby="phAddT">
@@ -998,9 +959,6 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <button class="btn" id="openWizard" type="button" style="margin-top:10px">Measure my panel (guided)</button>
   <label style="margin-top:18px"><span class="l">Solar meter correction</span><input id="pfactor" type="number" inputmode="decimal" step="0.05" min="0.2" max="1.5"></label>
   <p class="hint">Solar meters tend to read 2 to 3 times high on narrow-band LEDs. 0.5 is a middle-of-the-road guess. Use 1.0 to take your readings as-is.</p>
-  <label style="margin-top:18px"><span class="l">Panel size, lit area (optional)</span></label>
-  <div class="row2"><label style="margin:0"><span class="l">Width</span><input id="ppw" type="number" inputmode="decimal" step="any" min="0"></label><label style="margin:0"><span class="l">Height</span><input id="pph" type="number" inputmode="decimal" step="any" min="0"></label></div>
-  <p class="hint">Same unit as the distances above. With a size, output at distances you did not measure is estimated from how light spreads off a flat LED panel instead of a rough rule. Your readings always win between your first and last distance.</p>
   <label class="toggle"><input type="checkbox" id="ptogether"><span>Wavelengths fire together. Red and near-infrared cannot be switched separately.</span></label>
   <p class="hint" id="dlgSrc"></p>
   <p class="err" id="dlgErr" role="alert"></p>
@@ -1069,7 +1027,6 @@ svg text{fill:var(--muted);font:10px var(--sans)}
   <p class="hint">Makes a repeating calendar reminder file. Open it on your phone and your calendar app adds it, with an alert at the time you pick.</p>
   <div class="fxchips" id="remDays"></div>
   <label><span class="l">Time</span><input id="remTime" type="time" value="19:00"></label>
-  <label><span class="l">Reminder text</span><input id="remText" type="text" maxlength="60" value="Redox session"></label>
   <p class="err" id="remErr" role="alert"></p>
   <div class="actions"><button class="btn primary" id="remMake" type="button">Create reminder</button><button class="btn" id="remCancel" type="button">Cancel</button></div>
 </dialog>
@@ -1226,10 +1183,10 @@ const PRESETS=[
  {id:"kala-quad",name:"Kala Quad Panel",factor:0.5,mode:"fixed",bands:[[660,50],[850,50]],rows:[[6,161]],kind:"claim",
   src:"Kala lists 161 mW/cm\u00b2 at 6 inches, measured with a solar meter, so the solar correction is applied. 924 LEDs, 660 and 850 nm in a 1:1 LED ratio. The power split is assumed to be even, and separate switching was not confirmed.",
   refs:[{t:"Kala Red Light Quad Panel specifications (retailer listing)",u:"https://shop.healfaster.ca/products/kala-red-light-quad-panel"}]},
- {id:"mito-max-large",name:"Mito MitoMAX 2.0 (36 x 12 in)",pw:36,ph:12,factor:1,mode:"switch",bands:[[660,50],[850,50]],rows:[[6,74]],kind:"lab",
+ {id:"mito-max-large",name:"Mito MitoMAX 2.0 (36 x 12 in)",factor:1,mode:"switch",bands:[[660,50],[850,50]],rows:[[6,74]],kind:"lab",
   src:"Mito publishes a lab figure of more than 74 mW/cm\u00b2 at 6 inches, alongside more than 165 on a consumer solar meter. The lab figure is used, so no solar correction. 660 and 850 nm in a 50/50 split with a separate switch for each.",
   refs:[{t:"Mito Red Light MitoMAX 2.0 (manufacturer page)",u:"https://mitoredlight.com/products/mitomax"}]},
- {id:"mito-max-small",name:"Mito MitoMAX 2.0 (12 x 9 in)",pw:12,ph:9,factor:1,mode:"switch",bands:[[660,50],[850,50]],rows:[[6,52]],kind:"lab",
+ {id:"mito-max-small",name:"Mito MitoMAX 2.0 (12 x 9 in)",factor:1,mode:"switch",bands:[[660,50],[850,50]],rows:[[6,52]],kind:"lab",
   src:"Mito publishes a lab figure of more than 52 mW/cm\u00b2 at 6 inches, alongside more than 115 on a consumer solar meter. The lab figure is used, so no solar correction. 660 and 850 nm in a 50/50 split with a separate switch for each.",
   refs:[{t:"Mito Red Light MitoMAX 2.0 (manufacturer page)",u:"https://mitoredlight.com/products/mitomax"}]},
  {id:"mito-pro-1500plus",name:"Mito MitoPRO 1500+",factor:1,mode:"fixed",bands:[[630,25],[660,25],[830,25],[850,25]],rows:[[6,68.2]],kind:"lab",
@@ -1271,12 +1228,12 @@ let S=Object.assign({},DEFAULT,store.get()||{});
 if(!Array.isArray(S.profiles)||!S.profiles.length)S.profiles=[JSON.parse(JSON.stringify(DEFAULT_PROFILE))];
 S.night=Object.assign({on:false,level:100},S.night||{});
 /* people: each has their own About You answers. S.me is the active person (an alias that is not saved twice) */
-const PEOPLE_MAX=8,HAIRS=["","none","thin","normal","thick"];
+const PEOPLE_MAX=8;
 function cleanPerson(p,i){
   p=p&&typeof p==="object"?p:{};
   const h0=+p.h,w0=+p.w,t0=Math.round(+p.tone);
   return {id:typeof p.id==="string"&&p.id?p.id.slice(0,24):"p"+i,name:String(p.name||"Person").slice(0,24),u:p.u==="imperial"?"imperial":"metric",
-    h:h0>=100&&h0<=250?h0:0,w:w0>=30&&w0<=300?w0:0,sex:p.sex==="male"||p.sex==="female"?p.sex:"",tone:t0>=1&&t0<=6?t0:0,hair:HAIRS.indexOf(p.hair)>0?p.hair:"",lp:typeof p.lp==="string"?p.lp:""};
+    h:h0>=100&&h0<=250?h0:0,w:w0>=30&&w0<=300?w0:0,tone:t0>=1&&t0<=6?t0:0,lp:typeof p.lp==="string"?p.lp:""};
 }
 function ensurePeople(){
   if(!Array.isArray(S.people)||!S.people.length){const old=S.me&&typeof S.me==="object"?S.me:{};S.people=[Object.assign({},old,{id:"me",name:"Me"})];S.person="me"}
@@ -1285,7 +1242,7 @@ function ensurePeople(){
   delete S.me;
   Object.defineProperty(S,"me",{enumerable:false,configurable:true,
     get:function(){return S.people.find(p=>p.id===S.person)||S.people[0]},
-    set:function(v){const p=S.people.find(x=>x.id===S.person)||S.people[0],keep={id:p.id,name:p.name,lp:p.lp};Object.keys(p).forEach(k=>{delete p[k]});Object.assign(p,{u:"metric",h:0,w:0,sex:"",tone:0,hair:""},v||{},keep)}});
+    set:function(v){const p=S.people.find(x=>x.id===S.person)||S.people[0],keep={id:p.id,name:p.name,lp:p.lp};Object.keys(p).forEach(k=>{delete p[k]});Object.assign(p,{u:"metric",h:0,w:0,tone:0},v||{},keep)}});
 }
 ensurePeople();
 if(S.themeV!==2){S.theme="dark";S.themeV=2}   /* a theme saved while the themes were being tried is reset to Dark once; later choices are kept */
@@ -1304,104 +1261,16 @@ const toCm=(v,u)=>(u||P().unit)==="in"?v*2.54:v;
 const fromCm=(v,u)=>(u||P().unit)==="in"?v/2.54:v;
 const clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
 
-/* ---------- Tissue light engine: layered diffusion tables checked against Monte Carlo ---------- */
-const TISSUE={"wl":[600,630,660,690,730,770,810,850,890,940,980,1000],"dg":[0,0.5,1,1.5,2,2.5,3,4,5,6,7,8,9,10,12,14,16,18,20,23,26,30,35,40,45,50,60],"dgh":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,20,23,26,30,35,40],"fats":[0,2,4,6,9,13,18,25,35,50],"skulls":[4.5,6.5,8.5],"body":[[[1.002,1.065,0.722,0.161,-0.237,-0.639,-1.042,-1.851,-2.663,-3.476,-4.289,-5.103,-5.917,-6.73,-8.358,-9.985,-11.613,-13.24,-14.868,-17.309,-19.751,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723],[1.044,1.136,0.871,0.503,0.302,0.08,-0.173,-0.89,-1.702,-2.516,-3.329,-4.143,-4.957,-5.77,-7.398,-9.025,-10.653,-12.28,-13.908,-16.349,-18.79,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723],[1.054,1.154,0.907,0.576,0.405,0.227,0.042,-0.358,-0.839,-1.558,-2.371,-3.185,-3.999,-4.812,-6.44,-8.067,-9.695,-11.322,-12.95,-15.391,-17.833,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723],[1.057,1.158,0.916,0.594,0.43,0.262,0.092,-0.258,-0.626,-1.028,-1.509,-2.228,-3.042,-3.856,-5.483,-7.111,-8.738,-10.366,-11.993,-14.435,-16.876,-20.131,-20.723,-20.723,-20.723,-20.723,-20.723],[1.058,1.16,0.919,0.6,0.438,0.273,0.106,-0.229,-0.568,-0.912,-1.264,-1.632,-2.035,-2.516,-4.049,-5.677,-7.304,-8.932,-10.559,-13.0,-15.442,-18.697,-20.723,-20.723,-20.723,-20.723,-20.723],[1.058,1.16,0.919,0.601,0.439,0.274,0.108,-0.225,-0.561,-0.897,-1.233,-1.571,-1.911,-2.255,-2.975,-3.859,-5.392,-7.019,-8.647,-11.088,-13.529,-16.784,-20.723,-20.723,-20.723,-20.723,-20.723],[1.058,1.16,0.919,0.601,0.439,0.274,0.109,-0.225,-0.56,-0.895,-1.231,-1.567,-1.903,-2.239,-2.912,-3.589,-4.285,-5.056,-6.257,-8.698,-11.139,-14.394,-18.463,-20.723,-20.723,-20.723,-20.723],[1.058,1.16,0.919,0.601,0.439,0.274,0.109,-0.225,-0.56,-0.895,-1.231,-1.567,-1.902,-2.238,-2.91,-3.581,-4.253,-4.925,-5.6,-6.635,-7.888,-11.048,-15.117,-19.186,-20.723,-20.723,-20.723],[1.058,1.16,0.919,0.601,0.439,0.274,0.109,-0.225,-0.56,-0.895,-1.231,-1.567,-1.902,-2.238,-2.91,-3.581,-4.252,-4.924,-5.595,-6.602,-7.61,-8.957,-10.763,-14.405,-18.474,-20.723,-20.723],[1.058,1.16,0.919,0.601,0.439,0.274,0.109,-0.225,-0.56,-0.895,-1.231,-1.567,-1.902,-2.238,-2.91,-3.581,-4.252,-4.924,-5.595,-6.602,-7.61,-8.952,-10.631,-12.31,-13.993,-15.799,-20.723]],[[1.081,1.195,0.971,0.64,0.436,0.228,0.019,-0.402,-0.825,-1.248,-1.672,-2.096,-2.52,-2.943,-3.791,-4.639,-5.486,-6.334,-7.182,-8.453,-9.725,-11.42,-13.539,-15.658,-17.778,-19.897,-20.723],[1.106,1.235,1.044,0.779,0.635,0.482,0.318,-0.075,-0.497,-0.921,-1.345,-1.768,-2.192,-2.616,-3.464,-4.311,-5.159,-6.007,-6.854,-8.126,-9.397,-11.093,-13.212,-15.331,-17.45,-19.569,-20.723],[1.115,1.249,1.069,0.824,0.694,0.561,0.422,0.13,-0.193,-0.588,-1.012,-1.435,-1.859,-2.283,-3.131,-3.978,-4.826,-5.674,-6.521,-7.793,-9.064,-10.76,-12.879,-14.998,-17.117,-19.237,-20.723],[1.118,1.253,1.078,0.839,0.715,0.587,0.457,0.19,-0.088,-0.382,-0.706,-1.101,-1.525,-1.948,-2.796,-3.644,-4.491,-5.339,-6.187,-7.458,-8.73,-10.425,-12.544,-14.663,-16.783,-18.902,-20.723],[1.12,1.256,1.082,0.846,0.724,0.599,0.472,0.215,-0.045,-0.308,-0.577,-0.856,-1.15,-1.474,-2.293,-3.141,-3.988,-4.836,-5.684,-6.955,-8.227,-9.922,-12.041,-14.16,-16.279,-18.399,-20.723],[1.12,1.256,1.083,0.847,0.726,0.601,0.475,0.221,-0.035,-0.291,-0.549,-0.807,-1.068,-1.332,-1.879,-2.498,-3.317,-4.165,-5.012,-6.284,-7.555,-9.251,-11.37,-13.489,-15.608,-17.727,-20.723],[1.12,1.256,1.083,0.848,0.726,0.602,0.476,0.222,-0.033,-0.289,-0.545,-0.801,-1.057,-1.314,-1.829,-2.348,-2.881,-3.454,-4.173,-5.444,-6.716,-8.411,-10.53,-12.65,-14.769,-16.888,-20.723],[1.12,1.256,1.083,0.848,0.726,0.602,0.476,0.222,-0.033,-0.289,-0.545,-0.801,-1.057,-1.312,-1.824,-2.337,-2.849,-3.363,-3.879,-4.673,-5.57,-7.236,-9.355,-11.474,-13.594,-15.713,-19.951],[1.12,1.256,1.083,0.848,0.726,0.602,0.476,0.222,-0.033,-0.289,-0.545,-0.801,-1.056,-1.312,-1.824,-2.336,-2.848,-3.36,-3.872,-4.64,-5.409,-6.439,-7.805,-9.796,-11.915,-14.034,-18.273],[1.12,1.256,1.083,0.848,0.726,0.602,0.476,0.222,-0.033,-0.289,-0.545,-0.801,-1.056,-1.312,-1.824,-2.336,-2.848,-3.36,-3.872,-4.64,-5.408,-6.432,-7.712,-8.992,-10.278,-11.645,-15.755]],[[1.113,1.25,1.079,0.827,0.676,0.521,0.364,0.047,-0.272,-0.592,-0.912,-1.232,-1.552,-1.872,-2.512,-3.152,-3.792,-4.432,-5.073,-6.033,-6.993,-8.273,-9.873,-11.473,-13.074,-14.674,-17.875],[1.128,1.272,1.119,0.896,0.773,0.644,0.509,0.206,-0.113,-0.432,-0.752,-1.072,-1.392,-1.712,-2.352,-2.992,-3.633,-4.273,-4.913,-5.873,-6.833,-8.113,-9.713,-11.314,-12.914,-14.514,-17.715],[1.134,1.281,1.133,0.921,0.806,0.686,0.563,0.308,0.037,-0.268,-0.588,-0.908,-1.228,-1.548,-2.189,-2.829,-3.469,-4.109,-4.749,-5.709,-6.669,-7.949,-9.55,-11.15,-12.75,-14.35,-17.551],[1.136,1.284,1.139,0.931,0.818,0.702,0.583,0.341,0.092,-0.166,-0.438,-0.743,-1.063,-1.383,-2.023,-2.663,-3.303,-3.944,-4.584,-5.544,-6.504,-7.784,-9.384,-10.984,-12.585,-14.185,-17.386],[1.138,1.286,1.142,0.935,0.824,0.709,0.593,0.356,0.117,-0.124,-0.369,-0.619,-0.877,-1.149,-1.774,-2.415,-3.055,-3.695,-4.335,-5.295,-6.255,-7.535,-9.135,-10.736,-12.336,-13.936,-17.137],[1.138,1.286,1.142,0.936,0.825,0.711,0.595,0.361,0.124,-0.113,-0.351,-0.59,-0.83,-1.072,-1.567,-2.097,-2.722,-3.362,-4.003,-4.963,-5.923,-7.203,-8.803,-10.403,-12.004,-13.604,-16.805],[1.138,1.286,1.143,0.936,0.825,0.711,0.596,0.361,0.125,-0.111,-0.348,-0.585,-0.823,-1.06,-1.536,-2.015,-2.502,-3.01,-3.587,-4.547,-5.507,-6.788,-8.388,-9.988,-11.588,-13.188,-16.389],[1.138,1.286,1.143,0.936,0.825,0.711,0.596,0.361,0.125,-0.111,-0.348,-0.585,-0.822,-1.059,-1.533,-2.007,-2.481,-2.957,-3.434,-4.16,-4.94,-6.206,-7.806,-9.406,-11.007,-12.607,-15.808],[1.138,1.286,1.143,0.936,0.825,0.711,0.596,0.361,0.125,-0.111,-0.348,-0.585,-0.822,-1.059,-1.533,-2.007,-2.481,-2.955,-3.429,-4.14,-4.851,-5.803,-7.038,-8.576,-10.176,-11.776,-14.977],[1.138,1.286,1.143,0.936,0.825,0.711,0.596,0.361,0.125,-0.111,-0.348,-0.585,-0.822,-1.059,-1.533,-2.007,-2.481,-2.955,-3.428,-4.139,-4.85,-5.798,-6.983,-8.168,-9.357,-10.592,-13.731]],[[1.138,1.289,1.159,0.961,0.842,0.72,0.595,0.343,0.088,-0.167,-0.423,-0.679,-0.934,-1.19,-1.702,-2.213,-2.725,-3.236,-3.748,-4.515,-5.283,-6.306,-7.585,-8.864,-10.142,-11.421,-13.98],[1.148,1.304,1.184,1.001,0.898,0.789,0.676,0.431,0.177,-0.079,-0.334,-0.59,-0.846,-1.101,-1.613,-2.125,-2.636,-3.148,-3.659,-4.427,-5.194,-6.217,-7.496,-8.775,-10.054,-11.333,-13.891],[1.153,1.311,1.195,1.018,0.919,0.816,0.71,0.491,0.262,0.014,-0.242,-0.497,-0.753,-1.009,-1.52,-2.032,-2.544,-3.055,-3.567,-4.334,-5.101,-6.124,-7.403,-8.682,-9.961,-11.24,-13.798],[1.154,1.314,1.199,1.026,0.929,0.828,0.725,0.514,0.297,0.075,-0.155,-0.403,-0.659,-0.915,-1.426,-1.938,-2.449,-2.961,-3.473,-4.24,-5.007,-6.03,-7.309,-8.588,-9.867,-11.146,-13.704],[1.156,1.315,1.202,1.029,0.934,0.834,0.733,0.526,0.316,0.105,-0.11,-0.327,-0.55,-0.78,-1.284,-1.796,-2.307,-2.819,-3.33,-4.098,-4.865,-5.888,-7.167,-8.446,-9.725,-11.004,-13.562],[1.156,1.316,1.202,1.031,0.935,0.836,0.735,0.53,0.322,0.114,-0.095,-0.305,-0.516,-0.728,-1.16,-1.613,-2.117,-2.628,-3.14,-3.907,-4.675,-5.698,-6.977,-8.255,-9.534,-10.813,-13.372],[1.156,1.316,1.203,1.031,0.936,0.837,0.736,0.531,0.324,0.116,-0.092,-0.301,-0.509,-0.718,-1.136,-1.556,-1.983,-2.423,-2.902,-3.669,-4.436,-5.459,-6.738,-8.017,-9.296,-10.575,-13.133],[1.156,1.316,1.203,1.031,0.936,0.837,0.736,0.531,0.324,0.116,-0.092,-0.3,-0.508,-0.716,-1.133,-1.549,-1.966,-2.383,-2.802,-3.44,-4.11,-5.126,-6.405,-7.684,-8.962,-10.241,-12.8],[1.156,1.316,1.203,1.031,0.936,0.837,0.736,0.531,0.324,0.116,-0.092,-0.3,-0.508,-0.716,-1.132,-1.549,-1.965,-2.381,-2.797,-3.422,-4.047,-4.884,-5.961,-7.207,-8.486,-9.765,-12.323],[1.156,1.316,1.203,1.031,0.936,0.837,0.736,0.531,0.324,0.116,-0.092,-0.3,-0.508,-0.716,-1.132,-1.549,-1.965,-2.381,-2.797,-3.422,-4.046,-4.878,-5.919,-6.96,-8.005,-9.083,-11.608]],[[1.151,1.313,1.215,1.054,0.956,0.854,0.75,0.537,0.322,0.106,-0.111,-0.328,-0.544,-0.761,-1.195,-1.629,-2.062,-2.496,-2.93,-3.58,-4.231,-5.098,-6.183,-7.267,-8.351,-9.436,-11.605],[1.142,1.3,1.195,1.022,0.919,0.814,0.708,0.496,0.281,0.064,-0.152,-0.369,-0.586,-0.803,-1.236,-1.67,-2.104,-2.538,-2.971,-3.622,-4.272,-5.14,-6.224,-7.308,-8.393,-9.477,-11.646],[1.138,1.295,1.186,1.009,0.903,0.793,0.682,0.457,0.236,0.021,-0.196,-0.413,-0.63,-0.846,-1.28,-1.714,-2.148,-2.581,-3.015,-3.666,-4.316,-5.184,-6.268,-7.352,-8.436,-9.521,-11.69],[1.137,1.293,1.183,1.004,0.897,0.785,0.671,0.441,0.21,-0.018,-0.241,-0.457,-0.674,-0.891,-1.324,-1.758,-2.192,-2.626,-3.059,-3.71,-4.36,-5.228,-6.312,-7.396,-8.481,-9.565,-11.734],[1.136,1.292,1.182,1.002,0.894,0.781,0.666,0.433,0.197,-0.039,-0.274,-0.507,-0.736,-0.958,-1.391,-1.825,-2.259,-2.693,-3.126,-3.777,-4.427,-5.295,-6.379,-7.463,-8.548,-9.632,-11.801],[1.136,1.292,1.181,1.001,0.893,0.78,0.665,0.43,0.193,-0.045,-0.283,-0.522,-0.759,-0.996,-1.464,-1.915,-2.348,-2.782,-3.216,-3.866,-4.517,-5.384,-6.469,-7.553,-8.637,-9.722,-11.891],[1.136,1.292,1.181,1.001,0.893,0.78,0.665,0.43,0.193,-0.046,-0.285,-0.524,-0.763,-1.002,-1.479,-1.955,-2.427,-2.889,-3.328,-3.979,-4.629,-5.497,-6.581,-7.665,-8.749,-9.834,-12.003],[1.136,1.292,1.181,1.001,0.893,0.78,0.665,0.43,0.193,-0.046,-0.285,-0.524,-0.763,-1.003,-1.481,-1.959,-2.438,-2.916,-3.393,-4.102,-4.786,-5.653,-6.738,-7.822,-8.906,-9.991,-12.16],[1.136,1.292,1.181,1.001,0.893,0.78,0.665,0.43,0.193,-0.046,-0.285,-0.524,-0.763,-1.003,-1.481,-1.96,-2.438,-2.917,-3.395,-4.113,-4.83,-5.785,-6.956,-8.046,-9.13,-10.215,-12.384],[1.136,1.292,1.181,1.001,0.893,0.78,0.665,0.43,0.193,-0.046,-0.285,-0.524,-0.763,-1.003,-1.481,-1.96,-2.438,-2.917,-3.395,-4.113,-4.831,-5.788,-6.984,-8.18,-9.374,-10.545,-12.72]],[[1.12,1.275,1.175,1.001,0.891,0.777,0.66,0.419,0.175,-0.07,-0.316,-0.562,-0.808,-1.055,-1.548,-2.04,-2.533,-3.026,-3.519,-4.258,-4.997,-5.983,-7.215,-8.447,-9.679,-10.911,-13.376],[1.098,1.245,1.128,0.926,0.797,0.666,0.537,0.292,0.048,-0.197,-0.443,-0.689,-0.935,-1.182,-1.675,-2.167,-2.66,-3.153,-3.646,-4.385,-5.124,-6.11,-7.342,-8.574,-9.806,-11.038,-13.503],[1.091,1.236,1.114,0.903,0.767,0.626,0.484,0.2,-0.073,-0.323,-0.569,-0.816,-1.062,-1.308,-1.801,-2.294,-2.787,-3.279,-3.772,-4.512,-5.251,-6.236,-7.468,-8.7,-9.933,-11.165,-13.629],[1.09,1.233,1.11,0.897,0.758,0.614,0.468,0.171,-0.125,-0.414,-0.69,-0.942,-1.188,-1.434,-1.927,-2.42,-2.913,-3.405,-3.898,-4.638,-5.377,-6.362,-7.594,-8.826,-10.059,-11.291,-13.755],[1.089,1.232,1.108,0.894,0.755,0.61,0.462,0.161,-0.144,-0.449,-0.752,-1.051,-1.342,-1.617,-2.116,-2.609,-3.101,-3.594,-4.087,-4.826,-5.566,-6.551,-7.783,-9.015,-10.247,-11.479,-13.944],[1.089,1.232,1.108,0.894,0.754,0.609,0.461,0.159,-0.147,-0.455,-0.763,-1.071,-1.379,-1.685,-2.288,-2.855,-3.353,-3.846,-4.339,-5.078,-5.817,-6.803,-8.035,-9.267,-10.499,-11.731,-14.196],[1.089,1.232,1.108,0.894,0.754,0.609,0.461,0.159,-0.147,-0.455,-0.764,-1.073,-1.382,-1.691,-2.309,-2.925,-3.535,-4.125,-4.653,-5.393,-6.132,-7.117,-8.35,-9.582,-10.814,-12.046,-14.51],[1.089,1.232,1.108,0.894,0.754,0.609,0.461,0.159,-0.147,-0.455,-0.764,-1.073,-1.382,-1.691,-2.31,-2.929,-3.547,-4.165,-4.783,-5.701,-6.567,-7.558,-8.79,-10.022,-11.254,-12.486,-14.951],[1.089,1.232,1.108,0.894,0.754,0.609,0.461,0.159,-0.147,-0.455,-0.764,-1.073,-1.382,-1.691,-2.31,-2.929,-3.547,-4.166,-4.785,-5.713,-6.64,-7.876,-9.384,-10.651,-11.883,-13.115,-15.58],[1.089,1.232,1.108,0.894,0.754,0.609,0.461,0.159,-0.147,-0.455,-0.764,-1.073,-1.382,-1.691,-2.31,-2.929,-3.547,-4.166,-4.785,-5.713,-6.641,-7.878,-9.425,-10.971,-12.516,-14.024,-16.524]],[[1.116,1.273,1.192,1.039,0.941,0.838,0.731,0.511,0.287,0.061,-0.166,-0.394,-0.621,-0.849,-1.304,-1.759,-2.215,-2.67,-3.125,-3.808,-4.491,-5.402,-6.54,-7.679,-8.817,-9.955,-12.232],[1.116,1.272,1.191,1.036,0.933,0.824,0.711,0.486,0.261,0.035,-0.192,-0.419,-0.647,-0.874,-1.33,-1.785,-2.24,-2.696,-3.151,-3.834,-4.517,-5.427,-6.566,-7.704,-8.842,-9.981,-12.258],[1.115,1.272,1.19,1.035,0.932,0.822,0.709,0.477,0.241,0.01,-0.217,-0.445,-0.672,-0.9,-1.355,-1.81,-2.266,-2.721,-3.176,-3.859,-4.542,-5.453,-6.591,-7.73,-8.868,-10.006,-12.283],[1.115,1.272,1.19,1.035,0.931,0.822,0.709,0.476,0.239,0.001,-0.238,-0.47,-0.698,-0.925,-1.381,-1.836,-2.291,-2.747,-3.202,-3.885,-4.568,-5.479,-6.617,-7.755,-8.893,-10.032,-12.309],[1.115,1.272,1.19,1.035,0.931,0.821,0.708,0.475,0.238,-0.001,-0.24,-0.48,-0.72,-0.959,-1.419,-1.874,-2.33,-2.785,-3.24,-3.923,-4.606,-5.517,-6.655,-7.793,-8.932,-10.07,-12.347],[1.115,1.272,1.19,1.035,0.931,0.821,0.708,0.475,0.238,-0.001,-0.241,-0.481,-0.721,-0.961,-1.442,-1.92,-2.381,-2.836,-3.291,-3.974,-4.657,-5.568,-6.706,-7.844,-8.983,-10.121,-12.398],[1.115,1.272,1.19,1.035,0.931,0.821,0.708,0.475,0.238,-0.001,-0.241,-0.481,-0.722,-0.962,-1.443,-1.923,-2.404,-2.883,-3.355,-4.038,-4.721,-5.632,-6.77,-7.908,-9.047,-10.185,-12.462],[1.115,1.272,1.19,1.035,0.931,0.821,0.708,0.475,0.238,-0.001,-0.241,-0.481,-0.722,-0.962,-1.443,-1.924,-2.404,-2.885,-3.366,-4.087,-4.805,-5.721,-6.859,-7.998,-9.136,-10.274,-12.551],[1.115,1.272,1.19,1.035,0.931,0.821,0.708,0.475,0.238,-0.001,-0.241,-0.481,-0.722,-0.962,-1.443,-1.924,-2.404,-2.885,-3.366,-4.087,-4.809,-5.77,-6.971,-8.125,-9.264,-10.402,-12.679],[1.115,1.272,1.19,1.035,0.931,0.821,0.708,0.475,0.238,-0.001,-0.241,-0.481,-0.722,-0.962,-1.443,-1.924,-2.404,-2.885,-3.366,-4.087,-4.809,-5.77,-6.973,-8.175,-9.377,-10.577,-12.871]],[[1.087,1.238,1.158,0.999,0.895,0.785,0.671,0.435,0.194,-0.049,-0.294,-0.539,-0.785,-1.031,-1.522,-2.014,-2.506,-2.998,-3.489,-4.227,-4.965,-5.948,-7.178,-8.407,-9.636,-10.866,-13.325],[1.088,1.24,1.16,1.003,0.891,0.773,0.649,0.404,0.163,-0.081,-0.326,-0.571,-0.817,-1.063,-1.554,-2.046,-2.538,-3.029,-3.521,-4.259,-4.997,-5.98,-7.209,-8.439,-9.668,-10.898,-13.357],[1.089,1.24,1.162,1.005,0.893,0.775,0.653,0.4,0.14,-0.112,-0.357,-0.602,-0.848,-1.094,-1.586,-2.077,-2.569,-3.061,-3.553,-4.29,-5.028,-6.011,-7.241,-8.47,-9.7,-10.929,-13.388],[1.089,1.241,1.162,1.005,0.894,0.776,0.654,0.402,0.144,-0.117,-0.38,-0.634,-0.879,-1.125,-1.617,-2.108,-2.6,-3.092,-3.584,-4.321,-5.059,-6.043,-7.272,-8.501,-9.731,-10.96,-13.42],[1.089,1.241,1.162,1.005,0.894,0.777,0.655,0.403,0.146,-0.114,-0.375,-0.637,-0.9,-1.163,-1.663,-2.155,-2.647,-3.139,-3.63,-4.368,-5.106,-6.089,-7.319,-8.548,-9.778,-11.007,-13.466],[1.089,1.241,1.162,1.005,0.894,0.777,0.655,0.403,0.146,-0.114,-0.374,-0.635,-0.897,-1.158,-1.683,-2.209,-2.709,-3.201,-3.693,-4.43,-5.168,-6.152,-7.381,-8.61,-9.84,-11.069,-13.529],[1.089,1.241,1.162,1.005,0.894,0.777,0.655,0.403,0.146,-0.114,-0.374,-0.635,-0.896,-1.158,-1.681,-2.204,-2.728,-3.253,-3.771,-4.508,-5.246,-6.229,-7.459,-8.688,-9.918,-11.147,-13.606],[1.089,1.241,1.162,1.005,0.894,0.777,0.655,0.403,0.146,-0.114,-0.374,-0.635,-0.896,-1.158,-1.681,-2.204,-2.726,-3.249,-3.772,-4.558,-5.346,-6.338,-7.568,-8.797,-10.027,-11.256,-13.715],[1.089,1.241,1.162,1.005,0.894,0.777,0.655,0.403,0.146,-0.114,-0.374,-0.635,-0.896,-1.158,-1.681,-2.204,-2.726,-3.249,-3.772,-4.557,-5.341,-6.387,-7.697,-8.953,-10.182,-11.412,-13.871],[1.089,1.241,1.162,1.005,0.894,0.777,0.655,0.403,0.146,-0.114,-0.374,-0.635,-0.896,-1.158,-1.681,-2.204,-2.726,-3.249,-3.772,-4.557,-5.341,-6.387,-7.694,-9.001,-10.309,-11.619,-14.105]],[[1.061,1.207,1.131,0.973,0.866,0.753,0.635,0.391,0.141,-0.112,-0.367,-0.623,-0.879,-1.135,-1.648,-2.162,-2.675,-3.188,-3.702,-4.472,-5.241,-6.268,-7.551,-8.835,-10.118,-11.401,-13.968],[0.952,1.067,0.919,0.631,0.404,0.186,-0.01,-0.289,-0.536,-0.788,-1.042,-1.298,-1.554,-1.81,-2.323,-2.837,-3.35,-3.863,-4.376,-5.146,-5.916,-6.943,-8.226,-9.51,-10.793,-12.076,-14.643],[0.941,1.052,0.895,0.589,0.341,0.086,-0.17,-0.672,-1.113,-1.405,-1.658,-1.913,-2.169,-2.425,-2.938,-3.452,-3.965,-4.478,-4.992,-5.762,-6.532,-7.558,-8.841,-10.125,-11.408,-12.691,-15.258],[0.939,1.05,0.892,0.585,0.334,0.075,-0.188,-0.725,-1.262,-1.779,-2.229,-2.525,-2.781,-3.037,-3.55,-4.063,-4.576,-5.09,-5.603,-6.373,-7.143,-8.17,-9.453,-10.736,-12.02,-13.303,-15.87],[0.939,1.05,0.892,0.584,0.333,0.074,-0.191,-0.731,-1.281,-1.835,-2.389,-2.937,-3.46,-3.914,-4.468,-4.981,-5.495,-6.008,-6.521,-7.291,-8.061,-9.088,-10.371,-11.654,-12.938,-14.221,-16.788],[0.939,1.05,0.892,0.584,0.333,0.074,-0.191,-0.731,-1.281,-1.837,-2.395,-2.955,-3.516,-4.077,-5.186,-6.165,-6.72,-7.233,-7.746,-8.516,-9.286,-10.313,-11.596,-12.879,-14.163,-15.446,-18.013],[0.939,1.05,0.892,0.584,0.333,0.074,-0.191,-0.731,-1.281,-1.837,-2.395,-2.956,-3.517,-4.079,-5.204,-6.329,-7.45,-8.525,-9.278,-10.048,-10.818,-11.844,-13.128,-14.411,-15.694,-16.978,-19.545],[0.939,1.05,0.892,0.584,0.333,0.074,-0.191,-0.731,-1.281,-1.837,-2.395,-2.956,-3.517,-4.079,-5.204,-6.33,-7.456,-8.582,-9.707,-11.39,-12.92,-13.988,-15.272,-16.555,-17.838,-19.122,-20.723],[0.939,1.05,0.892,0.584,0.333,0.074,-0.191,-0.731,-1.281,-1.837,-2.395,-2.956,-3.517,-4.079,-5.204,-6.33,-7.456,-8.582,-9.708,-11.396,-13.085,-15.337,-18.095,-19.618,-20.723,-20.723,-20.723],[0.939,1.05,0.892,0.584,0.333,0.074,-0.191,-0.731,-1.281,-1.837,-2.395,-2.956,-3.517,-4.079,-5.204,-6.33,-7.456,-8.582,-9.708,-11.396,-13.085,-15.337,-18.152,-20.723,-20.723,-20.723,-20.723]],[[0.993,1.125,1.032,0.841,0.707,0.566,0.42,0.117,-0.195,-0.51,-0.829,-1.149,-1.47,-1.792,-2.435,-3.079,-3.723,-4.368,-5.012,-5.978,-6.944,-8.233,-9.844,-11.454,-13.065,-14.675,-17.897],[0.828,0.913,0.705,0.267,-0.173,-0.596,-0.969,-1.367,-1.666,-1.975,-2.289,-2.607,-2.927,-3.247,-3.89,-4.534,-5.178,-5.822,-6.467,-7.433,-8.399,-9.688,-11.298,-12.909,-14.519,-16.13,-19.351],[0.825,0.909,0.698,0.254,-0.2,-0.66,-1.124,-2.048,-2.878,-3.296,-3.605,-3.919,-4.237,-4.556,-5.198,-5.841,-6.485,-7.13,-7.774,-8.74,-9.706,-10.995,-12.605,-14.216,-15.827,-17.437,-20.659],[0.825,0.909,0.698,0.253,-0.201,-0.661,-1.127,-2.07,-3.024,-3.971,-4.818,-5.248,-5.562,-5.879,-6.519,-7.162,-7.806,-8.45,-9.094,-10.061,-11.027,-12.315,-13.926,-15.536,-17.147,-18.758,-20.723],[0.825,0.909,0.698,0.253,-0.201,-0.661,-1.127,-2.071,-3.027,-3.992,-4.964,-5.939,-6.902,-7.762,-8.52,-9.161,-9.804,-10.448,-11.092,-12.058,-13.024,-14.313,-15.923,-17.534,-19.144,-20.723,-20.723],[0.825,0.909,0.698,0.253,-0.201,-0.661,-1.127,-2.071,-3.027,-3.992,-4.965,-5.942,-6.923,-7.907,-9.879,-11.719,-12.484,-13.126,-13.77,-14.736,-15.703,-16.991,-18.602,-20.212,-20.723,-20.723,-20.723],[0.825,0.909,0.698,0.253,-0.201,-0.661,-1.127,-2.071,-3.027,-3.992,-4.965,-5.942,-6.923,-7.907,-9.882,-11.862,-13.845,-15.811,-17.129,-18.094,-19.06,-20.349,-20.723,-20.723,-20.723,-20.723,-20.723],[0.825,0.909,0.698,0.253,-0.201,-0.661,-1.127,-2.071,-3.027,-3.992,-4.965,-5.942,-6.923,-7.907,-9.882,-11.862,-13.846,-15.832,-17.819,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723],[0.825,0.909,0.698,0.253,-0.201,-0.661,-1.127,-2.071,-3.027,-3.992,-4.965,-5.942,-6.923,-7.907,-9.882,-11.862,-13.846,-15.832,-17.819,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723],[0.825,0.909,0.698,0.253,-0.201,-0.661,-1.127,-2.071,-3.027,-3.992,-4.965,-5.942,-6.923,-7.907,-9.882,-11.862,-13.846,-15.832,-17.819,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723,-20.723]],[[0.955,1.08,0.985,0.785,0.641,0.489,0.331,0.005,-0.33,-0.671,-1.016,-1.363,-1.71,-2.059,-2.758,-3.457,-4.156,-4.856,-5.556,-6.605,-7.655,-9.054,-10.803,-12.553,-14.302,-16.051,-19.55],[0.966,1.094,1.006,0.814,0.653,0.48,0.299,-0.055,-0.393,-0.736,-1.081,-1.429,-1.777,-2.126,-2.825,-3.524,-4.224,-4.923,-5.623,-6.672,-7.722,-9.121,-10.871,-12.62,-14.369,-16.118,-19.617],[0.969,1.097,1.01,0.821,0.663,0.494,0.318,-0.048,-0.432,-0.8,-1.147,-1.495,-1.843,-2.192,-2.891,-3.591,-4.29,-4.99,-5.69,-6.739,-7.789,-9.188,-10.937,-12.687,-14.436,-16.185,-19.684],[0.969,1.098,1.011,0.823,0.665,0.497,0.323,-0.04,-0.413,-0.796,-1.188,-1.561,-1.909,-2.259,-2.958,-3.657,-4.357,-5.056,-5.756,-6.806,-7.855,-9.255,-11.004,-12.753,-14.502,-16.252,-19.75],[0.97,1.098,1.012,0.823,0.665,0.498,0.324,-0.037,-0.409,-0.786,-1.167,-1.551,-1.938,-2.333,-3.057,-3.757,-4.456,-5.156,-5.856,-6.905,-7.955,-9.354,-11.103,-12.853,-14.602,-16.351,-19.85],[0.97,1.098,1.012,0.823,0.665,0.498,0.324,-0.037,-0.408,-0.785,-1.165,-1.546,-1.928,-2.311,-3.08,-3.865,-4.589,-5.289,-5.988,-7.038,-8.087,-9.487,-11.236,-12.985,-14.735,-16.484,-19.983],[0.97,1.098,1.012,0.823,0.665,0.498,0.324,-0.037,-0.408,-0.785,-1.164,-1.546,-1.927,-2.31,-3.076,-3.842,-4.61,-5.384,-6.154,-7.204,-8.253,-9.653,-11.402,-13.151,-14.9,-16.65,-20.148],[0.97,1.098,1.012,0.823,0.665,0.498,0.324,-0.037,-0.408,-0.785,-1.164,-1.545,-1.927,-2.31,-3.075,-3.841,-4.607,-5.373,-6.139,-7.291,-8.461,-9.885,-11.634,-13.383,-15.132,-16.882,-20.38],[0.97,1.098,1.012,0.823,0.665,0.498,0.324,-0.037,-0.408,-0.785,-1.164,-1.545,-1.927,-2.31,-3.075,-3.841,-4.607,-5.373,-6.139,-7.288,-8.437,-9.97,-11.895,-13.715,-15.464,-17.213,-20.712],[0.97,1.098,1.012,0.823,0.665,0.498,0.324,-0.037,-0.408,-0.785,-1.164,-1.545,-1.927,-2.31,-3.075,-3.841,-4.607,-5.373,-6.139,-7.288,-8.437,-9.969,-11.884,-13.799,-15.715,-17.64,-20.723]],[[0.966,1.095,1.015,0.838,0.711,0.576,0.435,0.143,-0.159,-0.466,-0.777,-1.091,-1.405,-1.72,-2.351,-2.983,-3.615,-4.247,-4.879,-5.828,-6.776,-8.041,-9.621,-11.202,-12.783,-14.363,-17.525],[0.911,1.027,0.917,0.684,0.48,0.275,0.074,-0.258,-0.56,-0.868,-1.178,-1.491,-1.806,-2.121,-2.752,-3.384,-4.016,-4.648,-5.28,-6.229,-7.177,-8.441,-10.022,-11.603,-13.183,-14.764,-17.926],[0.904,1.018,0.904,0.662,0.448,0.226,-0.002,-0.462,-0.903,-1.253,-1.564,-1.877,-2.191,-2.506,-3.137,-3.769,-4.401,-5.033,-5.665,-6.614,-7.562,-8.827,-10.407,-11.988,-13.569,-15.149,-18.311],[0.903,1.017,0.902,0.659,0.444,0.219,-0.013,-0.489,-0.974,-1.453,-1.906,-2.261,-2.576,-2.891,-3.522,-4.154,-4.786,-5.418,-6.05,-6.999,-7.947,-9.212,-10.792,-12.373,-13.954,-15.534,-18.696],[0.903,1.017,0.902,0.659,0.443,0.218,-0.014,-0.493,-0.984,-1.482,-1.982,-2.48,-2.968,-3.426,-4.1,-4.732,-5.364,-5.996,-6.629,-7.577,-8.525,-9.79,-11.37,-12.951,-14.532,-16.112,-19.274],[0.903,1.017,0.902,0.659,0.443,0.218,-0.014,-0.493,-0.985,-1.483,-1.986,-2.491,-2.997,-3.504,-4.512,-5.461,-6.136,-6.768,-7.4,-8.349,-9.297,-10.562,-12.142,-13.723,-15.304,-16.884,-20.046],[0.903,1.017,0.902,0.659,0.443,0.218,-0.014,-0.493,-0.985,-1.483,-1.986,-2.491,-2.998,-3.506,-4.522,-5.54,-6.554,-7.547,-8.365,-9.314,-10.262,-11.527,-13.107,-14.688,-16.269,-17.849,-20.723],[0.903,1.017,0.902,0.659,0.443,0.218,-0.014,-0.493,-0.985,-1.483,-1.986,-2.491,-2.998,-3.506,-4.522,-5.54,-6.558,-7.576,-8.594,-10.118,-11.57,-12.877,-14.458,-16.039,-17.619,-19.2,-20.723],[0.903,1.017,0.902,0.659,0.443,0.218,-0.014,-0.493,-0.985,-1.483,-1.986,-2.491,-2.998,-3.506,-4.522,-5.54,-6.558,-7.576,-8.595,-10.122,-11.649,-13.686,-16.202,-17.969,-19.549,-20.723,-20.723],[0.903,1.017,0.902,0.659,0.443,0.218,-0.014,-0.493,-0.985,-1.483,-1.986,-2.491,-2.998,-3.506,-4.522,-5.54,-6.558,-7.576,-8.595,-10.122,-11.649,-13.686,-16.232,-18.777,-20.723,-20.723,-20.723]]],"head":[[[1.001,0.896,0.29,-0.366,-1.043,-1.773,-2.385,-3.002,-3.639,-4.346,-4.74,-4.756,-5.244,-6.116,-6.988,-7.86,-8.733,-10.477,-12.222,-14.839,-17.456,-20.723,-20.723,-20.723],[1.001,0.896,0.29,-0.366,-1.043,-1.772,-2.382,-2.992,-3.603,-4.221,-4.857,-5.564,-5.959,-5.975,-6.462,-7.335,-8.207,-9.952,-11.696,-14.313,-16.93,-20.419,-20.723,-20.723],[1.001,0.896,0.29,-0.366,-1.043,-1.772,-2.381,-2.991,-3.6,-4.211,-4.822,-5.44,-6.076,-6.783,-7.178,-7.194,-7.681,-9.426,-11.17,-13.787,-16.404,-19.893,-20.723,-20.723]],[[1.161,1.205,0.807,0.364,-0.094,-0.567,-0.959,-1.362,-1.788,-2.273,-2.537,-2.547,-2.833,-3.343,-3.853,-4.364,-4.874,-5.895,-6.916,-8.447,-9.979,-12.021,-14.573,-17.125],[1.161,1.205,0.807,0.365,-0.091,-0.561,-0.946,-1.332,-1.724,-2.127,-2.553,-3.038,-3.301,-3.312,-3.597,-4.108,-4.618,-5.639,-6.66,-8.192,-9.723,-11.765,-14.317,-16.869],[1.161,1.205,0.808,0.365,-0.091,-0.56,-0.943,-1.326,-1.711,-2.097,-2.489,-2.892,-3.318,-3.803,-4.067,-4.077,-4.363,-5.384,-6.404,-7.936,-9.467,-11.509,-14.061,-16.613]],[[1.201,1.29,0.957,0.577,0.184,-0.219,-0.56,-0.912,-1.289,-1.717,-1.948,-1.957,-2.191,-2.609,-3.027,-3.445,-3.863,-4.699,-5.535,-6.789,-8.043,-9.715,-11.805,-13.895],[1.201,1.291,0.958,0.579,0.188,-0.209,-0.541,-0.876,-1.217,-1.569,-1.946,-2.374,-2.605,-2.614,-2.849,-3.266,-3.684,-4.52,-5.356,-6.61,-7.864,-9.536,-11.626,-13.716],[1.201,1.291,0.958,0.579,0.19,-0.207,-0.536,-0.866,-1.198,-1.533,-1.874,-2.227,-2.603,-3.032,-3.262,-3.272,-3.506,-4.342,-5.178,-6.432,-7.686,-9.358,-11.448,-13.538]],[[1.223,1.34,1.05,0.709,0.357,-0.003,-0.315,-0.639,-0.987,-1.382,-1.594,-1.603,-1.806,-2.169,-2.532,-2.895,-3.257,-3.983,-4.709,-5.797,-6.885,-8.337,-10.151,-11.965],[1.223,1.341,1.051,0.712,0.363,0.009,-0.293,-0.599,-0.911,-1.236,-1.583,-1.979,-2.19,-2.199,-2.402,-2.765,-3.128,-3.853,-4.579,-5.667,-6.756,-8.207,-10.021,-11.835],[1.223,1.341,1.052,0.713,0.365,0.013,-0.286,-0.587,-0.889,-1.195,-1.507,-1.832,-2.18,-2.575,-2.786,-2.795,-2.998,-3.724,-4.45,-5.538,-6.626,-8.078,-9.892,-11.706]],[[1.234,1.373,1.119,0.811,0.49,0.162,-0.134,-0.442,-0.774,-1.151,-1.353,-1.361,-1.546,-1.874,-2.202,-2.53,-2.858,-3.514,-4.169,-5.153,-6.137,-7.449,-9.089,-10.729],[1.235,1.374,1.121,0.815,0.497,0.176,-0.109,-0.398,-0.693,-1.001,-1.333,-1.71,-1.912,-1.921,-2.105,-2.433,-2.761,-3.417,-4.073,-5.057,-6.041,-7.353,-8.993,-10.633],[1.235,1.374,1.122,0.816,0.499,0.18,-0.101,-0.384,-0.668,-0.957,-1.253,-1.561,-1.892,-2.27,-2.471,-2.48,-2.664,-3.32,-3.976,-4.96,-5.944,-7.256,-8.896,-10.536]],[[1.215,1.356,1.115,0.812,0.492,0.164,-0.143,-0.464,-0.81,-1.207,-1.422,-1.432,-1.623,-1.963,-2.303,-2.643,-2.983,-3.663,-4.342,-5.362,-6.382,-7.742,-9.441,-11.141],[1.215,1.357,1.116,0.815,0.499,0.178,-0.119,-0.42,-0.727,-1.048,-1.394,-1.791,-2.006,-2.016,-2.207,-2.547,-2.887,-3.567,-4.246,-5.266,-6.286,-7.646,-9.345,-11.045],[1.216,1.358,1.117,0.816,0.502,0.182,-0.112,-0.406,-0.703,-1.003,-1.311,-1.632,-1.978,-2.375,-2.59,-2.599,-2.791,-3.471,-4.15,-5.17,-6.19,-7.55,-9.249,-10.949]],[[1.21,1.361,1.141,0.856,0.554,0.243,-0.057,-0.371,-0.71,-1.1,-1.311,-1.32,-1.5,-1.819,-2.137,-2.456,-2.775,-3.412,-4.05,-5.006,-5.962,-7.237,-8.83,-10.424],[1.211,1.362,1.143,0.86,0.562,0.257,-0.032,-0.325,-0.626,-0.94,-1.279,-1.669,-1.879,-1.889,-2.069,-2.387,-2.706,-3.344,-3.981,-4.937,-5.893,-7.168,-8.762,-10.356],[1.211,1.362,1.144,0.862,0.564,0.262,-0.024,-0.311,-0.6,-0.894,-1.194,-1.509,-1.848,-2.237,-2.448,-2.458,-2.637,-3.275,-3.912,-4.868,-5.824,-7.099,-8.693,-10.287]],[[1.194,1.347,1.141,0.865,0.569,0.262,-0.045,-0.366,-0.715,-1.118,-1.34,-1.35,-1.535,-1.861,-2.187,-2.513,-2.839,-3.492,-4.144,-5.123,-6.101,-7.406,-9.037,-10.668],[1.195,1.349,1.143,0.869,0.577,0.276,-0.019,-0.319,-0.626,-0.947,-1.296,-1.699,-1.921,-1.931,-2.116,-2.442,-2.768,-3.42,-4.073,-5.051,-6.03,-7.335,-8.966,-10.597],[1.195,1.349,1.144,0.87,0.579,0.281,-0.011,-0.304,-0.6,-0.9,-1.207,-1.528,-1.877,-2.28,-2.502,-2.512,-2.697,-3.349,-4.001,-4.98,-5.959,-7.263,-8.894,-10.526]],[[1.179,1.334,1.142,0.875,0.587,0.286,-0.025,-0.351,-0.705,-1.118,-1.347,-1.359,-1.545,-1.874,-2.202,-2.531,-2.86,-3.517,-4.175,-5.161,-6.148,-7.463,-9.106,-10.751],[1.18,1.336,1.144,0.88,0.595,0.301,0.002,-0.301,-0.612,-0.938,-1.293,-1.706,-1.935,-1.947,-2.133,-2.462,-2.79,-3.448,-4.105,-5.092,-6.078,-7.393,-9.037,-10.681],[1.18,1.336,1.145,0.881,0.597,0.305,0.01,-0.286,-0.585,-0.889,-1.2,-1.526,-1.881,-2.294,-2.523,-2.535,-2.721,-3.378,-4.036,-5.022,-6.008,-7.323,-8.967,-10.611]],[[1.164,1.323,1.148,0.893,0.61,0.307,-0.022,-0.37,-0.753,-1.212,-1.477,-1.492,-1.709,-2.093,-2.477,-2.861,-3.245,-4.013,-4.781,-5.933,-7.084,-8.62,-10.54,-12.459],[1.165,1.324,1.15,0.898,0.618,0.323,0.007,-0.315,-0.646,-0.994,-1.376,-1.836,-2.101,-2.116,-2.333,-2.717,-3.101,-3.869,-4.637,-5.789,-6.94,-8.476,-10.396,-12.315],[1.165,1.325,1.151,0.899,0.621,0.327,0.015,-0.3,-0.617,-0.939,-1.27,-1.618,-2.0,-2.46,-2.725,-2.739,-2.957,-3.725,-4.493,-5.645,-6.796,-8.332,-10.252,-12.172]],[[1.164,1.327,1.17,0.931,0.66,0.364,0.029,-0.325,-0.718,-1.197,-1.481,-1.497,-1.73,-2.138,-2.547,-2.956,-3.365,-4.183,-5.0,-6.227,-7.453,-9.089,-11.133,-13.177],[1.165,1.329,1.173,0.936,0.669,0.38,0.06,-0.266,-0.602,-0.957,-1.35,-1.829,-2.113,-2.129,-2.362,-2.77,-3.179,-3.997,-4.815,-6.041,-7.268,-8.903,-10.947,-12.991],[1.165,1.329,1.174,0.938,0.671,0.385,0.069,-0.25,-0.571,-0.898,-1.234,-1.589,-1.982,-2.462,-2.746,-2.762,-2.994,-3.811,-4.629,-5.856,-7.082,-8.717,-10.762,-12.806]],[[1.168,1.335,1.189,0.962,0.704,0.424,0.104,-0.236,-0.614,-1.074,-1.344,-1.359,-1.573,-1.949,-2.325,-2.702,-3.078,-3.83,-4.583,-5.711,-6.84,-8.345,-10.226,-12.108],[1.169,1.337,1.193,0.968,0.714,0.442,0.137,-0.174,-0.496,-0.836,-1.214,-1.674,-1.944,-1.959,-2.173,-2.55,-2.926,-3.678,-4.431,-5.559,-6.688,-8.193,-10.074,-11.956],[1.17,1.338,1.194,0.97,0.717,0.447,0.147,-0.156,-0.463,-0.774,-1.096,-1.437,-1.815,-2.275,-2.545,-2.56,-2.774,-3.526,-4.279,-5.408,-6.536,-8.041,-9.922,-11.804]]],"tone":[[0.8836,0.7688,0.643,0.5145,0.3791,0.3086],[0.8995,0.798,0.6826,0.5589,0.4181,0.3309],[0.9127,0.8228,0.7176,0.6005,0.4584,0.3601],[0.9237,0.844,0.7485,0.6387,0.4984,0.3932],[0.9357,0.8676,0.784,0.6843,0.5497,0.4402],[0.9452,0.8869,0.8138,0.724,0.5975,0.4877],[0.9529,0.9027,0.8387,0.7584,0.641,0.5338],[0.9591,0.9158,0.8597,0.788,0.6801,0.5774],[0.9643,0.9266,0.8774,0.8135,0.7149,0.6178],[0.9695,0.9377,0.8957,0.8403,0.7527,0.6635],[0.9729,0.945,0.9079,0.8585,0.779,0.6962],[0.9744,0.9482,0.9133,0.8666,0.7909,0.7113]]};
-const TONE_NAMES=["I. Very fair, always burns","II. Fair, burns easily","III. Medium, sometimes burns","IV. Olive or light brown, rarely burns","V. Brown, very rarely burns","VI. Deep brown or black, never burns"];
-const HAIR_F={none:1,thin:0.75,normal:0.5,thick:0.35},HAIR_REF="thin";
-const HAIR_AREAS={scalp:1,crown:1},HEAD_AREAS={scalp:1,forehead:1,crown:1};
-/* fat thickness in mm at BMI 25.5 as [male, female]: abdomen, thigh and calf from ultrasound fat-patterning data, other areas estimated */
-const FAT_REF={face:[3,4],neck:[5,7],shoulder:[5,7],upback:[6,8],lowback:[8,10],chest:[8,12],upab:[18,23],lowab:[18,23],uparm:[6,10],elbow:[3,4],forearm:[4,5],hand:[2,2],hip:[12,25],thigh:[10,22],knee:[4,6],calf:[4.3,9.4],foot:[2,2]};
-/* typical treated area, width x height in cm as seen from the panel: estimates for an adult, used only for the coverage check */
-const AREA_SIZE={face:[16,22],scalp:[18,20],forehead:[16,8],crown:[16,16],neck:[12,14],shoulder:[15,15],upback:[32,25],lowback:[32,20],chest:[30,25],upab:[30,20],lowab:[30,20],uparm:[10,25],elbow:[10,10],forearm:[9,25],hand:[10,18],hip:[25,25],thigh:[18,35],knee:[14,14],calf:[12,30],foot:[10,25]};
-const COV_MIN=0.7,COMFORT_I=150;
-const REF_TONE=3,REF_BMI=25.5,SKULL_MM=6.5;
-function wlPos(nm){const W=TISSUE.wl,n=W.length;if(nm<=W[0])return[0,0,0];if(nm>=W[n-1])return[n-1,n-1,0];let j=1;while(W[j]<nm)j++;return[j-1,j,(nm-W[j-1])/(W[j]-W[j-1])]}
-function lnAt(row,grid,d){
-  const n=grid.length;if(d<=grid[0])return row[0];
-  if(d>=grid[n-1]){const s=(row[n-1]-row[n-2])/(grid[n-1]-grid[n-2]);return row[n-1]+s*(d-grid[n-1])}
-  let k=1;while(grid[k]<d)k++;
-  return row[k-1]+(d-grid[k-1])/(grid[k]-grid[k-1])*(row[k]-row[k-1]);
-}
-function varLn(vals,rows,x,grid,d){
-  x=Math.max(vals[0],Math.min(vals[vals.length-1],x));
-  let k=1;while(k<vals.length-1&&vals[k]<x)k++;
-  const f=(x-vals[k-1])/(vals[k]-vals[k-1]),a=lnAt(rows[k-1],grid,d),b=lnAt(rows[k],grid,d);
-  return a+f*(b-a);
-}
-/* share of the surface light passing depth d (mm): c={kind:"body"|"head",fat,skull,tone,hair} */
-function tissueParts(nm,d,c){
-  const p=wlPos(nm),i=p[0],j=p[1],f=p[2];
-  const L=wi=>c.kind==="head"?varLn(TISSUE.skulls,TISSUE.head[wi],c.skull||SKULL_MM,TISSUE.dgh,d):varLn(TISSUE.fats,TISSUE.body[wi],c.fat,TISSUE.dg,d);
-  const ln=L(i)+f*(L(j)-L(i));
-  const tn=clamp(c.tone||REF_TONE,1,6),t0=Math.min(5,Math.floor(tn)),tf=tn-t0;
-  const tone=wi=>TISSUE.tone[wi][t0-1]*(1-tf)+TISSUE.tone[wi][t0]*tf;
-  const base=Math.exp(ln),tn2=tone(i)+f*(tone(j)-tone(i)),hr=c.hair==null?1:c.hair;
-  return {base:base,tone:tn2,hair:hr,total:base*tn2*hr};
-}
-function tissueT(nm,d,c){return tissueParts(nm,d,c).total}
 function meBmi(){const m=S.me||{};return m.h>0&&m.w>0?m.w/Math.pow(m.h/100,2):0}
-function meActive(){const m=S.me||{};return !!(m.tone>0||m.sex||m.hair||meBmi()>0)}
-function fatRefAvg(id){const r=FAT_REF[id];return r?(r[0]+r[1])/2:0}
-/* the typical participant has the same sex as you (so sex alone changes nothing) at BMI 25.5; with no sex given, the male and female average */
-function fatRefFor(id){const r=FAT_REF[id];if(!r)return 0;const m=S.me||{};return m.sex==="male"?r[0]:m.sex==="female"?r[1]:(r[0]+r[1])/2}
-function fatYou(id){
-  const r=FAT_REF[id];if(!r)return 0;const m=S.me||{};
-  const b=meBmi();
-  return fatRefFor(id)*(b>0?clamp((b-13)/(REF_BMI-13),0.3,3.2):1);
-}
-function ctxFor(A,you){
-  const m=S.me||{},tone=you&&m.tone>0?m.tone:REF_TONE;
-  if(HEAD_AREAS[A.id]){const hk=you&&m.hair?m.hair:HAIR_REF;return {kind:"head",skull:SKULL_MM,tone:tone,hair:HAIR_AREAS[A.id]?HAIR_F[hk]:1}}
-  return {kind:"body",fat:you?fatYou(A.id):fatRefFor(A.id),tone:tone,hair:1};
-}
-/* flat LED panel: on-axis irradiance versus distance, from a grid of cos^m emitters (m set by the beam angle) */
-const SRC_CACHE=new Map();
-function srcShape(g){
-  const beam=g.beam||60,me=Math.log(0.5)/Math.log(Math.cos(beam*Math.PI/360)),key=g.W.toFixed(1)+"|"+g.H.toFixed(1)+"|"+me.toFixed(2);
-  let tab=SRC_CACHE.get(key);
-  if(!tab){
-    const nx=64,ny=Math.max(8,Math.min(64,Math.round(nx*g.H/g.W))),cells=[];
-    for(let a=0;a<nx;a++)for(let b=0;b<ny;b++)cells.push([(a+.5)/nx*g.W-g.W/2,(b+.5)/ny*g.H-g.H/2]);
-    const zs=[],es=[];
-    for(let z=0.5;z<=500;z*=1.06){let s=0;for(const c of cells){const r2=z*z+c[0]*c[0]+c[1]*c[1];s+=Math.pow(z,me+1)/Math.pow(r2,(me+3)/2)}zs.push(Math.log(z));es.push(Math.log(s))}
-    tab={zs:zs,es:es};SRC_CACHE.set(key,tab);
-  }
-  return z=>{const x=Math.log(z),zs=tab.zs,es=tab.es;let k=1;while(k<zs.length-1&&zs[k]<x)k++;return Math.exp(es[k-1]+(x-zs[k-1])/(zs[k]-zs[k-1])*(es[k]-es[k-1]))};
-}
-const CELL_CACHE=new Map();
-function srcCells(g){
-  const key=g.W.toFixed(1)+"|"+g.H.toFixed(1);let c=CELL_CACHE.get(key);
-  if(!c){const nx=48,ny=Math.max(8,Math.min(48,Math.round(nx*g.H/g.W)));c=[];for(let a=0;a<nx;a++)for(let b=0;b<ny;b++)c.push([(a+.5)/nx*g.W-g.W/2,(b+.5)/ny*g.H-g.H/2]);CELL_CACHE.set(key,c)}
-  return c;
-}
-/* relative light at a point (x, y) on a plane z cm in front of the panel centre, from the same emitter model as srcShape */
-function srcAt(g,x,y,z){
-  const me=Math.log(0.5)/Math.log(Math.cos((g.beam||60)*Math.PI/360)),cells=srcCells(g);let s=0;
-  for(let i=0;i<cells.length;i++){const dx=x-cells[i][0],dy=y-cells[i][1];s+=Math.pow(z,me+1)/Math.pow(z*z+dx*dx+dy*dy,(me+3)/2)}
-  return s;
-}
-const COV_CACHE=new Map();
-/* how even the light is across the treated area at distance dcm: the weakest of 9 points (corners, edge middles, centre) against the centre */
-function covAt(prof,areaId,dcm){
-  const g=geomOf(prof),sz=AREA_SIZE[areaId];if(!g||!sz)return null;
-  const key=[g.W.toFixed(1),g.H.toFixed(1),areaId,dcm.toFixed(1)].join("|");
-  if(COV_CACHE.has(key))return COV_CACHE.get(key);
-  const one=function(aw,ah){
-    const c=srcAt(g,0,0,dcm),v=[];
-    [-1,0,1].forEach(function(sx){[-1,0,1].forEach(function(sy){v.push(srcAt(g,sx*aw/2,sy*ah/2,dcm)/c)})});
-    return {min:Math.min.apply(null,v),mean:v.reduce(function(a,b){return a+b},0)/v.length};
-  };
-  const a=one(sz[0],sz[1]),b=one(sz[1],sz[0]),rot=b.min>a.min+0.02,r=Object.assign({},rot?b:a,{rot:rot});
-  COV_CACHE.set(key,r);return r;
-}
-function geomOf(prof){const w=parseFloat(prof&&prof.pw),hh=parseFloat(prof&&prof.ph);return w>0&&hh>0?{W:toCm(w,prof.unit),H:toCm(hh,prof.unit),beam:60}:null}
+/* typical fat thickness over the target in mm at BMI 25.5 (abdomen, thigh and calf from ultrasound fat-patterning studies, the rest estimated); it scales with BMI */
+const REF_BMI=25.5,FAT_MM={face:3.5,neck:6,shoulder:6,upback:7,lowback:9,chest:10,upab:20.5,lowab:20.5,uparm:8,elbow:3.5,forearm:4.5,hand:2,hip:18.5,thigh:16,knee:5,calf:6.9,foot:2};
+const fatScale=function(b){return clamp((b-13)/(REF_BMI-13),0.3,3.2)};
 
-function makeIrr(pts,geom){
+function makeIrr(pts){
   if(!pts.length)return null;
-  const sh=geom?srcShape(geom):null;
-  if(pts.length===1){const p=pts[0];return sh?(d=>p.i*sh(d)/sh(p.d)):(d=>p.i*Math.pow(p.d/d,1.5))}
+  if(pts.length===1){const p=pts[0];return d=>p.i*Math.pow(p.d/d,1.5)}
   const L=pts.map(p=>({x:Math.log(p.d),y:Math.log(p.i)}));
-  const f=d=>{
+  return d=>{
     const x=Math.log(d),first=L[0],last=L[L.length-1];
     let a,b,base,k=L.findIndex(p=>p.x>=x);
     if(k===-1){a=L[L.length-2];b=last;base=last}
@@ -1411,9 +1280,6 @@ function makeIrr(pts,geom){
     if(x<first.x||x>last.x)s=clamp(s,-2.2,0);
     return Math.exp(base.y+s*(x-base.x));
   };
-  if(!sh)return f;
-  const lo=pts[0],hi=pts[pts.length-1];
-  return d=>{if(d>=lo.d-1e-9&&d<=hi.d+1e-9)return f(d);const e=d<lo.d?lo:hi;return e.i*sh(d)/sh(e.d)};
 }
   function fitExponent(pts){
   if(pts.length<2)return null;
@@ -1435,7 +1301,7 @@ const ruF=ru=>(RUNITS[ru]||RUNITS.mw).f;
 const ruLabel=ru=>(RUNITS[ru]||RUNITS.mw).label;
 const fmtConv=(t,ru)=>{const v=parseFloat(t);return v>0?fmt(v*ruF(ru),1):"-"};
 const qtrRound=s=>isFinite(s)?Math.max(15,Math.round(s/15)*15):s;     // protocol times and the "likely" range ends round to the nearest quarter minute
-const fmtMn=s=>{if(!isFinite(s))return "-";const m=s/60;return Number.isInteger(m)?String(m):String(+m.toFixed(2))};
+const fmtMn=s=>isFinite(s)?fmtT(s):"-";   // 9:45, 10:00: the same as the timer clock
 const fmtMin=s=>fmtMn(s)+" min";
 
 /* ---------- Model ---------- */
@@ -1458,9 +1324,8 @@ function model(o){
   const A=AREAS.find(a=>a.id===(o.area||S.area))||AREAS[0];
   const au=A.d[LAYER_IDX[T.layer]],auto=au!=null?au:A.d[1];
   const dmSel="depth" in o?o.depth:S.depthManual,manualD=dmSel!=null&&dmSel>0;
-  const depthRef=manualD?dmSel:auto;
-  const adj=(!manualD&&T.layer!=="skin"&&!HEAD_AREAS[A.id]&&meActive())?fatYou(A.id)-fatRefFor(A.id):0;
-  const depth=Math.max(0.5,depthRef+adj);
+  const adj=(!manualD&&T.layer!=="skin"&&FAT_MM[A.id]&&meBmi()>0)?FAT_MM[A.id]*(fatScale(meBmi())-1):0;
+  const depth=manualD?dmSel:Math.max(0.5,auto+adj);
   let wave=depth<4?"660":depth<13?"blend":"850",subst=null;
   const fixed=prof.mode==="fixed";
   if(!fixed){
@@ -1471,7 +1336,7 @@ function model(o){
   const s660=clamp(0.7-0.5*(depth-4)/8,0.2,0.7);
   const [lo,hi]=T.dose;
   const dSel="dose" in o?o.dose:S.dose,dose=clamp(dSel!=null?dSel:(T.def!=null?T.def:(lo+hi)/2),lo,hi);
-  const f=makeIrr(points(prof),geomOf(prof)),k=clamp(parseFloat(prof.factor)||1,0.2,1.5);
+  const f=makeIrr(points(prof)),k=clamp(parseFloat(prof.factor)||1,0.2,1.5);
   const irr=(ch,dcm)=>{
     if(!f)return null;const tot=f(dcm)*k;
     return ch==="660"?tot*G.sr:ch==="850"?tot*G.sn:tot;
@@ -1483,38 +1348,14 @@ function model(o){
   else if(wave==="660")segs=[{ch:"660",share:1,label:redL,cls:"r"}];
   else if(wave==="850")segs=[{ch:"850",share:1,label:nirL,cls:"n"}];
   else segs=[{ch:"660",share:s660,label:redL,cls:"r"},{ch:"850",share:1-s660,label:nirL,cls:"n"}];
-  const bandsFor=ch=>{const a=ch==="660"?G.red:ch==="850"?G.nir:G.bs;return a.length?a:[{nm:ch==="660"?660:ch==="850"?850:750,sh:1}]};
-  const tAt=(ch,c,d)=>{const a=bandsFor(ch),s=a.reduce((x,b)=>x+b.sh,0);return a.reduce((x,b)=>x+b.sh*tissueT(b.nm,d,c),0)/s};
-  const tEng=(ch,you)=>tAt(ch,ctxFor(A,you),you?depth:depthRef);
-  let pf=1,pfRaw=1,pfSkin=1,pfFat=1,pfComb=1;
-  if(meActive()){
-    /* skin tone and hair are applied in full; the effect of fat thickness is applied at half strength (square root), because published doses were not tuned to a fixed light level at the target and the ratio gets extremely steep with depth */
-    const cr=ctxFor(A,false),cy=ctxFor(A,true),ct=Object.assign({},cy,{fat:cr.fat}),cf=Object.assign({},cr,{fat:cy.fat});
-    let a=0,b=0,c=0,d=0;
-    segs.forEach(sg=>{
-      const r=Math.max(tAt(sg.ch,cr,depthRef),1e-9),y=Math.max(tAt(sg.ch,cy,depth),1e-9);
-      const pig=r/Math.max(tAt(sg.ch,ct,depthRef),1e-9),fat=r/Math.max(tAt(sg.ch,cf,depth),1e-9);
-      a+=sg.share*r/y;b+=sg.share*pig*Math.sqrt(fat);c+=sg.share*pig;d+=sg.share*Math.sqrt(fat);
-    });
-    pfRaw=a;pfSkin=c;pfFat=d;pfComb=b;pf=clamp(b,0.8,2);if(dose*pf>1.5*hi)pf=Math.max(0.8,1.5*hi/dose);
-  }
-  const secs=(seg,dcm,p,D)=>{const I=irr(seg.ch,dcm);return I?D*pf*seg.share*1000/(I*p/100):null};
+  const secs=(seg,dcm,p,D)=>{const I=irr(seg.ch,dcm);return I?D*seg.share*1000/(I*p/100):null};
   const total=(dcm,p,D)=>{let t=0;for(const s of segs){const x=secs(s,dcm,p,D);if(x==null)return null;t+=x}return t};
   const plan=(dcm,p,D)=>{const out=[];for(const s of segs){const x=secs(s,dcm,p,D);if(x==null)return null;out.push({label:s.label,ch:s.ch,sec:qtrRound(x)})}return {segs:out,total:out.reduce((a,s)=>a+s.sec,0)}};
   const rtotal=(dcm,p,D)=>{const q=plan(dcm,p,D);return q?q.total:null};
   const allPts=points(prof);
   const missing=!f||G.bs.length===0;
-  // share of surface light that passes the target depth, from the layered tissue tables
-  const trans=ch=>Math.min(1,tEng(ch,true));
-  const trRange=ch=>{
-    const c=ctxFor(A,true),a=bandsFor(ch),s=a.reduce((x,b)=>x+b.sh,0),val=cc=>a.reduce((x,b)=>x+b.sh*tissueT(b.nm,depth,cc),0)/s;
-    let lo,hi;
-    if(c.kind==="head"){lo=val(Object.assign({},c,{skull:8.5}));hi=val(Object.assign({},c,{skull:4.5}))}
-    else{const k=meActive()?1.5:1.9,t=val(c);lo=t/k;hi=t*k}
-    return [lo*0.85,Math.min(1,hi*1.15)];
-  };
   const irrSel=d=>Math.min(...segs.map(s=>irr(s.ch,d)));
-  return {prof,G,T,A,auto,depth,depthRef,adj,wave,subst,s660,lo,hi,dose,pf,pfRaw,pfComb,pfSkin,pfFat,irr,segs,secs,total,plan,rtotal,allPts,missing,k,trans,trRange,tEng,irrSel};
+  return {prof,G,T,A,auto,depth,adj,wave,subst,s660,lo,hi,dose,irr,segs,secs,total,plan,rtotal,allPts,missing,k,irrSel};
 }
 
 function recommend(m){
@@ -1526,46 +1367,16 @@ function recommend(m){
   for(let d=Math.max(2.54,dmin*0.5);d<=dmax*3+1e-6;d+=step){
     const t=m.total(d,100,m.dose),I=m.irrSel(d);
     if(t==null||!isFinite(I))continue;
-    cand.push({d,t,I,e:Math.abs(t-goal),meas:d>=dmin-1e-6&&d<=dmax+1e-6,cov:covAt(m.prof,m.A.id,d)});
+    cand.push({d,t,I,e:Math.abs(t-goal),meas:d>=dmin-1e-6&&d<=dmax+1e-6});
   }
   if(!cand.length)return null;
-  let pool=need?cand.filter(c=>c.I>=need):cand;
-  if(!pool.length){const c=cand.reduce((a,b)=>b.I>a.I?b:a);return {d:c.d,short:true,I:c.I,cov:c.cov,lowCov:false}}
-  /* with the panel size known, prefer distances where the edges of the area still get at least 70% of the centre */
-  let lowCov=false;
-  if(pool.some(c=>c.cov)){const okc=pool.filter(c=>c.cov&&c.cov.min>=COV_MIN);if(okc.length)pool=okc;else lowCov=true}
+  const pool=need?cand.filter(c=>c.I>=need):cand;
+  if(!pool.length){const c=cand.reduce((a,b)=>b.I>a.I?b:a);return {d:c.d,short:true,I:c.I}}
   const better=(a,b)=>!a||b.e<a.e-1e-9||(Math.abs(b.e-a.e)<1e-9&&b.d>a.d);
   let best=null;
   pool.filter(c=>c.meas&&c.e/goal<=0.1).forEach(c=>{if(better(best,c))best=c});
   if(!best)pool.forEach(c=>{if(better(best,c))best=c});
-  return {d:best.d,short:false,I:best.I,cov:best.cov,lowCov:lowCov};
-}
-/* the best few ways to deliver the dose: distance and power together, with the trade-offs shown */
-function optimize(m){
-  if(m.missing||!m.allPts.length)return [];
-  const ds=m.allPts.map(p=>p.d),dmin=Math.min.apply(null,ds),dmax=Math.max.apply(null,ds),step=m.prof.unit==="in"?2.54/2:1;
-  const goal=(parseFloat(S.goal)||10)*60,need=m.T.irrMin||0,all=[];
-  for(let d=Math.max(2.54,dmin*0.5);d<=dmax*3+1e-6;d+=step){
-    [100,50].forEach(function(p){
-      const t=m.total(d,p,m.dose),I=m.irrSel(d)*p/100;
-      if(t==null||!isFinite(I)||I<need)return;
-      all.push({d:d,p:p,t:t,I:I,cov:covAt(m.prof,m.A.id,d),meas:d>=dmin-1e-6&&d<=dmax+1e-6});
-    });
-  }
-  if(!all.length)return [];
-  const cm=function(o){return o.cov?o.cov.min:1},err=function(o){return Math.abs(o.t-goal)/goal};
-  const ok=all.filter(function(o){return cm(o)>=COV_MIN}),pool=ok.length?ok:all;
-  const pick=function(list,score){let b=null;list.forEach(function(o){if(!b||score(o)<score(b)-1e-9)b=o});return b};
-  const best=pick(pool,function(o){return err(o)+(o.p===50?0.04:0)+(o.I>COMFORT_I?(o.I-COMFORT_I)/600:0)+(o.meas?0:0.02)});
-  const near=pool.filter(function(o){return err(o)<=0.35&&o.p===100}),even=near.length&&all.some(function(o){return o.cov})?pick(near,function(o){return -cm(o)*10+err(o)}):null;
-  const fast=pick(pool.filter(function(o){return o.meas||!pool.some(function(x){return x.meas})}),function(o){return o.t});
-  const out=[];
-  [[best,"Best match"],[even,"Most even coverage"],[fast,"Fastest that still works"]].forEach(function(x){
-    if(!x[0])return;
-    const f=out.find(function(o){return Math.abs(o.d-x[0].d)<1e-6&&o.p===x[0].p});
-    if(f)f.labels.push(x[1]);else out.push(Object.assign({labels:[x[1]]},x[0]));
-  });
-  return out;
+  return {d:best.d,short:false,I:best.I};
 }
 
 /* ---------- Evidence ---------- */
@@ -1620,8 +1431,6 @@ function evItem(title,kind,text,refs){
 }
 function evidence(m){
   const ev=EVID[m.T.id],prof=m.prof,items=[];
-  const p660=m.trans("660")*100,p850=m.trans("850")*100;
-  const pc=x=>x>=10?Math.round(x):fmt(x,1);
   const nRead=new Set(prof.rows.filter(r=>parseFloat(r.d)>0&&parseFloat(r.t)>0).map(r=>parseFloat(r.d))).size;
   const wl=m.wave==="blend"?"660 + 850 nm":m.wave==="660"?"660 nm":"850 nm";
   const st=STATUS[m.T.id];
@@ -1630,7 +1439,6 @@ function evidence(m){
   items.push(evItem("Why the dose slider has an upper limit","part","Light therapy often shows a biphasic dose response, where moderate doses work better than very low or very high ones. That is why the slider stops at the top of the window.",[R.biphasic]));
   items.push(evItem(`Depth to target: ${fmt(m.depth,1)} mm`,"est",S.depthManual!=null&&S.depthManual>0?"You entered this depth, so it overrides the estimate.":m.A.note||"Typical tissue thickness for this area and layer, rounded. No study gives a number for your body, and fat thickness changes it a lot. Type your own estimate to override it.",[]));
   items.push(evItem(`Wavelength: ${wl}`,"est",`The rule is 660 nm under 4 mm, both from 4 to 13 mm, and 850 nm deeper. It is built on published penetration data, which shows near-infrared passes through tissue better than red, but the cutoffs are a judgment call. ${prof.mode==="fixed"?"This panel fires all wavelengths together, so the dose counts every wavelength. ":""}`,[R.esnouf,R.ninety,R.wound]));
-  items.push(evItem(`Light reaching ${m.T.layer==="brain"?"the cortex":fmt(m.depth,1)+" mm"}: about ${pc(p660)}% of 660 nm and ${pc(p850)}% of 850 nm`,"est","Light level at this depth as a share of the surface irradiance (the fluence rate, which is what cells respond to), from a layered tissue model of skin, fat and muscle, or scalp, skull, fluid and brain. The model agrees with a full Monte Carlo simulation to about 10%, matches published cadaver skull measurements (about 2% of near-infrared passes through scalp and skull as a net flow), and uses measured human values for skin and fat absorption. Real tissue differs between people, so the true value is plausibly half to double, and deep sites are the least certain. Skin tone, build and hair move these numbers: add them under Settings, General, About You."+(meActive()?" Your answers are included.":""),[R.esnouf,R.ninety,R.marq]));
   if(m.wave==="blend"&&prof.mode!=="fixed")items.push(evItem(`Dose split: ${Math.round(m.s660*100)}% 660 nm, ${Math.round((1-m.s660)*100)}% 850 nm`,"est","A heuristic, not from a trial. The share of 660 nm falls from 70% at 4 mm to 20% at 12 mm because red reaches less deeply. No trial specifies a ratio.",[]));
   if(m.T.irrMin)items.push(evItem(`Surface irradiance target: at least ${m.T.irrMin} mW/cm\u00b2`,"est",m.T.layer==="brain"
     ?"Transcranial devices in the literature and in device patents deliver roughly 100 to 500 mW/cm\u00b2 at the scalp because only about 0.5 to 5% of near-infrared light gets through the skull. So this protocol picks the farthest distance that still gives at least 100 mW/cm\u00b2 at the surface, even when that makes the session shorter than your time goal. Critical reviews argue that even this leaves the cortex with very little, so this is a floor, not a promise of effect."
@@ -1648,7 +1456,7 @@ function evidence(m){
   const kindMap={lab:"pub",ind:"pub",claim:"part",est:"est",user:"user"};
   items.push(evItem("Panel profile: "+escT(prof.name),kindMap[prof.kind]||"user",(prof.src||"Entered by you from your own readings.")+" Wavelengths and shares: "+bandsTxt+". Solar correction "+fmt(prof.factor,2)+"."+(prof.uniform&&prof.uniform.grid?" Evenness test: lowest spot is "+Math.round(prof.uniform.minRatio*100)+"% of the average.":""),prof.refs||[]));
   const dcmE=curDist(m);
-  if(dcmE!=null){const uu=unc(m,dcmE);items.push(evItem("Uncertainty on times: about \u00b1"+Math.round(uu*100)+"%","est","Each time is shown with a likely range. The range grows when the panel numbers come from a manufacturer claim, when a solar meter correction is applied, and when the distance is outside the measured range. Depth numbers carry a separate, larger uncertainty, shown as a range in Lab View.",[]))}
+  if(dcmE!=null){const uu=unc(m,dcmE);items.push(evItem("Uncertainty on times: about \u00b1"+Math.round(uu*100)+"%","est","Each time is shown with a likely range. The range grows when the panel numbers come from a manufacturer claim, when a solar meter correction is applied, and when the distance is outside the measured range.",[]))}
   return items.join("");
 }
 
@@ -1672,14 +1480,12 @@ function fillProfiles(){
   $("#profile").value=S.active;
 }
 function presetToProfile(x){
-  const o={id:x.id,name:x.name,unit:"in",factor:x.factor,mode:x.mode,
+  return {id:x.id,name:x.name,unit:"in",factor:x.factor,mode:x.mode,
     bands:x.bands.map(b=>({nm:String(b[0]),share:String(b[1])})),
     rows:x.rows.map(r=>({d:String(r[0]),t:String(r[1])})),kind:x.kind,src:x.src,refs:x.refs};
-  if(x.pw>0&&x.ph>0){o.pw=x.pw;o.ph=x.ph}
-  return o;
 }
 function profileHint(m){
-  const f=makeIrr(points(m.prof),geomOf(m.prof));if(!f)return "";
+  const f=makeIrr(points(m.prof));if(!f)return "";
   const pts=points(m.prof),dcm=15.24,k=m.k;
   const meas=pts.length&&dcm>=pts[0].d-1e-6&&dcm<=pts[pts.length-1].d+1e-6;
   const listed=f(dcm),eff=listed*k;
@@ -1690,7 +1496,7 @@ function profileHint(m){
 }
 
 function chart(m,dcm){
-    const DD=m.dose*m.pf;
+    const DD=m.dose;
   const W=360,H=230,L=40,R=34,Tp=12,B=30,pw=W-L-R,ph=H-Tp-B;
   const t50=m.total(dcm,50,m.dose),t100=m.total(dcm,100,m.dose);
   const xmax=Math.max(60,Math.ceil((t50*1.15)/60)*60);
@@ -1736,14 +1542,11 @@ function render(){
   renderUniform(m);
   $("#evidence").innerHTML=evidence(m);
   if(document.activeElement!==$("#depth"))$("#depth").value=fmt(m.depth,1);
-  $("#depthHint").textContent=S.depthManual!=null?"Using your depth. Change area or treatment to reset it.":(m.A.note||"Estimated from the area and tissue layer. Type a number to override.")+(Math.abs(m.adj)>=0.5?" For your build the depth is about "+fmt(m.depth,0)+" mm.":"");
+  $("#depthHint").textContent=S.depthManual!=null?"Using your depth. Change area or treatment to reset it.":(m.A.note||"Estimated from the area and tissue layer. Type a number to override.")+(Math.abs(m.adj)>=0.5?" Adjusted for your BMI ("+fmt(meBmi(),1)+"): about "+(m.adj>0?"+":"")+fmt(m.adj,0)+" mm.":"");
   const v={"660":'<span class="dot r"></span>660 nm red',"850":'<span class="dot n"></span>850 nm near-infrared',"blend":'<span class="dot r"></span><span class="dot n"></span>660 + 850 nm'}[m.wave];
   $("#verdict").innerHTML=v;
-  const bar=(ch,c)=>{const T=m.trans(ch);return `<div class="bar"><span>${ch} nm</span><i><b style="width:${Math.max(T*100,1.5).toFixed(1)}%;background:${c}"></b></i><span>${T>=.1?Math.round(T*100):fmt(T*100,1)}%</span></div>`};
-  $("#trans").innerHTML=bar("660","var(--red)")+bar("850","var(--nir)")+'<p class="hint" style="margin:0">'+(m.T.layer==="brain"?"Light level at the cortex surface as a share of the scalp-surface light (fluence rate), from a head model that matches published skull measurements. Only about 2% of near-infrared gets through scalp and skull as a net flow, but light scatters and is trapped inside the brain, so the level there is higher.":"Light level at the target as a share of the surface light (fluence rate), from a layered tissue model. Scattering can push it past 100% near the surface, which is shown as 100%."+(meActive()?" Adjusted for you.":" Add your details in Settings, General, About You for a personal estimate."))+'</p>';
   const ds=$("#dose");ds.min=m.lo;ds.max=m.hi;ds.step=m.hi-m.lo>=20?1:.5;ds.value=m.dose;
-  $("#doseOut").textContent=fmt(m.dose)+" J/cm\u00b2";
-  {const dy=$("#doseYou");if(Math.abs(m.pf-1)>0.02){dy.hidden=false;dy.textContent="Adjusted for you: "+fmt(m.dose*m.pf,1)+" J/cm\u00b2 at the surface ("+(m.pf>1?"+":"")+Math.round((m.pf-1)*100)+"%). "+meWhy(m)}else dy.hidden=true}$("#doseLo").textContent=m.lo;$("#doseHi").textContent=m.hi;
+  $("#doseOut").textContent=fmt(m.dose)+" J/cm\u00b2";$("#doseLo").textContent=m.lo;$("#doseHi").textContent=m.hi;
   const rec=recommend(m),box=$("#result");
   if(m.missing||!rec){
     $("#auto").hidden=true;
@@ -1761,7 +1564,7 @@ function render(){
     const detail=m.segs.length>1?P.segs.map(s=>`${s.label} ${fmtMin(s.sec)}`).join(", then "):"";
     const I=m.segs.length===1?m.irr(m.segs[0].ch,dcm)*p/100:null;
     return `<div class="card ${cls}${extra?" "+extra:""}"><h3>${name}</h3><div class="big">${fmtMn(P.total)}<small>min</small></div><div class="pw">${p}% power</div>
-      <p>${fmt(m.dose*m.pf)} J/cm\u00b2${I?` at ${fmt(I)} mW/cm\u00b2`:""}${detail?`<br>${detail}`:""}<br>Likely ${fmtMn(lo)} to ${fmtMin(hi)}</p></div>`;
+      <p>${fmt(m.dose)} J/cm\u00b2${I?` at ${fmt(I)} mW/cm\u00b2`:""}${detail?`<br>${detail}`:""}<br>Likely ${fmtMn(lo)} to ${fmtMin(hi)}</p></div>`;
   };
   const warns=[];
   const ds2=m.allPts.map(p=>p.d),dmin=Math.min(...ds2),dmax=Math.max(...ds2);
@@ -1777,27 +1580,22 @@ function render(){
   if(t50>30*60)warns.push("Half power takes over 30 minutes at this distance. Move the panel closer or use full power.");
   if(t100<45)warns.push("Full power finishes in under a minute. Increase the distance for more even coverage and easier dose control.");
   if(m.subst)warns.push(m.subst);
-  if(m.pfRaw>2.5)warns.push(`For your build this target sits deep enough that the model puts the light there at about ${fmt(m.trans(prof.mode==="fixed"?"both":(m.wave==="blend"?"850":m.wave))*100,1)}% of the surface level. The dose is raised, but only up to a limit, so expect less reach than the published window assumes.`);
   if(m.wave==="blend"&&prof.mode!=="fixed")warns.push(`This depth benefits from both wavelengths. Run each for its time. The dose is split ${Math.round(m.s660*100)}% 660 nm and ${Math.round((1-m.s660)*100)}% 850 nm, shifting toward 850 as depth increases.`);
   if(prof.mode==="fixed")warns.push("This panel fires all its wavelengths together, so the dose counts every wavelength.");
-  const tr=m.trans(prof.mode==="fixed"?"both":(m.wave==="blend"?"850":m.wave));
-  const trCh=prof.mode==="fixed"?"both":(m.wave==="blend"?"850":m.wave),rg=m.trRange(trCh),DD=m.dose*m.pf;
-  const info=`About ${fmt(DD*tr,2)} J/cm\u00b2 (roughly ${fmt(DD*rg[0],2)} to ${fmt(DD*rg[1],2)}) and ${fmt(m.irrSel(dcm)*tr,2)} mW/cm\u00b2 reach ${m.T.layer==="brain"?"the cortex":fmt(m.depth,1)+" mm"} by the layered tissue model. Frequency: ${m.T.freq}.`;
-  const rows=[100,75,50,25].map(p=>`<tr><td>${p}%</td><td>${fmtMin(m.rtotal(dcm,p,m.dose))}</td><td>${fmt(m.dose*m.pf*Math.min(1,600/m.total(dcm,p,m.dose)),1)} J/cm\u00b2</td></tr>`).join("");
+  const rows=[100,75,50,25].map(p=>`<tr><td>${p}%</td><td>${fmtMin(m.rtotal(dcm,p,m.dose))}</td><td>${fmt(m.dose*Math.min(1,600/m.total(dcm,p,m.dose)),1)} J/cm\u00b2</td></tr>`).join("");
   box.innerHTML=`
     <div class="hero"><div class="k">${manual?"Distance you picked":"Recommended distance"}</div><div class="v">${fmt(fromCm(dcm),1)} ${prof.unit}</div><div class="k lab" style="margin-top:2px">${m.segs.map(s=>`${fmt(m.irr(s.ch,dcm))} mW/cm\u00b2 ${s.label}`).join(", ")} at the surface, full power</div><div class="k simple-only" style="margin-top:2px">Light: ${m.segs.map(s=>s.label).join(" and ")}${prof.mode==="fixed"?" (together)":""}</div></div>
-    ${covHtml(m,dcm)}
     <div class="cards">${opt(100,'<span class="lab">Fast</span><span class="simple-only">Recommended</span>')}${opt(50,"Gentle","lab")}</div>
     <p class="hint lab">Pick either. Both deliver the same dose. Irradiance is assumed to scale linearly with the power setting.</p>
-    ${optHtml(m,dcm)}
     <div id="timerSlot"></div>
     <div class="lab">${chart(m,dcm)}</div>
     <table class="lab" style="margin-top:8px"><thead><tr><th>Power</th><th>Time to dose</th><th>Dose after 10 min</th></tr></thead><tbody>${rows}</tbody></table>
-    <ul class="warns">${warns.map(w=>`<li class="${/^(You have one measured|This distance is outside)/.test(w)?"lab":"keep"}">${w}</li>`).join("")}<li class="info lab">${info}</li>${m.T.caution?`<li class="keep">${m.T.caution}</li>`:""}</ul>
+    <ul class="warns">${warns.map(w=>`<li class="${/^(You have one measured|This distance is outside)/.test(w)?"lab":"keep"}">${w}</li>`).join("")}${m.T.caution?`<li class="keep">${m.T.caution}</li>`:""}</ul>
     <div class="acts"><button class="btn" id="shareCard" type="button">Protocol card</button><button class="btn" id="addRoutine" type="button">Add to Routine</button></div>`;
   LAST={m:m,dcm:dcm,manual:manual};sideUi();
   $("#shareCard").onclick=openCard;$("#addRoutine").onclick=rtAddFromCalc;
   $("#timerSlot").appendChild(tmCard);tmCard.hidden=false;tmSync();
+  if(document.body.dataset.view==="calcs")renderWork();
 }
 
 /* ---------- Profile editor (popup) ---------- */
@@ -1827,7 +1625,7 @@ function showView(v){
     if(typeof tm!=="undefined"&&tm.p!==100&&!tm.running&&(tm.acc===0||tm.done)){tm.p=100;if(LAST)tmBuild(100)}
     if(typeof pn!=="undefined"&&pn.p!==100&&!(pn.st&&pn.st.session&&pn.st.session.active))pn.p=100;
   }
-  const inCalc=v==="simple"||v==="lab"||v==="routines",inLearn=v==="lib"||v==="learn",inSet=v==="set"||v==="log"||v==="how"||v==="work";
+  const inCalc=v==="simple"||v==="lab"||v==="routines"||v==="calcs",inLearn=v==="lib"||v==="learn",inSet=v==="set"||v==="log"||v==="how";
   document.querySelectorAll(".tabs button").forEach(b=>{const k=b.dataset.view;b.setAttribute("aria-pressed",String(k==="calc"?inCalc:(k==="settingshub"?inSet:(k==="learnhub"?inLearn:k===v))))});
   if(typeof rtMini==="function")rtMini();
   const ht=$("#hubTitle");ht.textContent=inLearn?"Learning and Resources":(inSet?"Settings":"");ht.hidden=!(inLearn||inSet);
@@ -1839,7 +1637,7 @@ function openDlg(id){
   const base=saved||built||{id:null,name:"",unit:"in",factor:0.5,mode:"switch",bands:[{nm:"660",share:"50"},{nm:"850",share:"50"}],rows:[{d:"",t:""}],kind:"user"};
   draft=JSON.parse(JSON.stringify(base));draft.ru=draft.ru||"mw";editingId=id;editingBuiltin=!!built;delArmed=false;
   $("#dlgTitle").textContent=!id?"New panel profile":built?"Preset: "+base.name:"Edit panel profile";
-  $("#pname").value=draft.name;$("#pfactor").value=draft.factor;$("#ppw").value=draft.pw||"";$("#pph").value=draft.ph||"";$("#ptogether").checked=draft.mode==="fixed";
+  $("#pname").value=draft.name;$("#pfactor").value=draft.factor;$("#ptogether").checked=draft.mode==="fixed";
   $("#saveProfile").hidden=!saved;$("#shareProfile").hidden=!saved;
   $("#savePreset").className=saved?"btn":"btn primary";
   $("#delProfile").hidden=!saved||S.profiles.length<2;$("#delProfile").textContent="Delete";
@@ -1857,7 +1655,7 @@ function noKeyboard(){
 function openDlgWith(base){
   draft=JSON.parse(JSON.stringify(base));draft.ru=draft.ru||"mw";editingId=null;editingBuiltin=false;delArmed=false;
   $("#dlgTitle").textContent="New panel profile from measurement";
-  $("#pname").value=draft.name||"";$("#pfactor").value=draft.factor;$("#ppw").value=draft.pw||"";$("#pph").value=draft.ph||"";$("#ptogether").checked=draft.mode==="fixed";
+  $("#pname").value=draft.name||"";$("#pfactor").value=draft.factor;$("#ptogether").checked=draft.mode==="fixed";
   $("#saveProfile").hidden=true;$("#shareProfile").hidden=true;$("#savePreset").className="btn primary";$("#delProfile").hidden=true;
   $("#dlgErr").textContent="";$("#dlgSrc").textContent=draft.src||"";
   dlgUnits();renderDraftRows();
@@ -1869,7 +1667,6 @@ function collect(){
   draft.name=titleCase($("#pname").value.trim());
   const f=parseFloat($("#pfactor").value);draft.factor=f>0?clamp(f,.2,1.5):1;
   draft.mode=$("#ptogether").checked?"fixed":"switch";
-    {const pw=parseFloat($("#ppw").value),ph=parseFloat($("#pph").value);if(pw>0&&ph>0){draft.pw=clamp(pw,1,400);draft.ph=clamp(ph,1,400)}else{delete draft.pw;delete draft.ph}}
   draft.rows=draft.rows.filter(r=>String(r.d)!==""||String(r.t)!=="");
   draft.bands=draft.bands.filter(r=>String(r.nm)!==""||String(r.share)!=="");
   const okRows=draft.rows.some(r=>parseFloat(r.d)>0&&parseFloat(r.t)>0);
@@ -1939,16 +1736,24 @@ $("#auto").addEventListener("click",()=>{S.distManualCm=null;$("#dist").blur();s
 
 function setView(v){
   if(v==="calc")v=S.view==="lab"?"lab":"simple";
-  if(v==="settingshub")v=S.sview==="log"?"log":(S.sview==="how"?"how":(S.sview==="work"?"work":"set"));
+  if(v==="settingshub")v=S.sview==="log"?"log":(S.sview==="how"?"how":"set");
   if(v==="learnhub")v=S.lview==="lib"?"lib":"learn";
   if(v==="lib"||v==="learn"){S.lview=v;save()}
-  if(v==="set"||v==="log"||v==="how"||v==="work"){S.sview=v;save()}
+  if(v==="set"||v==="log"||v==="how"){S.sview=v;save()}
   if(v==="simple"||v==="lab"){S.view=v;save()}
   showView(v);
-  if(v==="log")renderLog();else if(v==="lib")renderLib();else if(v==="learn")renderLearn();else if(v==="set")renderSet();else if(v==="work")renderWork();else if(v==="panel")renderPanel();else if(v==="routines")renderRoutines();
+  $("#labTab").hidden=S.view!=="lab";$("#calcsTab").hidden=S.view!=="lab";$("#subTabs").classList.toggle("four",S.view==="lab");
+  if(v==="log")renderLog();else if(v==="lib")renderLib();else if(v==="learn")renderLearn();else if(v==="set")renderSet();else if(v==="calcs")renderWork();else if(v==="panel")renderPanel();else if(v==="routines")renderRoutines();
   window.scrollTo(0,0);
 }
 document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
+/* Lab View is not in the menus: five quick taps on the Redox logo open it, and five more close it */
+let logoTaps=[];
+$("#hdrLogo").addEventListener("click",function(){
+  if(document.body.classList.contains("who-open"))return;
+  const now=Date.now();logoTaps=logoTaps.filter(function(t){return now-t<3000});logoTaps.push(now);
+  if(logoTaps.length>=5){logoTaps=[];const cv=document.body.dataset.view;setView(cv==="lab"||cv==="calcs"?"simple":"lab")}
+});
 document.querySelectorAll(".subtabs button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.sub)));
 /* ---------- Research library ---------- */
 const PTYPE={sr:"Systematic review or meta-analysis",rev:"Review or perspective",trial:"Human trial",lab:"Cadaver or lab measurement",sim:"Modeling or simulation",reg:"Trial registry, ongoing",pre:"Preprint, not peer reviewed",guide:"News, vendor or guide"};
@@ -2159,28 +1964,6 @@ function unc(m,dcm){
   const solar=Math.abs(m.k-1)>0.005?0.20:0;
   return Math.min(Math.sqrt(base*base+solar*solar+(ext?0.0625:0)),0.6);
 }
-function covHtml(m,dcm){
-  const cv=covAt(m.prof,m.A.id,dcm),sz=AREA_SIZE[m.A.id];
-  if(!cv){return sz&&!geomOf(m.prof)?'<p class="hint lab">Add the panel size under Edit and the app also checks how evenly the light covers the '+escH(m.A.name.toLowerCase())+'.</p>':""}
-  const pct=Math.round(cv.min*100);
-  return '<p class="hint covline'+(cv.min<COV_MIN?' covlow':'')+'">'+(cv.min<COV_MIN?'Uneven here: the edges of the '+escH(m.A.name.toLowerCase())+' get only about '+pct+'% of the centre. Try another distance, turn the panel, or treat the area in two passes.':'Even coverage: the edges of the '+escH(m.A.name.toLowerCase())+' get about '+pct+'% of the centre.')+(cv.rot?' Holding the panel upright (turned a quarter turn) is more even.':'')+'</p>';
-}
-function optHtml(m,dcm){
-  const list=optimize(m);if(list.length<1)return "";
-  const hasCov=list.some(function(o){return o.cov});
-  const rows=list.map(function(o){
-    return '<tr><td><b>'+escH(o.labels.join(" and "))+'</b></td><td>'+fmt(fromCm(o.d,m.prof.unit),1)+' '+m.prof.unit+'</td><td>'+o.p+'%</td><td>'+fmtMin(o.t)+'</td>'+(hasCov?'<td>'+(o.cov?Math.round(o.cov.min*100)+'%':'-')+'</td>':'')+'<td><button class="btn" type="button" data-useopt="'+o.d.toFixed(2)+'|'+o.p+'"'+(Math.abs(o.d-dcm)<0.01&&o.p===tm.p?' disabled':'')+'>Use</button></td></tr>';
-  }).join("");
-  const warm=list.some(function(o){return o.I>COMFORT_I});
-  return '<details class="lab optcard" open><summary>Best options</summary><table style="margin:6px 0"><thead><tr><th></th><th>Distance</th><th>Power</th><th>Time</th>'+(hasCov?'<th>Edges</th>':'')+'<th></th></tr></thead><tbody>'+rows+'</tbody></table>'
-    +'<p class="hint">Each row delivers the same dose. Time is at the centre of the area.'+(hasCov?' Edges is the weakest point of the area as a share of the centre, from the flat-panel light model and a typical area size (an estimate).':'')+(warm?' The closest distances are strong enough to feel warm.':'')+'</p></details>';
-}
-document.addEventListener("click",function(e){
-  const b=e.target.closest("[data-useopt]");if(!b)return;
-  const v=b.dataset.useopt.split("|"),d=parseFloat(v[0]),p=+v[1];
-  if(!(d>0)||(p!==100&&p!==50))return;
-  S.distManualCm=d;tm.p=p;pn.p=p;save();render();
-});
 function curDist(m){
   if(S.distManualCm>0)return S.distManualCm;
   const r=recommend(m);return r?r.d:null;
@@ -2320,10 +2103,9 @@ function logCsv(){
   return [head.join(",")].concat(a.map(function(e){return [new Date(e.ts).toISOString(),lpName(S.logActive),e.trn,e.arn,(e.side||""),e.panel,e.light,e.dist,e.unit,e.power,(e.sec/60).toFixed(1),e.dose,e.note].map(q).join(",")})).join("\n");
 }
 
-const LOG_RANGES=[["day","Day"],["week","Week"],["month","Month"],["year","Year"],["all","All"]];
+const LOG_RANGES=[["week","Week"],["month","Month"],["year","Year"],["all","All"]];
 const logRangeKey=function(){return LOG_RANGES.some(function(r){return r[0]===S.logRange})?S.logRange:"week"};
-const hourName=function(h){return (h%12||12)+(h<12?"a":"p")};
-/* the time window for a range: Day is today by the hour, Week the last 7 days, Month the last 30 days, Year the last 12 months, All everything */
+/* the time window for a range: Week is the last 7 days by day, Month the last 4 weeks by week, Year the last 12 months, All everything by month */
 function logWindow(range,sessions,nowTs){
   const n=new Date(nowTs),y=n.getFullYear(),m=n.getMonth(),d=n.getDate();
   const T=function(yy,mm,dd,hh){return new Date(yy,mm,dd,hh||0,0,0,0).getTime()};
@@ -2332,15 +2114,12 @@ function logWindow(range,sessions,nowTs){
     for(let i=count-1;i>=0;i--){const lo=T(y,m,d-i);W.buckets.push({lo:lo,hi:T(y,m,d-i+1),label:labelFn(new Date(lo),i)})}
   };
   const mon=function(lo){return new Date(lo).toLocaleDateString(undefined,{month:"short"})};
-  if(range==="day"){
-    W.lo=T(y,m,d);W.plo=T(y,m,d-1);W.nm="today";W.prevNm="yesterday";W.title="Minutes per hour, today";
-    for(let k=0;k<24;k++)W.buckets.push({lo:T(y,m,d,k),hi:T(y,m,d,k+1),label:k%6===0?hourName(k):""});
-  }else if(range==="week"){
+  if(range==="week"){
     W.lo=T(y,m,d-6);W.plo=T(y,m,d-13);W.nm="last 7 days";W.prevNm="prior 7 days";W.title="Minutes per day, last 7 days";
     days(7,function(dt){return dt.toLocaleDateString(undefined,{weekday:"short"})});
   }else if(range==="month"){
-    W.lo=T(y,m,d-29);W.plo=T(y,m,d-59);W.nm="last 30 days";W.prevNm="prior 30 days";W.title="Minutes per day, last 30 days";
-    days(30,function(dt,i){return i%5===0?String(dt.getDate()):""});
+    W.lo=T(y,m,d-27);W.plo=T(y,m,d-55);W.nm="last 4 weeks";W.prevNm="prior 4 weeks";W.title="Minutes per week, last 4 weeks";
+    for(let i=0;i<4;i++){const lo=T(y,m,d-27+i*7);W.buckets.push({lo:lo,hi:T(y,m,d-20+i*7),label:new Date(lo).toLocaleDateString(undefined,{month:"short",day:"numeric"})})}
   }else if(range==="year"){
     W.lo=T(y,m-11,1);W.plo=T(y,m-23,1);W.nm="last 12 months";W.prevNm="prior 12 months";W.title="Minutes per month, last 12 months";
     for(let i=0;i<12;i++){const lo=T(y,m-11+i,1);W.buckets.push({lo:lo,hi:T(y,m-10+i,1),label:mon(lo)})}
@@ -2370,12 +2149,13 @@ function logChart(W,list){
   const top=Math.max.apply(null,vals.concat([0])),mx=Math.max(top,1),step=332/n,bw=Math.min(30,step*0.72);
   let bars="";
   vals.forEach(function(v,i){
-    const hh=Math.round(v/mx*90),x=14+i*step+(step-bw)/2,now=i===W.cur,lab=W.buckets[i].label;
+    const hh=Math.round(v/mx*88),x=14+i*step+(step-bw)/2,now=i===W.cur,lab=W.buckets[i].label;
     bars+='<rect x="'+x.toFixed(1)+'" y="'+(110-hh)+'" width="'+bw.toFixed(1)+'" height="'+hh+'" rx="'+Math.min(4,bw/3).toFixed(1)+'" fill="'+(now?"var(--red)":"var(--nir)")+'" opacity="'+(now?1:.75)+'"/>';
-    if(lab)bars+='<text x="'+(x+bw/2).toFixed(1)+'" y="126" text-anchor="middle">'+escH(lab)+'</text>';
-    if(v>0&&n<=12)bars+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(104-hh)+'" text-anchor="middle" style="fill:var(--ink)">'+fmt(v,0)+'</text>';
+    if(lab)bars+='<text x="'+(x+bw/2).toFixed(1)+'" y="128" text-anchor="middle" style="fill:var(--ink)">'+escH(lab)+'</text>';
+    if(v>0&&n<=12)bars+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(106-hh)+'" text-anchor="middle" style="fill:var(--ink)">'+fmt(v,0)+'</text>';
   });
-  return '<h3 class="dlg-h">'+escH(W.title)+'</h3><svg viewBox="0 0 360 134" role="img" aria-label="'+escH(W.title)+'">'+bars+'</svg>'+(top>0?'<p class="hint" style="margin-top:2px">Tallest bar: '+fmt(top,0)+' min.</p>':'');
+  const unit=W.range==="week"?"day":(W.range==="month"?"week":"month");
+  return '<h3 class="dlg-h">'+escH(W.title)+'</h3><svg viewBox="0 0 360 140" role="img" aria-label="'+escH(W.title)+'"><line x1="10" x2="350" y1="110.5" y2="110.5" stroke="var(--line)"/><line x1="10" x2="350" y1="20.5" y2="20.5" stroke="var(--line)" stroke-dasharray="3 3"/><text x="12" y="14" style="fill:var(--muted)">'+fmt(mx,0)+' min</text>'+bars+'</svg>'+(top>0?'<p class="hint" style="margin-top:2px">The red bar is the current '+unit+'. Tallest bar: '+fmt(top,0)+' min.</p>':'<p class="hint" style="margin-top:2px">No sessions in this period.</p>');
 }
 function renderLog(){
   $("#logNotice").hidden=canStore();
@@ -2743,11 +2523,14 @@ function tmBuild(p){
   tm.raw=tm.ctx.m.total(tm.ctx.dcm,tm.p,tm.ctx.m.dose);
   tm.running=false;tm.acc=0;tm.fired=0;tm.done=false;tmRender();
 }
-function tmSync(){if(LAST&&!tm.running&&(tm.acc===0||tm.done))tmBuild(tm.p)}
+function tmSync(){if(LAST&&!tm.running&&(tm.acc===0||tm.done))tmBuild(tm.p);else tmRender()}
 function tmRender(){
   if(!tm.segs.length)return;
   const e=Math.min(elapsed(),tm.total),rem=Math.max(0,tm.total-e),s=segAt(e);
   $("#tmClock").textContent=fmtT(Math.ceil(rem));
+  {const st=$("#tmStale");let ref=null;if(LAST&&e>0&&!tm.done)ref=planSegs(tm.p,{m:LAST.m,dcm:LAST.dcm});
+   const rt=ref?ref.reduce(function(a,s){return a+s.sec},0):0;
+   if(ref&&Math.abs(rt-tm.total)>0.5){st.hidden=false;st.textContent="This session started with other settings and will finish in "+fmtMin(tm.total)+". The recommendation above is now "+fmtMin(rt)+". Tap Reset to switch to it."}else st.hidden=true}
   $("#tmSeg").textContent=tm.segs.length>1?"Now: "+tm.segs[s.i].label+", "+fmtT(Math.ceil(s.left))+" left in this part":tm.segs[0].label;
   $("#tmStart").textContent=tm.running?"Pause":(tm.done?"Start again":(e>0?"Resume":"Start"));
   $("#tmStopLog").hidden=!(e>0&&!tm.done);
@@ -2768,7 +2551,7 @@ function sessionEntry(sec){
   const m=c.m,frac=tm.raw?sec/tm.raw:1;
   return {id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:sideFor(m.A.id),panel:m.prof.name,
     light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(c.dcm,m.prof.unit),1),unit:m.prof.unit,power:tm.p,
-    sec:Math.round(sec),dose:+fmt(m.dose*m.pf*frac,1),note:"",lp:S.logActive};
+    sec:Math.round(sec),dose:+fmt(m.dose*frac,1),note:"",lp:S.logActive};
 }
 function logSession(sec){const e=sessionEntry(sec);return e?pushEntry(e):""}
 /* a finished session that is waiting to be logged by hand: Log to and Side are read when it is saved */
@@ -2826,7 +2609,7 @@ function wrapText(ctx,text,x,y,maxW,lh){
 function cardText(){
   const m=LAST.m,d=LAST.dcm,u=unc(m,d),t1=m.rtotal(d,100,m.dose),t2=m.rtotal(d,50,m.dose),r1=m.total(d,100,m.dose),r2=m.total(d,50,m.dose);
   return {title:m.T.name+", "+m.A.name,
-    rows:(S.people.length>1?[["For",S.me.name]]:[]).concat([["Panel",m.prof.name],["Light",m.segs.map(function(s){return s.label}).join(" and ")],["Distance",fmt(fromCm(d),1)+" "+m.prof.unit+" from the surface"],["Dose",fmt(m.dose*m.pf,1)+" J/cm\u00b2 per session"],
+    rows:(S.people.length>1?[["For",S.me.name]]:[]).concat([["Panel",m.prof.name],["Light",m.segs.map(function(s){return s.label}).join(" and ")],["Distance",fmt(fromCm(d),1)+" "+m.prof.unit+" from the surface"],["Dose",fmt(m.dose,1)+" J/cm\u00b2 per session"],
       [S.view==="simple"?"Time":"Full power",fmtMin(t1)+" (likely "+fmtMn(qtrRound(r1/(1+u)))+" to "+fmtMin(qtrRound(r1/(1-u)))+")"],["Half power",fmtMin(t2)+" (likely "+fmtMn(qtrRound(r2/(1+u)))+" to "+fmtMin(qtrRound(r2/(1-u)))+")"],["How often",m.T.freq]]).filter(function(r){return !(S.view==="simple"&&r[0]==="Half power")}),
     status:STATUS[m.T.id]?STATUS[m.T.id][1]:"",caution:m.T.caution||""};
 }
@@ -3146,11 +2929,62 @@ $("#stReset").addEventListener("click",function(){
 /* ---------- Panel control (ESP32 over WiFi) ---------- */
 const PNKEY="rdl.panel.v1";
 const SAMEORIGIN=location.protocol==="http:";   // opened from the panel itself (or a local test server)
-const pn={addr:"panel.local",key:"",swap:false,connected:false,iv:null,st:null,ctx:null,p:100,wasActive:false,logged:false};
-(function(){try{const v=JSON.parse(localStorage.getItem(PNKEY))||{};if(v.addr)pn.addr=v.addr;pn.key=v.key||"";pn.swap=!!v.swap}catch(e){}})();
-function pnSave(){try{localStorage.setItem(PNKEY,JSON.stringify({addr:pn.addr,key:pn.key,swap:pn.swap}))}catch(e){}}
+const BLE_SVC="6e400001-b5a3-f393-e0a9-e50e24dcca9e",BLE_RX="6e400002-b5a3-f393-e0a9-e50e24dcca9e",BLE_TX="6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+const BLE_OK=typeof navigator!=="undefined"&&!!navigator.bluetooth&&!location.protocol.startsWith("http:");
+const pn={mode:"ble",dev:null,bleRx:null,bleTx:null,bleBuf:"",bleDec:null,bleWait:null,bleQ:Promise.resolve(),addr:"panel.local",key:"",swap:false,connected:false,iv:null,st:null,ctx:null,p:100,wasActive:false,logged:false};
+(function(){try{const v=JSON.parse(localStorage.getItem(PNKEY))||{};if(v.addr)pn.addr=v.addr;pn.key=v.key||"";pn.swap=!!v.swap;if(v.mode==="wifi"||v.mode==="ble")pn.mode=v.mode}catch(e){}if(!BLE_OK)pn.mode="wifi"})();
+function pnSave(){try{localStorage.setItem(PNKEY,JSON.stringify({addr:pn.addr,key:pn.key,swap:pn.swap,mode:pn.mode}))}catch(e){}}
 function pnBase(){return SAMEORIGIN?"":"http://"+pn.addr.replace(/^https?:\/\//,"").replace(/\/+$/,"")}
+/* ---- Bluetooth link: the same requests as WiFi, sent as text lines over a UART-style service ---- */
+function bleDropped(){pn.bleRx=null;pn.bleTx=null}
+function bleOnData(ev){
+  pn.bleDec=pn.bleDec||new TextDecoder();
+  pn.bleBuf+=pn.bleDec.decode(ev.target.value,{stream:true});
+  let i;
+  while((i=pn.bleBuf.indexOf("\n"))>=0){
+    const line=pn.bleBuf.slice(0,i);pn.bleBuf=pn.bleBuf.slice(i+1);
+    const w=pn.bleWait;if(!w)continue;
+    pn.bleWait=null;clearTimeout(w.to);
+    const code=parseInt(line,10),body=line.slice(line.indexOf(" ")+1);
+    if(code===401)w.rej(new Error("key"));
+    else if(!(code>=200&&code<300))w.rej(new Error("HTTP "+code));
+    else{try{w.res(JSON.parse(body))}catch(e){w.rej(e)}}
+  }
+}
+function bleLink(pick){
+  if(pn.bleRx&&pn.dev&&pn.dev.gatt&&pn.dev.gatt.connected)return Promise.resolve();
+  const getDev=(pn.dev&&!pick)?Promise.resolve(pn.dev):navigator.bluetooth.requestDevice({filters:[{services:[BLE_SVC]}]});
+  return getDev.then(function(d){
+    if(pn.dev!==d){pn.dev=d;d.addEventListener("gattserverdisconnected",bleDropped)}
+    return d.gatt.connect();
+  }).then(function(srv){return srv.getPrimaryService(BLE_SVC)})
+  .then(function(svc){return Promise.all([svc.getCharacteristic(BLE_RX),svc.getCharacteristic(BLE_TX)])})
+  .then(function(c){
+    pn.bleRx=c[0];pn.bleTx=c[1];pn.bleBuf="";pn.bleDec=null;pn.bleWait=null;
+    c[1].oncharacteristicvaluechanged=bleOnData;
+    return c[1].startNotifications();
+  }).then(function(){});
+}
+function bleReq(path,params){
+  const body=new URLSearchParams(Object.assign({key:pn.key},params||{})).toString();
+  const job=function(){
+    return bleLink(false).then(function(){
+      return new Promise(function(res,rej){
+        const to=setTimeout(function(){pn.bleWait=null;rej(new Error("timeout"))},6000);
+        pn.bleWait={res:res,rej:rej,to:to};
+        const bytes=new TextEncoder().encode(path+"?"+body+"\n"),rx=pn.bleRx;
+        let p=Promise.resolve();
+        for(let o=0;o<bytes.length;o+=20){(function(chunk){p=p.then(function(){return (rx.writeValueWithResponse||rx.writeValue).call(rx,chunk)})})(bytes.slice(o,o+20))}
+        p.catch(function(e){clearTimeout(to);pn.bleWait=null;rej(e)});
+      });
+    });
+  };
+  const run=pn.bleQ.then(job);
+  pn.bleQ=run.catch(function(){});
+  return run;
+}
 function pnReq(path,params){
+  if(pn.mode==="ble"&&!SAMEORIGIN)return bleReq(path,params);
   const body=new URLSearchParams(Object.assign({key:pn.key},params||{})).toString();
   const ctl=typeof AbortController!=="undefined"?new AbortController():null;
   const to=setTimeout(function(){if(ctl)ctl.abort()},4500);
@@ -3162,6 +2996,11 @@ function pnReq(path,params){
 function pnMsg(t,bad){const e=$("#pnStatus");e.textContent=t;e.style.color=bad?"var(--warn)":"var(--muted)"}
 function pnHelp(err){
   if(err&&err.message==="key")return "The panel rejected the key. Check the panel key in the box above.";
+  if(pn.mode==="ble"&&!SAMEORIGIN){
+    if(err&&err.name==="NotFoundError")return "No panel was chosen. Tap Connect and pick Redox Panel from the Bluetooth list.";
+    if(err&&err.name==="SecurityError")return "Bluetooth is blocked here. Allow Bluetooth for this site in Chrome, and make sure Bluetooth is on in the phone.";
+    return "Could not reach the panel over Bluetooth. Check that it is powered, within a few metres, and that no other phone is connected to it.";
+  }
   let t="Could not reach the panel at "+(SAMEORIGIN?"this address":pn.addr)+". Check that it is powered and on the same WiFi.";
   if(!SAMEORIGIN&&location.protocol==="https:")t+=" On Android Chrome, tap Allow when it asks to find devices on your local network. On iPhone, this page cannot reach the panel: open the panel's own address in Safari instead, for example http://"+pn.addr+".";
   return t;
@@ -3210,9 +3049,11 @@ function pnPoll(){
   });
 }
 function pnConnect(){
-  pn.addr=($("#pnAddr").value||"panel.local").trim();pn.key=$("#pnKey").value.trim();pnSave();
-  pnMsg("Connecting...",false);
-  pnReq("/api/state").then(function(st){
+  pn.addr=($("#pnAddr").value||"panel.local").trim();pn.key=$("#pnKey").value.trim();pn.mode=$("#pnMode").value;pnSave();
+  const ble=pn.mode==="ble"&&!SAMEORIGIN;
+  clearInterval(pn.iv);pn.iv=null;
+  pnMsg(ble?"Choose your panel (Redox Panel) in the Bluetooth list...":"Connecting...",false);
+  (ble?bleLink(!pn.dev):Promise.resolve()).then(function(){return pnReq("/api/state")}).then(function(st){
     pn.connected=true;pnRender(st);clearInterval(pn.iv);pn.iv=setInterval(pnPoll,2000);
     $("#pnConnect").textContent="Reconnect";
   }).catch(function(e){pn.connected=false;pnRender(null);pnMsg(pnHelp(e),true)});
@@ -3236,7 +3077,9 @@ function renderPanel(){
   sideUi();
   const simpleP=S.view==="simple";$("#pnOpts").hidden=simpleP;if(simpleP&&!(pn.st&&pn.st.session&&pn.st.session.active))pn.p=100;
   $("#pnAddr").value=pn.addr;$("#pnKey").value=pn.key;$("#pnSwap").checked=pn.swap;
-  $("#pnAddrRow").hidden=SAMEORIGIN;
+  const mrow=$("#pnMode").parentNode;mrow.hidden=SAMEORIGIN;$("#pnMode").value=pn.mode;$("#pnModeNote").hidden=BLE_OK||SAMEORIGIN;
+  $("#pnMode").querySelector("option[value=ble]").disabled=!BLE_OK;
+  $("#pnAddrRow").hidden=SAMEORIGIN||pn.mode==="ble";
   $("#pnL1").textContent="Channel 1 ("+(pn.swap?"850":"660")+" nm)";$("#pnL2").textContent="Channel 2 ("+(pn.swap?"660":"850")+" nm)";
   const pl=pnPlan(),el=$("#pnPlan");
   document.querySelectorAll("#pnOpts button").forEach(function(b){b.setAttribute("aria-pressed",String(+b.dataset.p===pn.p))});
@@ -3254,7 +3097,7 @@ function panelEntry(sec){
   const c=pn.ctx;if(!c)return null;const m=c.m;
   return {id:"l"+Date.now(),ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:sideFor(m.A.id),panel:m.prof.name,
     light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(c.dcm,m.prof.unit),1),unit:m.prof.unit,power:c.p,
-    sec:Math.round(sec),dose:+fmt(m.dose*m.pf*(c.raw?sec/c.raw:1),1),note:"Run by the panel",lp:S.logActive};
+    sec:Math.round(sec),dose:+fmt(m.dose*(c.raw?sec/c.raw:1),1),note:"Run by the panel",lp:S.logActive};
 }
 function logPanelSession(sec){const e=panelEntry(sec);return e?pushEntry(e):""}
 pnLock();
@@ -3268,6 +3111,7 @@ $("#pnC2").addEventListener("input",function(){$("#pnC2v").textContent=$("#pnC2"
 $("#pnC1").addEventListener("change",pnSet);$("#pnC2").addEventListener("change",pnSet);
 $("#pnOff").addEventListener("click",pnAllOff);$("#pnStop").addEventListener("click",pnAllOff);
 $("#pnStart").addEventListener("click",pnStart);
+$("#pnMode").addEventListener("change",function(){pn.mode=$("#pnMode").value;pn.connected=false;clearInterval(pn.iv);pn.iv=null;pnSave();pnRender(null);pnMsg("Not connected.",false);renderPanel()});
 $("#pnSwap").addEventListener("change",function(){pn.swap=$("#pnSwap").checked;pnSave();renderPanel()});
 $("#pnOpts").addEventListener("click",function(e){const b=e.target.closest("button");if(b){pn.p=+b.dataset.p;renderPanel()}});
 
@@ -3279,11 +3123,11 @@ function qsSetOff(on){try{if(on)localStorage.setItem(QSOFF,"1");else localStorag
 const QS=[
  {t:"Welcome",h:"<p>This app turns your panel's readings into a session plan: how far to hold the panel, which light to use and how long to run it.</p><p>This quick tour takes about a minute. Every number is an educational estimate, not medical advice.</p>"},
  {t:"1. Set Up Your Panel",h:"<p>On the <b>Calculator</b> tab, pick your panel under Panel Profile. Choose a built-in preset, or tap <b>Edit</b> to enter your own readings. Readings can be in mW/cm\u00b2, W/m\u00b2 or Btu/(ft\u00b2\u00b7h), and the app converts them.</p><p>More readings at more distances means better numbers. The Measure My Panel guide in the Edit window walks you through it.</p>"},
- {t:"2. Choose a Treatment",h:"<p>Pick what you are treating and the target area. The app chooses the wavelength and shows a published dose window.</p><p>The Evidence section below shows how strong the research is and links the sources.</p>"},
- {t:"3. Read the Recommendation",h:"<p>You get a distance and one recommended time at full power, rounded to the nearest quarter minute.</p><p>Drag the <b>dose</b> slider to change how much light you want, or change the time goal or type a distance to adjust it. For a personal estimate, fill in <b>About You</b> in Settings, General: skin tone, height and weight, and hair. Add a profile on the start screen to plan for someone else. <b>Lab View (Advanced)</b> adds the half-power Gentle option, depth and charts.</p>"},
+ {t:"2. Choose a Treatment",h:"<p>Pick what you are treating and the target area. The app estimates the <b>depth to the target</b> (you can type your own), chooses the wavelength from it, and shows a published dose window.</p><p>The Evidence section below shows how strong the research is and links the sources.</p>"},
+ {t:"3. Read the Recommendation",h:"<p>You get a distance and one recommended time at full power, rounded to the nearest quarter minute.</p><p>Drag the <b>dose</b> slider to change how much light you want, or change the time goal or type a distance to adjust it. Add a profile on the start screen to plan for someone else.</p>"},
  {t:"4. Run a Session",h:"<p>Tap <b>Start</b> on the Session Timer. It beeps when a part ends and logs the session for you when it finishes (untick <b>Log automatically</b> under the timer to log by hand instead). Then tap <b>Add Photo to This Session</b> if you want a progress photo with it.</p><p>For paired areas like the knee or shoulder, pick <b>Left</b>, <b>Right</b> or <b>Both</b> next to Log to. Have a compatible Redox panel? The <b>Control Panel</b> tab can run the session for you.</p>"},
  {t:"5. Build a Routine",h:"<p>Chain up to 10 protocols like a playlist. Set up each protocol on the Calculator and tap <b>Add to Routine</b>, then open <b>Calculator, Routines</b> to name it, reorder it and tap <b>Start Routine</b>.</p><p>Each step tells you where to place the panel, with a pause between steps. With a panel connected, the routine runs the panel for you. Not sure where to start? Try a <b>Preset Routine</b>, such as Knee Care or Leg Recovery.</p>"},
- {t:"6. Track Your Sessions",h:"<p>Every finished session is logged automatically, with its side and the routine it came from. Use <b>Log to</b> to keep separate logs, such as Panel and Mask.</p><p>Inside each log, sessions are sorted by treatment area, and paired areas split into Left and Right. Use the <b>Area</b> drop-down to see just one, and <b>Day, Week, Month, Year</b> or <b>All</b> to change the time range. Find it all under the gear, <b>Session Logs</b>.</p><p>Want to see change over time? Tap <b>Add Photo</b> there to keep progress photos, then compare them with <b>Before and After</b>. Photos stay on your phone.</p>"},
+ {t:"6. Track Your Sessions",h:"<p>Every finished session is logged automatically, with its side and the routine it came from. Use <b>Log to</b> to keep separate logs, such as Panel and Mask.</p><p>Inside each log, sessions are sorted by treatment area, and paired areas split into Left and Right. Use the <b>Area</b> drop-down to see just one, and <b>Week, Month, Year</b> or <b>All</b> to change the time range. Find it all under the gear, <b>Session Logs</b>.</p><p>Want to see change over time? Tap <b>Add Photo</b> there to keep progress photos, then compare them with <b>Before and After</b>. Photos stay on your phone.</p>"},
  {t:"7. Explore",h:"<p>The <b>book icon</b> opens Learning and Resources: short guides and a research library.</p><p>The <b>gear</b> opens Settings: Session Logs, the full How to Use guide, and the safety checklist. The switch at the very top turns on the Red Screen Filter for night use.</p>"}
 ];
 let qsI=0;
@@ -3307,15 +3151,12 @@ $("#stQs").addEventListener("change",function(){qsSetOff(!$("#stQs").checked)});
 function renderWork(){
   const m=model(),prof=m.prof,u=prof.unit,box=$("#workBody"),dcm=curDist(m);
   if(dcm==null||m.missing){box.innerHTML='<p class="hint">Add at least one wavelength and one panel reading under Edit on the Calculator and the worked numbers appear here.</p>';return}
-  const A=m.A,T=m.T,me=S.me||{},g=geomOf(prof),pts=m.allPts,k=m.k,D=m.dose;
-  const du=x=>fmt(fromCm(x,u),1),dIn=x=>du(x)+" "+u,mw=x=>fmt(x,1)+" mW/cm\u00b2",pc=x=>x>=0.1?Math.round(x*100)+"%":fmt(x*100,1)+"%";
-  const roman=["I","II","III","IV","V","VI"],f2=x=>(+x).toFixed(2);
-  const bands=ch=>{const a=ch==="660"?m.G.red:ch==="850"?m.G.nir:m.G.bs;return a.length?a:[{nm:ch==="660"?660:ch==="850"?850:750,sh:1}]};
-  const tw=(ch,c,d)=>{const a=bands(ch),s=a.reduce((x,b)=>x+b.sh,0);return a.reduce((x,b)=>x+b.sh*tissueT(b.nm,d,c),0)/s};
+  const A=m.A,T=m.T,pts=m.allPts,k=m.k,D=m.dose;
+  const du=x=>fmt(fromCm(x,u),1),dIn=x=>du(x)+" "+u,mw=x=>fmt(x,1)+" mW/cm\u00b2";
   const out=[],sec=(t,b)=>out.push("<details open><summary>"+t+"</summary>"+b+"</details>");
-  out.push('<p class="hint">'+(S.people.length>1?'For <b>'+escT(S.me.name)+'</b>. ':'')+'Working on: <b>'+escT(T.name)+'</b>, <b>'+escT(A.name)+'</b>, panel <b>'+escT(prof.name)+'</b>, dose window '+m.lo+' to '+m.hi+' J/cm\u00b2, distance '+dIn(dcm)+(S.distManualCm>0?' (picked by you)':' (recommended)')+'.</p>');
+  out.push('<p class="hint">Working on: <b>'+escT(T.name)+'</b>, <b>'+escT(A.name)+'</b>, panel <b>'+escT(prof.name)+'</b>, dose window '+m.lo+' to '+m.hi+' J/cm\u00b2, distance '+dIn(dcm)+(S.distManualCm>0?' (picked by you)':' (recommended)')+'.</p>');
   // 1 panel output
-  const fn=makeIrr(pts,g),listed=fn(dcm),inR=dcm>=pts[0].d-1e-6&&dcm<=pts[pts.length-1].d+1e-6;
+  const fn=makeIrr(pts),listed=fn(dcm),inR=dcm>=pts[0].d-1e-6&&dcm<=pts[pts.length-1].d+1e-6;
   let s1='<p>Your readings (all wavelengths on, 100% power, centered on the panel):</p><ul>'+pts.map(p=>'<li>'+dIn(p.d)+': '+mw(p.i)+'</li>').join('')+'</ul>';
   if(inR&&pts.length>1){
     const j=Math.max(1,pts.findIndex(p=>p.d>=dcm-1e-6)),a=pts[j-1],b=pts[j],sl=Math.log(b.i/a.i)/Math.log(b.d/a.d);
@@ -3324,76 +3165,38 @@ function renderWork(){
     s1+='<p>'+dIn(dcm)+' is one of your readings, so <b>'+mw(listed)+'</b> is used as measured.</p>';
   }else{
     const e=dcm<pts[0].d?pts[0]:pts[pts.length-1];
-    if(g){const sh=srcShape(g),r=sh(dcm)/sh(e.d);s1+='<p>'+dIn(dcm)+' is outside your readings, so the app continues from the nearest one ('+dIn(e.d)+', '+mw(e.i)+') using how light spreads off a flat LED panel of '+du(g.W)+' \u00d7 '+du(g.H)+' '+u+' with 60\u00b0 lenses. The model sums the light from a grid of emitters, each falling off as cos^m of the angle, and gives a shape ratio of '+fmt(r,3)+'. Irradiance = '+fmt(e.i,1)+' \u00d7 '+fmt(r,3)+' = <b>'+mw(listed)+'</b>.</p>'}
-    else if(pts.length===1)s1+='<p>'+dIn(dcm)+' is outside your one reading, so the app uses a rough rule: irradiance = '+fmt(e.i,1)+' \u00d7 ('+du(e.d)+' / '+du(dcm)+')^1.5 = <b>'+mw(listed)+'</b>. Add the panel size under Edit to use the physical shape of a flat panel instead.</p>';
+    if(pts.length===1)s1+='<p>'+dIn(dcm)+' is outside your one reading, so the app uses a rough rule: irradiance = '+fmt(e.i,1)+' \u00d7 ('+du(e.d)+' / '+du(dcm)+')^1.5 = <b>'+mw(listed)+'</b>. More readings at more distances make this better.</p>';
     else s1+='<p>'+dIn(dcm)+' is outside your readings, so the app continues the slope of the nearest two readings (limited to between -2.2 and 0) from '+dIn(e.d)+'. Result: <b>'+mw(listed)+'</b>.</p>';
   }
-  s1+='<p>Solar meter correction: '+fmt(listed,1)+' \u00d7 '+f2(k)+' = <b>'+mw(listed*k)+'</b> total at 100% power. Split by light:</p><ul>'+m.segs.map(s=>'<li>'+escT(s.label)+': '+mw(m.irr(s.ch,dcm))+'</li>').join('')+'</ul>';
+  s1+='<p>Solar meter correction: '+fmt(listed,1)+' \u00d7 '+(+k).toFixed(2)+' = <b>'+mw(listed*k)+'</b> total at 100% power. Split by light:</p><ul>'+m.segs.map(s=>'<li>'+escT(s.label)+': '+mw(m.irr(s.ch,dcm))+'</li>').join('')+'</ul>';
   sec('1. Panel output at '+dIn(dcm),s1);
-  // 2 depth
+  // 2 which light
   let s2='<p>Typical depth to the '+T.layer+' layer in this area: <b>'+fmt(m.auto,1)+' mm</b> (from the area table).</p>';
-  if(Math.abs(m.depthRef-m.auto)>1e-9)s2+='<p>You typed a depth, so <b>'+fmt(m.depthRef,1)+' mm</b> is used as typed.</p>';
-  else if(Math.abs(m.adj)>=0.05){const bm=meBmi();s2+='<p>Fat over this area: typical '+fmt(fatRefFor(A.id),1)+' mm at BMI 25.5, for you '+fmt(fatYou(A.id),1)+' mm (BMI '+fmt(bm,1)+'). Depth = '+fmt(m.auto,1)+' '+(m.adj>=0?'+':'-')+' '+fmt(Math.abs(m.adj),1)+' = <b>'+fmt(m.depth,1)+' mm</b>.</p>'}
-  else s2+='<p>No build adjustment applies ('+(meActive()?'this is a skin or head target, or your fat estimate matches the typical one':'nothing is filled in under About You')+'), so the depth stays <b>'+fmt(m.depth,1)+' mm</b>.</p>';
-  sec('2. Depth to the target',s2);
-  // 3 wavelength
-  let s3='<p>Rule: under 4 mm uses red (660), 4 to 13 mm uses both, deeper than 13 mm uses near-infrared (850), because near-infrared scatters less and passes deeper. At '+fmt(m.depth,1)+' mm that gives <b>'+(m.wave==='blend'?'both wavelengths':m.wave+' nm')+'</b>.</p>';
-  if(prof.mode==='fixed')s3+='<p>This panel fires every wavelength together, so the dose counts all of them.</p>';
-  if(m.subst)s3+='<p>'+escT(m.subst)+'</p>';
-  if(m.wave==='blend'&&prof.mode!=='fixed')s3+='<p>The red share of the dose = 0.70 - 0.50 \u00d7 (depth - 4) / 8 = '+fmt(0.7-0.5*(m.depth-4)/8,2)+', limited to 0.20 to 0.70, giving <b>'+Math.round(m.s660*100)+'% red and '+Math.round((1-m.s660)*100)+'% near-infrared</b>. This is a rule of thumb, not from a trial.</p>';
-  sec('3. Which light',s3);
-  // 4 tissue
-  const c=ctxFor(A,true),hairArea=!!HAIR_AREAS[A.id];
-  let s4='<p>Model: '+(c.kind==='head'?'scalp 5 mm, skull '+fmt(SKULL_MM,1)+' mm, fluid 2 mm, then brain':'skin 1.5 mm, fat '+fmt(c.fat,1)+' mm, then muscle')+'. Skin type '+roman[Math.round(c.tone)-1]+(me.tone>0?'':' (assumed)')+(hairArea?', hair factor '+f2(c.hair)+(me.hair?'':' (assumed thin)'):'')+'. The tables hold the light level (fluence rate) at each depth as a share of the light hitting the skin, worked out by solving the diffusion equation through the layers with published absorption and scattering values. Near the surface scattering can push the level above 100%.</p>';
-  m.segs.forEach(sg=>{
-    s4+='<p><b>'+escT(sg.label)+'</b> at '+fmt(m.depth,1)+' mm:</p><ul>'+bands(sg.ch).map(b=>{const p=tissueParts(b.nm,m.depth,c);return '<li>'+b.nm+' nm: tissue profile '+pc(p.base)+' \u00d7 skin factor '+f2(p.tone)+(hairArea?' \u00d7 hair '+f2(p.hair):'')+' = '+pc(p.total)+'</li>'}).join('')+'</ul><p>Weighted by the panel\'s output share: <b>'+pc(tw(sg.ch,c,m.depth))+'</b>'+(tw(sg.ch,c,m.depth)>1?' (shown as 100%)':'')+'.</p>';
-  });
-  const tr=m.trans(prof.mode==='fixed'?'both':(m.wave==='blend'?'850':m.wave));
-  s4+='<p>Light reaching the target for the dose line: '+fmt(D*m.pf,2)+' J/cm\u00b2 \u00d7 '+pc(tr)+' = '+fmt(D*m.pf*tr,2)+' J/cm\u00b2, with a plausible range of about half to double.</p>';
-  sec('4. Light that reaches the target',s4);
-  // 5 personal
-  let s5;
-  if(!meActive())s5='<p>Nothing is filled in under About You, so the factor is <b>\u00d71.00</b>. The app assumes a typical study participant: skin type III, BMI 25.5, thin hair.</p>';
-  else{
-    const cr=ctxFor(A,false);
-    s5='<p>Compare the light at the target for a typical participant with the light for you:</p><ul>'+m.segs.map(sg=>{const r=tw(sg.ch,cr,m.depthRef),y=tw(sg.ch,c,m.depth);return '<li>'+escT(sg.label)+': typical '+pc(r)+', you '+pc(y)+', ratio '+fmt(r/Math.max(y,1e-9),2)+'</li>'}).join('')+'</ul>'
-     +'<p>Skin tone and hair part, applied in full: \u00d7'+f2(m.pfSkin)+'. Fat and depth part: raw \u00d7'+f2(m.pfFat*m.pfFat)+', applied at half strength (square root) to \u00d7'+f2(m.pfFat)+', because published doses were not tuned to a fixed light level at the target and the ratio becomes extremely steep with depth.</p>'
-     +'<p>Combined: \u00d7'+f2(m.pfComb)+'. Limits: not below 0.80, not above 2.00, and the adjusted dose never above 1.5 \u00d7 the top of the window ('+fmt(1.5*m.hi,1)+' J/cm\u00b2). Final factor <b>\u00d7'+f2(m.pf)+'</b>.</p>'
-     +'<p>Surface dose: '+fmt(D,1)+' J/cm\u00b2 published \u00d7 '+f2(m.pf)+' = <b>'+fmt(D*m.pf,1)+' J/cm\u00b2</b>.'+(m.pfRaw>2.5?' The unlimited ratio would be \u00d7'+fmt(m.pfRaw,1)+', so the limit is doing the work: the target is deep for your build and extra dose does not make up for it.':'')+'</p>';
-  }
-  sec('5. Adjusting the dose for you',s5);
-  // 6 time
-  let s6='<p>Time for each light = dose \u00d7 factor \u00d7 share \u00f7 irradiance, with irradiance scaled by the power setting.</p><ul>';
-  const full=m.segs.map(sg=>{const I=m.irr(sg.ch,dcm),J=D*m.pf*sg.share,t=J*1000/I;return {sg:sg,I:I,J:J,t:t}});
-  full.forEach(x=>{s6+='<li>'+escT(x.sg.label)+': '+fmt(D,1)+' \u00d7 '+f2(m.pf)+' \u00d7 '+f2(x.sg.share)+' = '+fmt(x.J,2)+' J/cm\u00b2 \u00f7 '+fmt(x.I,1)+' mW/cm\u00b2 = '+Math.round(x.t)+' s</li>'});
-  const p100=m.plan(dcm,100,D),p50=m.plan(dcm,50,D),uu=unc(m,dcm);
-  s6+='</ul><p>Each light is rounded to the nearest quarter minute (never below 15 seconds), so full power gives <b>'+fmtMin(p100.total)+'</b>. At 50% power the irradiance halves, so the time doubles to '+fmtMin(p50.total)+'.</p>';
-  const base={lab:0.12,ind:0.15,claim:0.25,est:0.30,user:0.20}[prof.kind||'user']||0.2,solar=Math.abs(k-1)>0.005?0.20:0,ext=!inR;
-  s6+='<p>Likely range: the uncertainty combines the panel numbers ('+Math.round(base*100)+'%, from how they were obtained)'+(solar?', the solar meter correction (20%)':'')+(ext?', and a distance outside your readings (25%)':'')+' as a root sum of squares = \u00b1'+Math.round(uu*100)+'%.</p>';
-  sec('6. Session time',s6);
-  // 7 distance
+  if(S.depthManual>0)s2+='<p>You typed a depth, so <b>'+fmt(m.depth,1)+' mm</b> is used as typed.</p>';
+  else if(Math.abs(m.adj)>=0.05){const b=meBmi();s2+='<p>Fat over this area: typical '+fmt(FAT_MM[A.id],1)+' mm at BMI '+REF_BMI+', for you '+fmt(FAT_MM[A.id]*fatScale(b),1)+' mm (BMI '+fmt(b,1)+'). Depth = '+fmt(m.auto,1)+' '+(m.adj>=0?'+':'-')+' '+fmt(Math.abs(m.adj),1)+' = <b>'+fmt(m.depth,1)+' mm</b>.</p>'}
+  else s2+='<p>No build adjustment applies ('+(meBmi()>0?'this is a skin or head target, or your BMI is typical':'no height and weight entered')+'), so the depth stays <b>'+fmt(m.depth,1)+' mm</b>.</p>';
+  s2+='<p>Rule: under 4 mm uses red (660), 4 to 13 mm uses both, deeper than 13 mm uses near-infrared (850), because near-infrared passes deeper. That gives <b>'+(m.wave==='blend'?'both wavelengths':m.wave+' nm')+'</b>.</p>';
+  if(prof.mode==='fixed')s2+='<p>This panel fires every wavelength together, so the dose counts all of them.</p>';
+  if(m.subst)s2+='<p>'+escT(m.subst)+'</p>';
+  if(m.wave==='blend'&&prof.mode!=='fixed')s2+='<p>The red share of the dose = 0.70 - 0.50 \u00d7 (depth - 4) / 8 = '+fmt(0.7-0.5*(m.depth-4)/8,2)+', limited to 0.20 to 0.70, giving <b>'+Math.round(m.s660*100)+'% red and '+Math.round((1-m.s660)*100)+'% near-infrared</b>. This is a rule of thumb, not from a trial.</p>';
+  sec('2. Which light',s2);
+  // 3 dose and time
+  let s3='<p>Dose in joules per square centimeter = irradiance (mW/cm\u00b2) \u00d7 time (seconds) \u00f7 1000. So time = dose \u00d7 1000 \u00f7 irradiance. The dose is the number on the slider, '+fmt(D,1)+' J/cm\u00b2, split between the lights by their share.</p><ul>';
+  m.segs.forEach(sg=>{const I=m.irr(sg.ch,dcm),J=D*sg.share,t=J*1000/I;s3+='<li>'+escT(sg.label)+': '+fmt(D,1)+' \u00d7 '+fmt(sg.share,2)+' = '+fmt(J,2)+' J/cm\u00b2 \u00f7 '+fmt(I,1)+' mW/cm\u00b2 \u00d7 1000 = '+Math.round(t)+' s</li>'});
+  const p100=m.plan(dcm,100,D),p50=m.plan(dcm,50,D);
+  s3+='</ul><p>Each light is rounded to the nearest quarter minute (never below 15 seconds), so full power gives <b>'+fmtMin(p100.total)+'</b>. At 50% power the irradiance halves, so the time doubles to '+fmtMin(p50.total)+'.</p>';
+  sec('3. Dose and session time',s3);
+  // 4 range
+  const uu=unc(m,dcm),base={lab:0.12,ind:0.15,claim:0.25,est:0.30,user:0.20}[prof.kind||'user']||0.2,solar=Math.abs(k-1)>0.005?0.20:0;
+  sec('4. Likely range','<p>The uncertainty combines the panel numbers ('+Math.round(base*100)+'%, from how they were obtained)'+(solar?', the solar meter correction (20%)':'')+(!inR?', and a distance outside your readings (25%)':'')+' as a root sum of squares = \u00b1'+Math.round(uu*100)+'%, so the time is likely between '+fmtMin(qtrRound(p100.total/(1+uu)))+' and '+fmtMin(qtrRound(p100.total/(1-uu)))+'.</p>');
+  // 5 distance
   const rec=recommend(m),goal=parseFloat(S.goal)||10;
-  let s7='<p>The app tries distances in steps of '+(u==='in'?'1.27 cm (half an inch)':'1 cm')+', works out the full-power time at each, '+(T.irrMin?'keeps only those that give at least '+T.irrMin+' mW/cm\u00b2 at the surface (this treatment needs it for depth), ':'')+'and picks the one closest to your '+goal+' minute goal, preferring a distance inside your measured range that lands within 10% of the goal.</p>';
-  {const cv0=covAt(prof,A.id,dcm),sz0=AREA_SIZE[A.id];
-    if(cv0)s7+='<p><b>Coverage check:</b> a typical '+escH(A.name.toLowerCase())+' is about '+sz0[0]+' \u00d7 '+sz0[1]+' cm (an estimate). From the flat-panel light model of your '+du(g.W)+' \u00d7 '+du(g.H)+' '+u+' panel, at '+dIn(dcm)+' the weakest of nine points across it (corners, edge middles and centre) gets <b>'+Math.round(cv0.min*100)+'%</b> of the centre'+(cv0.rot?', and turning the panel a quarter turn is more even':'')+'. Distances where that is under 70% are skipped when others work.</p>';
-    else if(sz0)s7+='<p>Coverage is not checked because no panel size is entered. Add it under Edit and the app also looks at how evenly the light reaches a typical '+escH(A.name.toLowerCase())+'.</p>';}
-  if(S.distManualCm>0)s7+='<p>You picked '+dIn(dcm)+', so the search is skipped and that distance is used.</p>';
-  else if(rec)s7+='<p>Result: <b>'+dIn(rec.d)+'</b>, full-power time '+fmtMin(m.total(rec.d,100,D))+', surface irradiance '+mw(rec.I)+'.'+(rec.short?' No distance reached the surface irradiance this treatment needs, so the strongest reachable is shown.':'')+'</p>';
-  sec('7. Recommended distance',s7);
-  // 8 sources and limits
-  const s8='<p><b>Where the numbers come from</b></p><ul>'
-   +'<li>Dose windows: published ranges and dosing guides, shown with their evidence level on the Calculator.</li>'
-   +'<li>Tissue absorption: hemoglobin, water, fat and melanin spectra (Prahl, Hale and Querry, van Veen, Jacques). Scattering: Jacques 2013. Skin pigment ranges: Jacques. Fat and dermis calibrated to measured human tissue (Simpson 1998).</li>'
-   +'<li>Fat thickness: ultrasound data for the abdomen, thigh and calf, estimated elsewhere, scaled with BMI.</li>'
-   +'<li>Skin tone factors: Monte Carlo simulation of light through the epidermis, smoothed.</li></ul>'
-   +'<p><b>What was checked</b></p><ul>'
-   +'<li>The diffusion tables agree with a full Monte Carlo simulation to about 10% (about 25% right at a fat to muscle boundary).</li>'
-   +'<li>Light through scalp and skull: model 2.4% near-infrared and 0.6% red at typical thickness, against published cadaver values of about 2.1% (830 nm) and 0.5% (633 nm).</li></ul>'
-   +'<p><b>What was not</b></p><ul>'
-   +'<li>Light at depth in fat and muscle has not been compared with direct measurements, so deep sites are the least certain.</li>'
-   +'<li>Hair loss and the BMI to fat link are the roughest inputs.</li>'
-   +'<li>Nobody can predict clinical results from light dose alone, because the response is biphasic and varies between people. The dose window, not the physics, sets what is aimed for.</li></ul>';
-  sec('8. Sources, checks and limits',s8);
+  let s5='<p>The app tries distances in steps of '+(u==='in'?'half an inch':'1 cm')+', works out the full-power time at each, '+(T.irrMin?'keeps only those that give at least '+T.irrMin+' mW/cm\u00b2 at the surface (this treatment needs it for depth), ':'')+'and picks the one closest to your '+goal+' minute goal, preferring a distance inside your measured range that lands within 10% of the goal.</p>';
+  if(S.distManualCm>0)s5+='<p>You picked '+dIn(dcm)+', so the search is skipped and that distance is used.</p>';
+  else if(rec)s5+='<p>Result: <b>'+dIn(rec.d)+'</b>, full-power time '+fmtMin(m.total(rec.d,100,D))+', surface irradiance '+mw(rec.I)+'.'+(rec.short?' No distance reached the surface irradiance this treatment needs, so the strongest reachable is shown.':'')+'</p>';
+  sec('5. Recommended distance',s5);
+  // 6 limits
+  sec('6. Sources and limits','<ul><li>Dose windows are rounded from published ranges and dosing guides, shown with their evidence level on the Calculator.</li><li>Irradiance comes only from your own panel readings, so the numbers are as good as the readings and the meter correction.</li><li>The depth, the red and near-infrared rule and the split are rules of thumb. Your BMI only nudges the depth estimate where there is a fat layer; the app does not model how light spreads through skin, fat or bone.</li><li>Nobody can predict clinical results from the light dose alone, because the response varies between people.</li></ul>');
   box.innerHTML=out.join('');
 }
 
@@ -3424,18 +3227,13 @@ function goalStats(entries,nowTs,perWeek){
     let w=cw;if(thisWeek<perWeek)w=new Date(new Date(cw).getFullYear(),new Date(cw).getMonth(),new Date(cw).getDate()-7).getTime();
     while((weeks.get(w)||0)>=perWeek){onGoal++;const x=new Date(w);w=new Date(x.getFullYear(),x.getMonth(),x.getDate()-7).getTime()}
   }
-  const strip=[],s0=new Date(cw);
-  for(let i=0;i<84;i++){const x=new Date(s0.getFullYear(),s0.getMonth(),s0.getDate()-77+i),m=days.get(dayNum(x.getTime()))||0;strip.push({ts:x.getTime(),min:m,future:x.getTime()>today.getTime()})}
-  return {cur:cur,best:best,thisWeek:thisWeek,onGoal:onGoal,strip:strip};
+  return {cur:cur,best:best,thisWeek:thisWeek,onGoal:onGoal};
 }
 function goalCardHtml(){
-  const a=logFor(S.logActive),g=goalOf(),st=goalStats(a,Date.now(),g);
-  const lvl=function(c){return c.future?"gf":(c.min<=0?"g0":(c.min<10?"g1":(c.min<20?"g2":"g3")))};
-  let h='<div class="goalcard"><div class="gtop"><b>'+(g?'This week':'Streak')+'</b><span>'+(g?st.thisWeek+' of '+g+' session'+(g>1?'s':''):'No weekly goal set')+'</span></div>';
+  const g=goalOf(),st=goalStats(logFor(S.logActive),Date.now(),g);
+  let h='<div class="goalcard"><div class="gtop"><b>This week</b><span>'+(g?st.thisWeek+' of '+g+' session'+(g>1?'s':''):st.thisWeek+' session'+(st.thisWeek===1?'':'s'))+'</span></div>';
   if(g)h+='<div class="pbar" aria-label="Progress this week"><b style="width:'+Math.min(100,Math.round(st.thisWeek/g*100))+'%"></b></div>';
-  h+='<div class="gstats"><div><b>'+st.cur+'</b><span>day streak</span></div><div><b>'+(g?st.onGoal:"-")+'</b><span>weeks on goal</span></div><div><b>'+st.best+'</b><span>best streak, days</span></div></div>';
-  h+='<div class="gstrip" role="img" aria-label="Sessions over the last 12 weeks">'+st.strip.map(function(c){return '<i class="'+lvl(c)+'" title="'+escH(new Date(c.ts).toLocaleDateString(undefined,{month:"short",day:"numeric"}))+': '+Math.round(c.min)+' min"></i>'}).join("")+'</div>';
-  h+='<p class="glegend">Last 12 weeks, newest on the right: darker means more minutes that day (under 10, under 20, 20 or more).</p>';
+  h+='<p class="glegend">'+(st.cur?'Day streak: '+st.cur+(st.cur>1?' days':' day')+'.':'No streak right now. A session today starts one.')+'</p>';
   h+='<div class="acts"><button class="btn" id="goalSet" type="button">'+(g?"Change goal":"Set a weekly goal")+'</button><button class="btn" id="goalRemind" type="button">Remind me</button></div></div>';
   return h;
 }
@@ -3476,7 +3274,7 @@ $("#remMake").addEventListener("click",function(){
   const days=Array.prototype.map.call($("#remDays").querySelectorAll('[aria-pressed="true"]'),function(b){return b.dataset.d});
   if(!days.length){$("#remErr").textContent="Pick at least one day.";return}
   const time=$("#remTime").value;if(!/^\d\d:\d\d$/.test(time)){$("#remErr").textContent="Pick a time.";return}
-  const text=($("#remText").value.trim()||"Redox session").slice(0,60),ics=icsText(days,time,text);
+  const text="Redox session",ics=icsText(days,time,text);
   closeD("#remDlg");
   try{
     const f=new File([ics],"redox-reminder.ics",{type:"text/calendar"});
@@ -3782,7 +3580,6 @@ function docModel(o){
     if(me.w>0)b.w=imp?fmt(me.w*2.2046226,0)+" lb":fmt(me.w,0)+" kg";
     if(bmi>0)b.bmi=fmt(bmi,1);
     if(me.tone>0)b.skin="Fitzpatrick type "+["I","II","III","IV","V","VI"][me.tone-1];
-    if(me.sex)b.sex=me.sex;
   }
   return {o:o,now:now,lo:lo,person:me.name,log:lpName(S.logActive),areaName:o.area==="all"?"All areas":((AREAS.find(function(a){return a.id===o.area})||{}).name||(ents[0]&&ents[0].arn)||(reps[0]&&reps[0].arn)||o.area),ents:ents,reps:reps,tot:tot,areaRows:areaRows,metrics:metrics,fx:fx,goal:g,gs:gs,body:b,weekly:ents.length/(o.days/7),
     notes:o.notes?reps.filter(function(r){return r.note}).slice(-8).reverse():[],
@@ -3813,13 +3610,13 @@ function docBuild(o){
   d.y-=20;d.text("Session and check-in summary",d.M,d.y,19,true);d.y-=6;
   d.line(d.M,d.y-4,W-d.M,d.y-4,1);d.y-=6;
   const info=[["Person",mod.person],["Log",mod.log],["Period",dt(mod.lo)+" to "+dt(mod.now)+" ("+o.days+" days)"],["Area",mod.areaName],["Prepared",dt(mod.now)]];
-  if(mod.body.h||mod.body.w||mod.body.bmi||mod.body.skin||mod.body.sex)info.push(["Body details",[mod.body.sex,mod.body.h,mod.body.w,mod.body.bmi?"BMI "+mod.body.bmi:"",mod.body.skin].filter(Boolean).join(", ")]);
+  if(mod.body.h||mod.body.w||mod.body.bmi||mod.body.skin)info.push(["Body details",[mod.body.h,mod.body.w,mod.body.bmi?"BMI "+mod.body.bmi:"",mod.body.skin].filter(Boolean).join(", ")]);
   info.forEach(function(r){d.need(14);d.y-=13;d.text(r[0],d.M,d.y,9.5,true);d.text(pdfFit(r[1],d.cw-90,9.5,false),d.M+90,d.y,9.5,false)});
   d.h2("Sessions");
   if(!mod.tot.n)d.para("No sessions were logged in this period.",10,false);
   else{
     d.para(mod.tot.n+" session"+(mod.tot.n>1?"s":"")+", "+fmt(mod.tot.min,0)+" minutes in total ("+fmt(mod.tot.min/mod.tot.n,1)+" minutes on average), about "+fmt(mod.weekly,1)+" per week. Estimated surface dose delivered: "+fmt(mod.tot.dose,0)+" J/cm2 in total, "+fmt(mod.tot.dose/mod.tot.n,1)+" J/cm2 per session.",10,false);
-    if(mod.goal)d.para("Goal: "+mod.goal+" session"+(mod.goal>1?"s":"")+" a week. Weeks in a row on goal: "+mod.gs.onGoal+". Current day streak: "+mod.gs.cur+", best streak: "+mod.gs.best+" days.",10,false);
+    if(mod.goal)d.para("Goal: "+mod.goal+" session"+(mod.goal>1?"s":"")+" a week. This week so far: "+mod.gs.thisWeek+". Current day streak: "+mod.gs.cur+" day"+(mod.gs.cur===1?"":"s")+".",10,false);
     d.table([30,10,9,11,20,12,8],["Area","Sessions","Minutes","Avg dose","Light","Distance","Power"],mod.areaRows.map(function(a){return [a.name,String(a.n),fmt(a.min,0),fmt(a.avgDose,1)+" J/cm2",a.light,a.dist,a.power]}));
     d.para("Doses are estimates from the panel readings and the person's own settings in the app. Distances are the panel to skin.",8.5,false);
   }
@@ -4234,14 +4031,6 @@ $("#mePName").addEventListener("input",function(e){const v=e.target.value.trim()
 $("#mePName").addEventListener("blur",function(){if(!$("#mePName").value.trim())$("#mePName").value=S.me.name});
 $("#meLog").addEventListener("change",function(e){S.me.lp=e.target.value;save();if(S.me.lp&&S.logActive!==S.me.lp){S.logActive=S.me.lp;S.logArea="all";S.logSide="all";fillLogProfiles();save()}});
 
-function meWhy(m){
-  const s=S.me||{},b=meBmi(),bits=[];
-  if(s.tone>0)bits.push("skin type "+["I","II","III","IV","V","VI"][s.tone-1]);
-  if(b>0)bits.push("BMI "+fmt(b,1));
-  if(s.sex)bits.push(s.sex);
-  if(s.hair&&HAIR_AREAS[m.A.id])bits.push(s.hair+" hair");
-  return bits.length?"Based on "+bits.join(", ")+".":"";
-}
 let meNoteT=null;
 function meNote(msg){const e=$("#meSaved");if(!e)return;e.textContent=msg;clearTimeout(meNoteT);meNoteT=setTimeout(function(){e.textContent=""},5000)}
 function meUnits(){return S.me&&S.me.u==="imperial"?"imperial":"metric"}
@@ -4253,20 +4042,20 @@ function meRender(){
   $("#meHL").textContent=imp?"Height (in)":"Height (cm)";$("#meWL").textContent=imp?"Weight (lb)":"Weight (kg)";
   if(document.activeElement!==$("#meH"))$("#meH").value=m.h>0?String(+(imp?m.h/2.54:m.h).toFixed(1)):"";
   if(document.activeElement!==$("#meW"))$("#meW").value=m.w>0?String(+(imp?m.w*2.2046226:m.w).toFixed(1)):"";
-  $("#meSex").value=m.sex||"";$("#meTone").value=String(m.tone||0);$("#meHair").value=m.hair||"";
-  const b=meBmi();$("#meBmi").textContent=b?"BMI "+fmt(b,1)+". Used only to estimate how thick the fat layer is at each area.":"Enter height and weight to work out BMI.";
+  $("#meTone").value=String(m.tone||0);
+  const b=meBmi();$("#meBmi").textContent=b?"BMI "+fmt(b,1)+". It adjusts the depth estimate where there is a fat layer.":"Enter height and weight to work out BMI.";
 }
 function meRead(){
   const imp=meUnits()==="imperial",h=parseFloat($("#meH").value),w=parseFloat($("#meW").value);
   S.me.h=h>0?clamp(imp?h*2.54:h,100,250):0;S.me.w=w>0?clamp(imp?w/2.2046226:w,30,300):0;
-  S.me.sex=$("#meSex").value;S.me.tone=+$("#meTone").value||0;S.me.hair=$("#meHair").value;
-  save();meNote("Saved for "+S.me.name+".");const b=meBmi();$("#meBmi").textContent=b?"BMI "+fmt(b,1)+". Used only to estimate how thick the fat layer is at each area.":"Enter height and weight to work out BMI.";
+  S.me.tone=+$("#meTone").value||0;
+  save();meNote("Saved for "+S.me.name+".");const b=meBmi();$("#meBmi").textContent=b?"BMI "+fmt(b,1)+". It adjusts the depth estimate where there is a fat layer.":"Enter height and weight to work out BMI.";
   render();
 }
 ["#meH","#meW"].forEach(function(s){$(s).addEventListener("input",meRead)});
-["#meSex","#meTone","#meHair"].forEach(function(s){$(s).addEventListener("change",meRead)});
+$("#meTone").addEventListener("change",meRead);
 document.querySelectorAll("[data-meu]").forEach(function(b){b.addEventListener("click",function(){S.me.u=b.dataset.meu;save();meRender()})});
-$("#meClear").addEventListener("click",function(){S.me={u:meUnits(),h:0,w:0,sex:"",tone:0,hair:""};save();meRender();render();toast("Answers cleared");meNote("Cleared for "+S.me.name+".")});
+$("#meClear").addEventListener("click",function(){S.me={u:meUnits(),h:0,w:0,tone:0};save();meRender();render();toast("Answers cleared");meNote("Cleared for "+S.me.name+".")});
 $("#meSave").addEventListener("click",function(){meRead();toast("Saved for "+S.me.name+". Answers also save as you type.")});
 
 $("#howQs").addEventListener("click",openQs);
@@ -4506,7 +4295,7 @@ function rtLog(sec,early){
   const st=rt.steps[rt.i],x=rt.plans[rt.i],m=x.m;
   const e={id:"l"+Date.now()+"r"+rt.i,ts:Date.now(),tr:m.T.id,trn:m.T.name,ar:m.A.id,arn:m.A.name,side:st.side||"",panel:x.prof.name,
     light:m.segs.map(function(s){return s.label}).join(" + "),dist:+fmt(fromCm(x.dcm,x.prof.unit),1),unit:x.prof.unit,power:st.p,
-    sec:Math.round(sec),dose:+fmt(m.dose*m.pf*sec/x.raw,1),note:"Routine: "+rt.name+", step "+(rt.i+1)+" of "+rt.steps.length+(early?" (ended early)":""),lp:S.logActive};
+    sec:Math.round(sec),dose:+fmt(m.dose*sec/x.raw,1),note:"Routine: "+rt.name+", step "+(rt.i+1)+" of "+rt.steps.length+(early?" (ended early)":""),lp:S.logActive};
   const a=getLog();a.push(e);putLog(a);
   rt.lastSid=e.id;
 }
@@ -4616,7 +4405,6 @@ function downloadText(name,text,mime){
 const ex={kind:""};
 function profileOut(p){
   const o={name:p.name,unit:p.unit,ru:p.ru||"mw",factor:p.factor,mode:p.mode,bands:p.bands.map(function(b){return {nm:b.nm,share:b.share}}),rows:p.rows.map(function(r){return {d:r.d,t:r.t}}),src:p.src||""};
-  if(p.pw>0&&p.ph>0){o.pw=p.pw;o.ph=p.ph}
     if(p.uniform)o.uniform=p.uniform;
   return o;
 }
@@ -4713,7 +4501,6 @@ function cleanProfile(o){
   if(!bands.length||!rows.length)return null;
   const p={name:titleCase(name),unit:o.unit==="cm"?"cm":"in",ru:RUNITS[o.ru]?o.ru:"mw",factor:clamp(parseFloat(o.factor)||1,0.2,1.5),mode:o.mode==="fixed"?"fixed":"switch",bands:bands,rows:rows,kind:"user",
     src:(typeof o.src==="string"&&o.src?o.src.slice(0,400)+" ":"")+"Imported on "+new Date().toLocaleDateString()+"."};
-  if(+o.pw>0&&+o.ph>0){p.pw=clamp(+o.pw,1,400);p.ph=clamp(+o.ph,1,400)}
   const u=o.uniform;
   if(u&&Array.isArray(u.grid)&&u.grid.length===9&&u.grid.every(function(x){return typeof x==="number"&&isFinite(x)&&x>0})&&[u.avg,u.min,u.max,u.minRatio,u.cv,u.d].every(function(x){return typeof x==="number"&&isFinite(x)}))
     p.uniform={d:u.d,unit:u.unit==="cm"?"cm":"in",grid:u.grid.slice(),avg:u.avg,min:u.min,max:u.max,minRatio:u.minRatio,cv:u.cv};
@@ -4788,7 +4575,7 @@ function importSessions(list,skip){
   save();fillLogProfiles();
   return {added:added,dup:dup,bad:plan.bad,logs:Object.keys(counts),show:show};
 }
-function profileKey(p){return JSON.stringify([p.unit,p.ru||"mw",+p.factor,p.mode,p.bands.map(function(b){return b.nm+":"+b.share}),p.rows.map(function(r){return r.d+":"+r.t}),p.pw||0,p.ph||0])}
+function profileKey(p){return JSON.stringify([p.unit,p.ru||"mw",+p.factor,p.mode,p.bands.map(function(b){return b.nm+":"+b.share}),p.rows.map(function(r){return r.d+":"+r.t})])}
 function addProfile(p,i){
   const taken=function(n){return S.profiles.some(function(x){return x.name.toLowerCase()===n.toLowerCase()})||BUILTIN.some(function(x){return x.name.toLowerCase()===n.toLowerCase()})};
   let name=p.name,k=1;
