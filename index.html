@@ -395,8 +395,6 @@ body.hw-open{overflow:hidden}
 #hween .hw-big .evil{display:none}
 #hween .hw-big.lit .evil{display:inline}#hween .hw-big.lit .nice{display:none}
 #hween .hw-big.lit svg{--pe:#ff2a1a}
-#hween .hw-scarebtn{position:absolute;top:max(14px,env(safe-area-inset-top));right:14px;z-index:5;background:rgba(0,0,0,.35);color:#ffd9a0;border:1px solid #6b3a14;border-radius:20px;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer}
-#hween .hw-scarebtn[aria-pressed=false]{opacity:.6}
 #hwScare{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(120,0,0,.88),rgba(0,0,0,.97));animation:hwbg 1.5s forwards}
 #hwScare[hidden]{display:none}
 #hwScare svg{width:132vmin;max-width:none;--pb:#c93d0e;--pb2:#e0520f;--pf:#ffd23a;--pe:#ff1a10;filter:drop-shadow(0 0 40px #ff2a00) drop-shadow(0 0 90px #ff0000);animation:hwjump 1.5s forwards}
@@ -943,7 +941,7 @@ body.hw-open{overflow:hidden}
   <p class="hint" id="stPhInfo"></p>
   <div class="acts"><button class="btn danger" id="stPhClear" type="button" hidden>Delete all photos</button><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 116. Released October 28, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 120. Released October 28, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
@@ -1077,7 +1075,7 @@ body.hw-open{overflow:hidden}
 
 <dialog id="qrDlg" aria-labelledby="qrTitle">
   <h2 id="qrTitle" tabindex="-1">Scan the panel QR</h2>
-  <p class="hint">Hold the camera over the QR code on the back of the panel. The key is saved on this phone, so you only do this once per panel.</p>
+  <p class="hint" id="qrHint">Hold the camera over the QR code on the back of the panel. The key is saved on this phone, so you only do this once per panel.</p>
   <video id="qrVid" playsinline muted style="width:100%;max-height:50vh;border-radius:12px;background:#000"></video>
   <p class="hint" id="qrStatus" role="status" aria-live="polite"></p>
   <div class="actions"><button class="btn" id="qrPhoto" type="button">Use a photo instead</button><button class="btn" id="qrCancel" type="button">Cancel</button></div>
@@ -1086,18 +1084,19 @@ body.hw-open{overflow:hidden}
 
 <dialog id="wifiDlg" aria-labelledby="wifiTitle">
   <h2 id="wifiTitle" tabindex="-1">Connect the panel to your WiFi</h2>
-  <p class="hint">Type your home WiFi once. The panel remembers it and joins it, so your phone keeps its internet while you use the panel. The name and password are stored on the panel only.</p>
+  <p class="hint">Type a WiFi network once and the panel remembers it, so your phone keeps its internet while you use the panel. It keeps up to 5 (home, family, a friend's) and joins whichever one is in range, like a phone does. Names and passwords are stored on the panel only.</p>
   <label><span class="l">Panel key</span><input id="wfKey" type="text" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="Scan the QR on the back of the panel"></label>
   <div class="acts"><button class="btn" id="wfScanQr" type="button">Scan panel QR</button></div>
   <label><span class="l">WiFi network name</span><input id="wfSsid" type="text" list="wfNets" maxlength="32" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Your home WiFi name"></label>
   <datalist id="wfNets"></datalist>
-  <div class="acts"><button class="btn" id="wfScan" type="button">Find networks</button></div>
+  <div class="acts"><button class="btn" id="wfScan" type="button">Find networks</button><button class="btn" id="wfScanWq" type="button">Scan WiFi QR</button><button class="btn" id="wfShowSaved" type="button">Saved networks</button></div>
   <div class="fxchips" id="wfList"></div>
+  <div id="wfSavedBox" hidden><p class="hint">Saved on the panel. It joins whichever one is in range:</p><div id="wfSaved"></div></div>
   <label><span class="l">WiFi password</span><input id="wfPass" type="password" maxlength="63" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Leave empty for an open network"></label>
   <label class="toggle"><input type="checkbox" id="wfShow"><span>Show password</span></label>
   <p class="hint" id="wfHow"></p>
   <p class="hint" id="wfStatus" role="status" aria-live="polite"></p>
-  <div class="actions"><button class="btn primary" id="wfSave" type="button">Save and connect</button><button class="btn" id="wfForget" type="button" hidden>Forget this network</button><button class="btn" id="wfCancel" type="button">Close</button></div>
+  <div class="actions"><button class="btn primary" id="wfSave" type="button">Save and connect</button><button class="btn" id="wfCancel" type="button">Close</button></div>
 </dialog>
 
 <dialog id="remDlg" aria-labelledby="remTitle">
@@ -1189,7 +1188,6 @@ body.hw-open{overflow:hidden}
 </defs></svg>
 <div id="hween" role="dialog" aria-modal="true" aria-label="Red Light Scarapy" tabindex="-1" hidden>
   <button type="button" class="hw-close" id="hwClose">&larr; Back to the lab</button>
-  <button type="button" class="hw-scarebtn" id="hwScareBtn" aria-pressed="true">Scares: on</button>
   <div class="hw-moon"></div>
   <span class="hw-star" style="top:9%;left:12%"></span><span class="hw-star" style="top:16%;left:34%;animation-delay:-1s"></span><span class="hw-star" style="top:6%;left:58%;animation-delay:-2s"></span><span class="hw-star" style="top:24%;left:80%"></span><span class="hw-star" style="top:30%;left:8%;animation-delay:-1.5s"></span><span class="hw-star" style="top:12%;left:90%;animation-delay:-.5s"></span>
   <svg class="hw-witch" style="top:12%" viewBox="0 -24 170 124" aria-hidden="true"><use href="#wt"/></svg>
@@ -3168,7 +3166,7 @@ function pnRender(st){
   hwSync(st);
   pnLock();
   const wl=$("#pnWifiLine");
-  if(wl){const w=st&&st.wifi;wl.hidden=!w;if(w)wl.textContent=w.st==="ok"?"Panel WiFi: "+w.ssid+" at "+w.ip+".":(w.st==="trying"?"Panel WiFi: joining "+w.ssid+"...":(w.st==="failed"?"Panel WiFi: could not join "+w.ssid+".":"Panel WiFi: not set up yet. Tap Panel WiFi setup."))}
+  if(wl){const w=st&&st.wifi;wl.hidden=!w;if(w)wl.textContent=w.st==="ok"?"Panel WiFi: "+w.ssid+" at "+w.ip+".":(w.st==="trying"?"Panel WiFi: joining "+w.ssid+"...":(w.st==="failed"?"Panel WiFi: could not join "+w.ssid+".":(w.st==="searching"?"Panel WiFi: looking for a saved network...":(w.st==="away"?"Panel WiFi: none of its "+w.n+" saved network"+(w.n===1?" is":"s is")+" in range. Tap Panel WiFi setup to add this one.":"Panel WiFi: not set up yet. Tap Panel WiFi setup."))))}
   if(!st)return;
   $("#pnC1v").textContent=st.c1+"%";$("#pnC2v").textContent=st.c2+"%";
   if(document.activeElement!==$("#pnC1"))$("#pnC1").value=st.c1;
@@ -3266,9 +3264,8 @@ function hwRun(fn){
 }
 function hwSetLights(){return pnReq("/api/set",{c1:hw.bri,c2:0,fx:hw.fx})}
 /* ---- the jump scare: a face that leaps at the screen, a scream made from scratch with Web Audio, and a buzz ---- */
-hw.scare=true;
-try{if(localStorage.getItem("rdl.hw.scare")==="off")hw.scare=false}catch(e){}
-function hwScareUi(){const b=$("#hwScareBtn");b.setAttribute("aria-pressed",String(hw.scare));b.textContent=hw.scare?"Scares: on":"Scares: off"}
+hw.scare=true;   // always on: there is no switch, so nobody sees it coming
+try{localStorage.removeItem("rdl.hw.scare")}catch(e){}
 function hwScream(){
   try{
     const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
@@ -3319,11 +3316,6 @@ function hwToggle(){
   if(!on)hwJump();
   hwRun(function(){return on?pnReq("/api/set",{c1:0,c2:0,fx:hw.fx}):hwSetLights()});
 }
-$("#hwScareBtn").addEventListener("click",function(){
-  hw.scare=!hw.scare;hwScareUi();
-  try{localStorage.setItem("rdl.hw.scare",hw.scare?"on":"off")}catch(e){}
-});
-hwScareUi();
 $("#hwFx").addEventListener("click",function(e){
   const b=e.target.closest("button");if(!b)return;
   hw.fx=b.dataset.fx;hwChips();hwRun(hwSetLights);
@@ -3361,13 +3353,32 @@ function wfErr(e){
 }
 
 /* ---- panel QR key ---- */
-const qr={stream:null,raf:0,done:null,det:null,busy:false};
+const qr={stream:null,raf:0,done:null,det:null,busy:false,mode:"key"};
 function qrParse(t){
   t=String(t||"").trim();
   let m=t.match(/^redox:([A-Za-z0-9]{6,32})\b/i)||t.match(/[?#&]k=([A-Za-z0-9]{6,32})/);
   if(m)return m[1].toUpperCase();
   return /^[A-Za-z0-9]{6,32}$/.test(t)?t.toUpperCase():"";
 }
+/* The phone-style WiFi QR:  WIFI:T:WPA;S:name;P:password;H:false;;   (\ ; , : " are escaped with a backslash) */
+function wifiQrParse(t){
+  t=String(t||"").trim();
+  if(!/^WIFI:/i.test(t))return null;
+  const f={};let k="",v="",inV=false,esc=false;
+  const push=function(){if(k)f[k.toUpperCase()]=v;k="";v="";inV=false};
+  for(let i=5;i<t.length;i++){
+    const c=t[i];
+    if(esc){(inV?(v+=c):(k+=c));esc=false;continue}
+    if(c==="\\"){esc=true;continue}
+    if(c===";"){push();continue}
+    if(c===":"&&!inV){inV=true;continue}
+    inV?(v+=c):(k+=c);
+  }
+  push();
+  if(!f.S)return null;
+  return {ssid:f.S,pass:f.P||"",type:(f.T||"WPA").toUpperCase(),hidden:/^true$/i.test(f.H||"")};
+}
+function qrAccept(raw){return qr.mode==="wifi"?wifiQrParse(raw):qrParse(raw)}
 function qrSay(t,bad){const e=$("#qrStatus");e.textContent=t;e.style.color=bad?"var(--warn)":"var(--muted)"}
 function qrStop(){
   if(qr.raf){cancelAnimationFrame(qr.raf);qr.raf=0}
@@ -3390,10 +3401,10 @@ function qrDecode(src,w,h){
     const x=c.getContext("2d",{willReadFrequently:true});x.drawImage(src,0,0,c.width,c.height);
     const d=x.getImageData(0,0,c.width,c.height);
     const r=window.jsQR(d.data,d.width,d.height,{inversionAttempts:"attemptBoth"});
-    return Promise.resolve(r?qrParse(r.data):"");
+    return Promise.resolve(r?(qrAccept(r.data)||""):"");
   };
   if(qr.det)return qr.det.detect(src).then(function(a){
-    for(let i=0;i<a.length;i++){const k=qrParse(a[i].rawValue);if(k)return k}
+    for(let i=0;i<a.length;i++){const k=qrAccept(a[i].rawValue);if(k)return k}
     return viaJs();
   }).catch(viaJs);
   return viaJs();
@@ -3413,16 +3424,19 @@ function qrPhoto(file){
   (window.createImageBitmap?createImageBitmap(file):Promise.reject(new Error("x"))).then(function(b){
     return qrDecode(b,b.width,b.height);
   }).then(function(k){
-    if(k)qrFinish(k);else qrSay("No panel QR found in that photo. Try again closer, with the whole code in view, or type the key.",true);
-  }).catch(function(){qrSay("Could not read that photo. Type the key printed under the QR instead.",true)});
+    if(k)qrFinish(k);else qrSay(qr.mode==="wifi"?"No WiFi QR found in that photo. Try again closer, with the whole code in view, or type the network name and password.":"No panel QR found in that photo. Try again closer, with the whole code in view, or type the key.",true);
+  }).catch(function(){qrSay("Could not read that photo. Try again, or type it in instead.",true)});
 }
-function qrScan(cb){
-  qr.done=cb;qr.busy=false;
+function qrScan(cb,mode){
+  qr.done=cb;qr.busy=false;qr.mode=mode||"key";
+  const w=qr.mode==="wifi";
+  $("#qrTitle").textContent=w?"Scan a WiFi QR code":"Scan the panel QR";
+  $("#qrHint").textContent=w?"Hold the camera over a WiFi QR code, like the one in your router's app or the Share option in your phone's WiFi settings. The name and password are filled in for you.":"Hold the camera over the QR code on the back of the panel. The key is saved on this phone, so you only do this once per panel.";
   const canLive=!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.isSecureContext);
   const canRead=("BarcodeDetector" in window)||typeof window.jsQR==="function";
   $("#qrVid").hidden=!canLive;
   if(!canRead){
-    qrSay("This copy of the app cannot read QR codes. Type the key printed under the QR code on the panel.",true);
+    qrSay("This copy of the app cannot read QR codes. "+(w?"Type the network name and password instead.":"Type the key printed under the QR code on the panel."),true);
     $("#qrPhoto").hidden=true;openD("#qrDlg");return;
   }
   $("#qrPhoto").hidden=false;
@@ -3432,7 +3446,7 @@ function qrScan(cb){
   navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false}).then(function(st){
     if(!$("#qrDlg").open){st.getTracks().forEach(function(t){t.stop()});return}
     qr.stream=st;const v=$("#qrVid");v.srcObject=st;v.play().catch(function(){});
-    qrSay("Point the camera at the QR code.");qrLoop();
+    qrSay(w?"Point the camera at the WiFi QR code.":"Point the camera at the QR code.");qrLoop();
   }).catch(function(){
     $("#qrVid").hidden=true;qrSay("The camera is not available. Tap Use a photo instead, or type the key.",true);
   });
@@ -3450,11 +3464,20 @@ function qrInto(inputId){
 }
 $("#pnScan").addEventListener("click",function(){qrInto("#pnKey")});
 $("#wfScanQr").addEventListener("click",function(){qrInto("#wfKey")});
+$("#wfScanWq").addEventListener("click",function(){
+  qrScan(function(n){
+    if(n.type==="WEP"){wfSay("That network uses old WEP security, which the panel does not support.",true);return}
+    $("#wfSsid").value=n.ssid;$("#wfPass").value=n.type==="NOPASS"?"":n.pass;
+    $("#wfShow").checked=false;$("#wfPass").type="password";
+    wfSay("Network read from the QR code: "+n.ssid+(n.type==="NOPASS"?" (open network)":"")+". Tap Save and connect."+(n.hidden?" It is a hidden network, so the panel can join it when you save it here, but it may not find it again on its own.":""));
+  },"wifi");
+});
 function openWifi(){
   $("#wfKey").value=pn.key||"";$("#wfSsid").value=wf.ssid||"";$("#wfPass").value="";$("#wfShow").checked=false;$("#wfPass").type="password";
-  $("#wfList").innerHTML="";$("#wfNets").innerHTML="";$("#wfForget").hidden=!wf.ok;wf.busy=false;
-  $("#wfHow").textContent=SAMEORIGIN?"You are on the panel's own page, so this talks to it directly.":(BLE_OK?"This uses Bluetooth. When you tap Save or Find networks, Android asks which device: choose Redox Panel.":"This phone cannot use Bluetooth in a browser. First join the WiFi network RedoxPanel (password redoxpanel) on this phone, then tap Save here.");
+  $("#wfList").innerHTML="";$("#wfNets").innerHTML="";$("#wfSavedBox").hidden=true;$("#wfSaved").innerHTML="";wf.busy=false;
+  $("#wfHow").textContent=SAMEORIGIN?"You are on the panel's own page, so this talks to it directly.":(BLE_OK?"The panel is not on your WiFi yet, so this one-time setup is sent to it over Bluetooth. When you tap Save or Find networks, Android asks which device: choose Redox Panel. The panel then joins your WiFi by itself.":"This phone cannot use Bluetooth in a browser. First join the WiFi network RedoxPanel (password redoxpanel) on this phone, then tap Save here.");
   wfSay("");openD("#wifiDlg");
+  if((pn.connected||SAMEORIGIN)&&pn.key)wfLoadSaved(true);
 }
 function wfScan(){
   wfSay("Looking for networks...");
@@ -3467,9 +3490,10 @@ function wfScan(){
   }).catch(function(e){wfSay(wfErr(e),true)});
 }
 function wfDone(ssid,ip){
-  wf.busy=false;wf.ok=true;wf.ssid=ssid;wfSaveLocal();$("#wfForget").hidden=false;
+  wf.busy=false;wf.ok=true;wf.ssid=ssid;wfSaveLocal();
   if(ip){pn.addr=ip;pnSave();if($("#pnAddr"))$("#pnAddr").value=ip}
   wfSay("Connected. The panel is on "+ssid+(ip?" at "+ip:"")+". Put your phone on "+ssid+" too, choose WiFi under Connection and tap Connect.");
+  if(!wfHttp())wfLoadSaved(true);
 }
 function wfPoll(ssid,t0,st,fails){
   const w=st&&st.wifi;
@@ -3481,7 +3505,7 @@ function wfPoll(ssid,t0,st,fails){
   setTimeout(function(){
     wfVia("/api/state").then(function(s){wfPoll(ssid,t0,s,0)}).catch(function(e){
       if(wfHttp()){   // over its own network the link drops when it switches to yours: that means it worked
-        wf.busy=false;wf.ok=true;wf.ssid=ssid;wfSaveLocal();$("#wfForget").hidden=false;
+        wf.busy=false;wf.ok=true;wf.ssid=ssid;wfSaveLocal();
         wfSay("The panel left its own network, which means it joined "+ssid+". Put your phone on "+ssid+" and open http://"+(HOSTNAME_LOCAL)+" (or use WiFi and Connect in the app).");return}
       wfPoll(ssid,t0,st,fails+1);
     });
@@ -3498,14 +3522,32 @@ function wfSave(){
   wf.busy=true;wfSay("Sending to the panel...");
   wfVia("/api/wifi",{ssid:ssid,pass:pass}).then(function(st){wfPoll(ssid,Date.now(),st,0)}).catch(function(e){wf.busy=false;wfSay(wfErr(e),true)});
 }
-function wfForget(){
-  wfSay("Asking the panel to forget its WiFi...");
-  wfVia("/api/wififorget").then(function(){wf.ok=false;wf.ssid="";wfSaveLocal();$("#wfForget").hidden=true;$("#wfSsid").value="";wfSay("Done. The panel now only uses its own network, RedoxPanel.")}).catch(function(e){wfSay(wfErr(e),true)});
+function wfRenderSaved(r){
+  const list=(r&&r.saved)||[],box=$("#wfSaved");
+  box.innerHTML="";
+  list.forEach(function(n){
+    const row=document.createElement("div");row.className="acts";row.style.alignItems="center";
+    const t=document.createElement("span");t.textContent=n+(r.cur===n?" (connected)":"");t.style.flex="1";t.style.overflowWrap="anywhere";
+    const b=document.createElement("button");b.type="button";b.className="btn";b.textContent="Forget";b.setAttribute("aria-label","Forget "+n);
+    b.addEventListener("click",function(){wfForgetOne(n)});
+    row.appendChild(t);row.appendChild(b);box.appendChild(row);
+  });
+  $("#wfSavedBox").hidden=false;
+  if(!list.length){box.textContent="None yet. Enter a network above and tap Save and connect."}
+  wf.ok=list.length>0;if(list.length)wf.ssid=r.cur||list[0];wfSaveLocal();
+}
+function wfLoadSaved(quiet){
+  if(!quiet)wfSay("Asking the panel...");
+  return wfVia("/api/wifilist").then(function(r){wfRenderSaved(r);if(!quiet)wfSay("")}).catch(function(e){if(!quiet)wfSay(wfErr(e),true)});
+}
+function wfForgetOne(n){
+  wfSay("Asking the panel to forget "+n+"...");
+  wfVia("/api/wififorget",{ssid:n}).then(function(){wfSay("Forgot "+n+".");return wfLoadSaved(true)}).catch(function(e){wfSay(wfErr(e),true)});
 }
 $("#pnWifiSetup").addEventListener("click",openWifi);
 $("#wfScan").addEventListener("click",wfScan);
 $("#wfSave").addEventListener("click",wfSave);
-$("#wfForget").addEventListener("click",wfForget);
+$("#wfShowSaved").addEventListener("click",function(){wfLoadSaved(false)});
 $("#wfCancel").addEventListener("click",function(){closeD("#wifiDlg")});
 $("#wfShow").addEventListener("change",function(){$("#wfPass").type=this.checked?"text":"password"});
 function renderPanel(){
