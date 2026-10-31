@@ -941,11 +941,11 @@ body.hw-open{overflow:hidden}
   <p class="hint" id="stPhInfo"></p>
   <div class="acts"><button class="btn danger" id="stPhClear" type="button" hidden>Delete all photos</button><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 121. Released October 28, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
+  <p class="hint">Redox Dosimetry Lab, app build <span class="appbuild">122</span>. Released October 31, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build 114. Released October 28, 2026.<br>© 2026 Redox. All rights reserved.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build <span class="appbuild">122</span>. Released October 31, 2026.<br>© 2026 Redox. All rights reserved.</p>
 </main>
 
 <dialog id="phAdd" aria-labelledby="phAddT">
@@ -5337,6 +5337,8 @@ phInit();
   quiet(document);
   try{new MutationObserver(function(m){for(let i=0;i<m.length;i++){const n=m[i].addedNodes;for(let k=0;k<n.length;k++)if(n[k].nodeType===1){if(n[k].matches&&n[k].matches(SEL)){n[k].setAttribute("autocomplete","off");n[k].setAttribute("data-lpignore","true");n[k].setAttribute("data-1p-ignore","");n[k].setAttribute("data-form-type","other")}quiet(n[k])}}}).observe(document.body,{childList:true,subtree:true})}catch(e){}
 })();
+/* The build number lives here once; every .appbuild on a page shows it. */
+document.querySelectorAll(".appbuild").forEach(function(e){e.textContent="122"});
 window.__rdlReady=true;
 })();
 </script>
