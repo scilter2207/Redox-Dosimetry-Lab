@@ -941,7 +941,7 @@ body.hw-open{overflow:hidden}
   <p class="hint" id="stPhInfo"></p>
   <div class="acts"><button class="btn danger" id="stPhClear" type="button" hidden>Delete all photos</button><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build 120. Released October 28, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
+  <p class="hint">Redox Dosimetry Lab, app build 121. Released October 28, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
@@ -1092,7 +1092,7 @@ body.hw-open{overflow:hidden}
   <div class="acts"><button class="btn" id="wfScan" type="button">Find networks</button><button class="btn" id="wfScanWq" type="button">Scan WiFi QR</button><button class="btn" id="wfShowSaved" type="button">Saved networks</button></div>
   <div class="fxchips" id="wfList"></div>
   <div id="wfSavedBox" hidden><p class="hint">Saved on the panel. It joins whichever one is in range:</p><div id="wfSaved"></div></div>
-  <label><span class="l">WiFi password</span><input id="wfPass" type="password" maxlength="63" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Leave empty for an open network"></label>
+  <label><span class="l">WiFi password</span><input id="wfPass" type="password" data-pw="1" maxlength="63" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Leave empty for an open network"></label>
   <label class="toggle"><input type="checkbox" id="wfShow"><span>Show password</span></label>
   <p class="hint" id="wfHow"></p>
   <p class="hint" id="wfStatus" role="status" aria-live="polite"></p>
@@ -1588,16 +1588,35 @@ function evidence(m){
 }
 
 /* ---------- Render ---------- */
+/* Recently used treatments and areas are listed first in each picker, with a line before the full list. */
+const RECENT_KEY="rdl.recent.v1";
+let RECENT={tr:[],ar:[]};
+try{const v=JSON.parse(localStorage.getItem(RECENT_KEY));if(v&&Array.isArray(v.tr)&&Array.isArray(v.ar))RECENT={tr:v.tr.slice(0,8),ar:v.ar.slice(0,8)}}catch(e){}
+function noteRecent(kind,id){
+  if(!id)return;
+  RECENT[kind]=[id].concat(RECENT[kind].filter(function(x){return x!==id})).slice(0,8);
+  try{localStorage.setItem(RECENT_KEY,JSON.stringify(RECENT))}catch(e){}
+}
+function pickerOpts(items,recentIds,allLabel){
+  const one=function(a){return '<option value="'+a.id+'">'+a.name+'</option>'};
+  const byId={};items.forEach(function(a){byId[a.id]=a});
+  const rec=recentIds.filter(function(id){return byId[id]}).slice(0,4);
+  if(!rec.length)return items.map(one).join("");
+  return '<optgroup label="Recent">'+rec.map(function(id){return one(byId[id])}).join("")+'</optgroup><hr><optgroup label="'+allLabel+'">'+items.map(one).join("")+'</optgroup>';
+}
+function fillTreatments(){
+  $("#treatment").innerHTML=pickerOpts(TREATMENTS,RECENT.tr,"All treatments");
+  $("#treatment").value=S.treatment;
+}
 function fillSelects(){
-  $("#treatment").innerHTML=TREATMENTS.map(t=>`<option value="${t.id}">${t.name}</option>`).join("");
-  $("#treatment").value=S.treatment;fillAreas();$("#goal").value=String(S.goal);
+  fillTreatments();fillAreas();$("#goal").value=String(S.goal);
 }
 function fillAreas(reset){
   const T=TREATMENTS.find(t=>t.id===S.treatment)||TREATMENTS[0];
   const list=T.areas==="all"?AREAS:AREAS.filter(a=>T.areas.includes(a.id));
   const ok=list.some(a=>a.id===S.area);
   if(!ok||(reset&&T.areas!=="all"))S.area=T.areas==="all"?list[0].id:T.areas[0];
-  $("#area").innerHTML=list.map(a=>`<option value="${a.id}">${a.name}</option>`).join("");
+  $("#area").innerHTML=pickerOpts(list,RECENT.ar,"All areas");
   $("#area").value=S.area;
 }
 function fillProfiles(){
@@ -1853,8 +1872,8 @@ $("#delProfile").addEventListener("click",()=>{
 });
 
 /* ---------- Main events ---------- */
-$("#treatment").addEventListener("change",e=>{S.treatment=e.target.value;fillAreas(true);S.dose=null;S.depthManual=null;S.distManualCm=null;save();render()});
-$("#area").addEventListener("change",e=>{S.area=e.target.value;S.depthManual=null;S.distManualCm=null;save();render()});
+$("#treatment").addEventListener("change",e=>{S.treatment=e.target.value;noteRecent("tr",S.treatment);fillAreas(true);fillTreatments();S.dose=null;S.depthManual=null;S.distManualCm=null;save();render()});
+$("#area").addEventListener("change",e=>{S.area=e.target.value;noteRecent("ar",S.area);fillAreas();S.depthManual=null;S.distManualCm=null;save();render()});
 $("#depth").addEventListener("input",e=>{const v=parseFloat(e.target.value);S.depthManual=v>0?v:null;save();render()});
 $("#dose").addEventListener("input",e=>{S.dose=parseFloat(e.target.value);save();render()});
 $("#goal").addEventListener("change",e=>{S.goal=parseInt(e.target.value,10);S.distManualCm=null;save();render()});
@@ -2842,7 +2861,7 @@ $("#libList").addEventListener("click",function(e){const b=e.target.closest("[da
 function usePaper(id){
   const p=PAPERS.find(function(x){return x.id===id});if(!p||!p.protocol)return;
   const pr=p.protocol,T=TREATMENTS.find(function(t){return t.id===pr.tr});
-  S.treatment=pr.tr;fillAreas(true);$("#treatment").value=S.treatment;$("#area").value=S.area;
+  S.treatment=pr.tr;noteRecent("tr",S.treatment);fillAreas(true);noteRecent("ar",S.area);fillTreatments();fillAreas();
   S.depthManual=null;S.distManualCm=null;
   const dose=Array.isArray(pr.dose)?(pr.dose[0]+pr.dose[1])/2:pr.dose;
   S.dose=clamp(dose,T.dose[0],T.dose[1]);
@@ -5305,6 +5324,19 @@ function initFeatures(){
 
 fillSelects();fillProfiles();peopleFill();initFeatures();setView(S.view);render();
 phInit();
+/* No browser autofill or saved-password suggestions on any field except the password field. */
+(function(){
+  const SEL='input:not([type=password]):not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=hidden]):not([data-pw]),textarea';
+  function quiet(root){
+    (root&&root.querySelectorAll?root:document).querySelectorAll(SEL).forEach(function(e){
+      if(e.getAttribute("autocomplete")!=="off"){
+        e.setAttribute("autocomplete","off");e.setAttribute("data-lpignore","true");e.setAttribute("data-1p-ignore","");e.setAttribute("data-form-type","other");
+      }
+    });
+  }
+  quiet(document);
+  try{new MutationObserver(function(m){for(let i=0;i<m.length;i++){const n=m[i].addedNodes;for(let k=0;k<n.length;k++)if(n[k].nodeType===1){if(n[k].matches&&n[k].matches(SEL)){n[k].setAttribute("autocomplete","off");n[k].setAttribute("data-lpignore","true");n[k].setAttribute("data-1p-ignore","");n[k].setAttribute("data-form-type","other")}quiet(n[k])}}}).observe(document.body,{childList:true,subtree:true})}catch(e){}
+})();
 window.__rdlReady=true;
 })();
 </script>
