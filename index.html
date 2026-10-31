@@ -402,6 +402,7 @@ body.hw-open{overflow:hidden}
 @keyframes hwjump{0%{transform:scale(.05) rotate(0)}8%{transform:scale(1.35) rotate(-4deg)}14%{transform:scale(1.0) rotate(3deg)}22%{transform:scale(1.2) rotate(-3deg)}30%{transform:scale(1.05) rotate(2deg)}38%{transform:scale(1.22) rotate(-2deg)}50%{transform:scale(1.1) rotate(1deg)}70%{transform:scale(1.18) rotate(-1deg)}100%{transform:scale(1.7) rotate(0)}}
 @media (prefers-reduced-motion:reduce){#hwScare svg{animation:none;transform:scale(.8)}}
 @media (prefers-reduced-motion:reduce){#hween *{animation:none!important}}
+#wfForm{display:contents}
 </style>
 </head>
 <body data-view="simple">
@@ -941,11 +942,11 @@ body.hw-open{overflow:hidden}
   <p class="hint" id="stPhInfo"></p>
   <div class="acts"><button class="btn danger" id="stPhClear" type="button" hidden>Delete all photos</button><button class="btn danger" id="stClearLog" type="button">Clear all session logs</button><button class="btn danger" id="stReset" type="button">Reset profiles and settings</button></div>
   <h3 class="dlg-h">About</h3>
-  <p class="hint">Redox Dosimetry Lab, app build <span class="appbuild">122</span>. Released October 31, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
+  <p class="hint">Redox Dosimetry Lab, app build <span class="appbuild">123</span>. Released October 31, 2026. Educational estimates, not medical advice. © 2026 Redox. All rights reserved.</p>
 </section>
 
 <p class="foot"><button class="linkbtn" data-safety="1" type="button" style="min-height:30px;padding:0">Safety checklist</button></p>
-<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build <span class="appbuild">122</span>. Released October 31, 2026.<br>© 2026 Redox. All rights reserved.</p>
+<p class="foot">A planning aid, not medical advice or a medical device. Dose windows summarize published red and near-infrared photobiomodulation ranges and public dosing guides, and individual response varies. Start near the low end and work up. Protect your eyes: 850 nm is invisible but not harmless.<br>Redox Dosimetry Lab. App build <span class="appbuild">123</span>. Released October 31, 2026.<br>© 2026 Redox. All rights reserved.</p>
 </main>
 
 <dialog id="phAdd" aria-labelledby="phAddT">
@@ -1083,6 +1084,7 @@ body.hw-open{overflow:hidden}
 </dialog>
 
 <dialog id="wifiDlg" aria-labelledby="wifiTitle">
+<form id="wfForm" onsubmit="return false">
   <h2 id="wifiTitle" tabindex="-1">Connect the panel to your WiFi</h2>
   <p class="hint">Type a WiFi network once and the panel remembers it, so your phone keeps its internet while you use the panel. It keeps up to 5 (home, family, a friend's) and joins whichever one is in range, like a phone does. Names and passwords are stored on the panel only.</p>
   <label><span class="l">Panel key</span><input id="wfKey" type="text" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="Scan the QR on the back of the panel"></label>
@@ -1097,6 +1099,7 @@ body.hw-open{overflow:hidden}
   <p class="hint" id="wfHow"></p>
   <p class="hint" id="wfStatus" role="status" aria-live="polite"></p>
   <div class="actions"><button class="btn primary" id="wfSave" type="button">Save and connect</button><button class="btn" id="wfCancel" type="button">Close</button></div>
+</form>
 </dialog>
 
 <dialog id="remDlg" aria-labelledby="remTitle">
@@ -5338,7 +5341,7 @@ phInit();
   try{new MutationObserver(function(m){for(let i=0;i<m.length;i++){const n=m[i].addedNodes;for(let k=0;k<n.length;k++)if(n[k].nodeType===1){if(n[k].matches&&n[k].matches(SEL)){n[k].setAttribute("autocomplete","off");n[k].setAttribute("data-lpignore","true");n[k].setAttribute("data-1p-ignore","");n[k].setAttribute("data-form-type","other")}quiet(n[k])}}}).observe(document.body,{childList:true,subtree:true})}catch(e){}
 })();
 /* The build number lives here once; every .appbuild on a page shows it. */
-document.querySelectorAll(".appbuild").forEach(function(e){e.textContent="122"});
+document.querySelectorAll(".appbuild").forEach(function(e){e.textContent="123"});
 window.__rdlReady=true;
 })();
 </script>
